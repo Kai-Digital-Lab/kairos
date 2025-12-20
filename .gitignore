@@ -1,24 +1,40 @@
-# build output
+# --- Dependencies ---
+node_modules/
+.pnp
+.pnp.js
+
+# --- Build Output ---
 dist/
-# generated types
+server/
 .astro/
 
-# dependencies
-node_modules/
+# --- Environment Variables (Security) ---
+.env
+.env.*
+!.env.example
+!.env.production
 
-# logs
+# --- Logs ---
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
+# --- Testing & Coverage ---
+coverage/
+.nyc_output/
 
-# environment variables
-.env
-.env.production
-
-# macOS-specific files
-.DS_Store
-
-# jetbrains setting folder
+# --- IDE / Editor Specific ---
 .idea/
+.vscode/
+*.swp
+*.swo
+
+# --- Operating System Junk ---
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# --- Optional: Local SSL Certs ---
+*.pem
