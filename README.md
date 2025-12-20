@@ -1,43 +1,64 @@
-# Astro Starter Kit: Minimal
+<p>
+<div align="right">
+<strong>Languages：</strong>
+<b>English</b> |
+<a href="./README.zh-TW.md">繁體中文</a>
+</div>
+</p>
 
-```sh
-npm create astro@latest -- --template minimal
-```
+# 🌌 Project Kairos | Kai Digital Lab
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+**"Kairos" (Ancient Greek: καιρός):** represents a critical moment or a supreme opportunity. Unlike chronological time, it signifies a decisive gap in time where a fleeting opportunity must be seized with precision.
 
-## 🚀 Project Structure
+> **Last Updated:** December 21, 2025
 
-Inside of your Astro project, you'll see the following folders and files:
+## 🚀 Vision
 
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
+**Project Kairos** is the official digital carrier for **Kai Digital Lab (K-LAB)**. It is not just a personal portfolio, but a technical manifestation of the philosophy **"Bridging Business & Technology."**
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+Designed for performance, built for scalability, and documented for clarity.
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+## 🛠️ Technical Stack
 
-Any static assets, like images, can be placed in the `public/` directory.
+This project adheres to a **Zero-Runtime Overhead** philosophy, leveraging modern web standards to achieve extreme performance.
 
-## 🧞 Commands
+* **Framework:** Astro 5.0+ - Utilizing Server-First architecture and View Transitions for a seamless SPA experience.
 
-All commands are run from the root of the project, from a terminal:
+* **Styling:** Tailwind CSS v4 - Next-generation CSS engine with Vite integration.
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+* **State Management:** Nano Stores - Framework-agnostic, lightweight (<1kb) state manager.
 
-## 👀 Want to learn more?
+* **Interactivity: Vanilla Web Components** - Replacing heavy framework runtimes with native Custom Elements.
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+* **Infrastructure:** Cloudflare Pages with Zero Trust security protocols.
+
+## 📐 Architectural Philosophy
+
+As a **Senior Technical Program Manager**, I believe code should be as organized as a project roadmap:
+
+* 1. **Clean Architecture:** Feature-based module separation and Atomic Design patterns.
+
+* 2. **Zero-Dependency Interaction:** Using native `HTMLElement` and `<dialog>` to eliminate framework bloat.
+
+* 3. **Strict Engineering Discipline:** Fully typed with TypeScript (Strict Mode) and documented through Conventional Commits.
+
+## 🗺️ Roadmap
+
+* [x] **Phase 1: Infrastructure** - Core layout, FOUC prevention, and CI/CD setup.
+* [ ] **Phase 2: Design System** - Atomic components and accessible UI modules.
+* [ ] **Phase 3: Content & SEO** - I18n routing and MDX-based case studies.
+* [ ] **Phase 4: Optimization** - Final performance audit and Lighthouse certification.
+
+## 👨‍💻 About the Author
+
+**Kevin Hsieh (Kai)** *Senior Technical Program Manager | Cloud Architecture & Agile Consultant*
+
+I specialize in leading complex cross-functional teams to deliver high-impact digital products. K-LAB is my personal laboratory for exploring the frontier of Web technologies.
+
+### 📫 Connect with me: LinkedIn | Medium
+
+## 📄 License
+
+This project is open-source and available under the MIT License.
+
+The content, design, and creative assets are licensed under a [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](https://creativecommons.org/licenses/by-nc-nd/4.0/) (CC BY-NC-ND 4.0).
