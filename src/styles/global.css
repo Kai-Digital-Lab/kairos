@@ -1,1 +1,12 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 這裡未來可以放自定義的 global styles 或字型設定 */
+@layer base {
+
+    /* 修正 iOS 點擊高亮問題 */
+    html {
+        -webkit-tap-highlight-color: transparent;
+    }
+}

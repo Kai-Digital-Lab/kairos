@@ -1,0 +1,48 @@
+---
+import { ClientRouter } from "astro:transitions";
+import "../styles/global.css";
+
+interface Props {
+    title?: string;
+    description?: string;
+}
+
+const {
+    title = "K@i DIGITAL LAB",
+    description = "Senior TPM & Modern Web Architecture Portfolio",
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="description" content={description} />
+        <meta name="viewport" content="width=device-width" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <meta name="generator" content={Astro.generator} />
+        <title>{title}</title>
+
+        <ClientRouter />
+
+        <script is:inline>
+            // 立即執行，不等待 DOM Ready
+            const theme = localStorage.getItem("pref:themeId") || "default";
+            document.documentElement.setAttribute("data-theme", theme);
+            const mode = localStorage.getItem("pref:mode");
+
+            if (
+                mode === "dark" ||
+                (!mode &&
+                    window.matchMedia("(prefers-color-scheme: dark)").matches)
+            ) {
+                document.documentElement.classList.add("dark");
+            }
+        </script>
+    </head>
+    <body
+        class="bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 transition-colors duration-300"
+    >
+        <slot />
+    </body>
+</html>
