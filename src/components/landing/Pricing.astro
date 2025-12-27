@@ -1,0 +1,267 @@
+---
+const lang = Astro.currentLocale || "en";
+
+const translations = {
+    en: {
+        title: "Transparent Investment",
+        subtitle:
+            "Professional web development packages tailored to your business needs.",
+        mvpTitle: "Landing Page",
+        mvpPrice: "$1,500",
+        mvpPer: "/ starting",
+        growthTitle: "Business Website",
+        growthPrice: "$4,800",
+        growthPer: "/ starting",
+        enterpriseTitle: "Custom Web App",
+        enterprisePrice: "$10k+",
+        enterprisePer: "/ project",
+        features: {
+            onePage: "High-Converting Single Page",
+            responsive: "Fully Mobile Responsive",
+            contact: "Contact Form & Lead Gen",
+            fastDelivery: "5-7 Day Turnaround",
+            multiPage: "Up to 8 Custom Pages",
+            cms: "Easy-to-use CMS (Manage Content)",
+            seo: "Technical SEO & Analytics",
+            training: "Handover Training & Docs",
+            react: "React / Next.js Architecture",
+            database: "Database & Auth Integration",
+            api: "Custom API Development",
+            support: "30 Days Post-Launch Support",
+        },
+        buttons: {
+            start: "Start Project",
+            select: "Most Popular",
+            contact: "Get a Quote",
+        },
+        footer: {
+            secure: "Secure Payment",
+            fast: "Fast Delivery",
+        },
+    },
+    "zh-tw": {
+        title: "透明的投資方案",
+        subtitle: "專為您的商業需求量身打造的專業網頁開發方案。",
+        mvpTitle: "形象著陸頁",
+        mvpPrice: "$1,500",
+        mvpPer: "/ 起",
+        growthTitle: "商業形象網站",
+        growthPrice: "$4,800",
+        growthPer: "/ 起",
+        enterpriseTitle: "客製化 Web App",
+        enterprisePrice: "$10k+",
+        enterprisePer: "/ 專案",
+        features: {
+            onePage: "高轉換率單頁設計",
+            responsive: "完全響應式 (手機友善)",
+            contact: "聯絡表單與潛在客戶收集",
+            fastDelivery: "5-7 天快速交付",
+            multiPage: "最多 8 個客製化頁面",
+            cms: "易用的後台 (內容管理)",
+            seo: "技術 SEO 與分析設定",
+            training: "移交教育訓練與文件",
+            react: "React / Next.js 架構",
+            database: "資料庫與會員驗證整合",
+            api: "客製化 API 開發",
+            support: "上線後 30 天技術支援",
+        },
+        buttons: {
+            start: "開始專案",
+            select: "最受歡迎",
+            contact: "索取報價",
+        },
+        footer: {
+            secure: "安全支付",
+            fast: "快速交付",
+        },
+    },
+};
+
+const t = translations[lang] || translations.en;
+
+const plans = [
+    {
+        title: t.mvpTitle,
+        price: t.mvpPrice,
+        period: t.mvpPer,
+        features: [
+            t.features.onePage,
+            t.features.responsive,
+            t.features.contact,
+            t.features.fastDelivery,
+        ],
+        buttonText: t.buttons.start,
+        isPopular: false,
+    },
+    {
+        title: t.growthTitle,
+        price: t.growthPrice,
+        period: t.growthPer,
+        features: [
+            t.features.multiPage,
+            t.features.cms,
+            t.features.seo,
+            t.features.training,
+        ],
+        buttonText: t.buttons.select,
+        isPopular: true,
+    },
+    {
+        title: t.enterpriseTitle,
+        price: t.enterprisePrice,
+        period: t.enterprisePer,
+        features: [
+            t.features.react,
+            t.features.database,
+            t.features.api,
+            t.features.support,
+        ],
+        buttonText: t.buttons.contact,
+        isPopular: false,
+    },
+];
+---
+
+<section
+    id="pricing"
+    class="relative py-24 lg:py-32 bg-slate-50 dark:bg-slate-950 overflow-hidden transition-colors duration-500"
+>
+    <!-- Ambient Background -->
+    <div class="absolute inset-0 pointer-events-none">
+        <div
+            class="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[400px] bg-blue-200/40 dark:bg-blue-900/20 rounded-[100%] blur-[120px] -translate-y-1/2 transition-colors duration-500"
+        >
+        </div>
+        <div
+            class="absolute bottom-0 left-0 w-[600px] h-[600px] bg-purple-200/40 dark:bg-purple-900/10 rounded-full blur-[100px] translate-y-1/4 -translate-x-1/4 transition-colors duration-500"
+        >
+        </div>
+        <div
+            class="absolute inset-0 opacity-10 dark:opacity-20 mix-blend-overlay"
+            style="background-image: url('data:image/svg+xml,%3Csvg viewBox=\'0 0 200 200\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noiseFilter\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.65\' numOctaves=\'3\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noiseFilter)\'/%3E%3C/svg%3E');"
+        >
+        </div>
+    </div>
+
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-20">
+            <h2
+                class="text-3xl md:text-5xl font-bold text-slate-900 dark:text-white tracking-tight mb-6 drop-shadow-sm transition-colors"
+            >
+                {t.title}
+            </h2>
+            <p
+                class="text-lg md:text-xl text-slate-600 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed transition-colors"
+            >
+                {t.subtitle}
+            </p>
+        </div>
+
+        <div
+            class="grid md:grid-cols-3 gap-8 lg:gap-10 max-w-6xl mx-auto items-center"
+        >
+            {
+                plans.map((plan) => (
+                    <div
+                        class={`relative p-8 rounded-2xl transition-all duration-300 ${
+                            plan.isPopular
+                                ? "bg-white dark:bg-slate-900 shadow-2xl scale-105 border-2 border-primary-500 z-10"
+                                : "bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 hover:shadow-xl"
+                        }`}
+                    >
+                        {plan.isPopular && (
+                            <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-primary-500 text-white px-4 py-1 rounded-full text-sm font-bold shadow-lg">
+                                Most Popular
+                            </div>
+                        )}
+
+                        <div class="text-center mb-8">
+                            <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">
+                                {plan.title}
+                            </h3>
+                            <div class="flex items-baseline justify-center gap-1">
+                                <span class="text-4xl font-extrabold text-slate-900 dark:text-white">
+                                    {plan.price}
+                                </span>
+                                <span class="text-slate-500 dark:text-slate-400">
+                                    {plan.period}
+                                </span>
+                            </div>
+                        </div>
+
+                        <ul class="space-y-4 mb-8">
+                            {plan.features.map((feature) => (
+                                <li class="flex items-start gap-3 text-slate-600 dark:text-slate-300">
+                                    <svg
+                                        class="w-5 h-5 text-primary-500 shrink-0"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke="currentColor"
+                                    >
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M5 13l4 4L19 7"
+                                        />
+                                    </svg>
+                                    <span class="text-sm">{feature}</span>
+                                </li>
+                            ))}
+                        </ul>
+
+                        <a
+                            href="#contact"
+                            class={`block w-full py-3 px-6 rounded-lg text-center font-bold transition-colors ${
+                                plan.isPopular
+                                    ? "bg-primary-600 hover:bg-primary-700 text-white shadow-lg shadow-primary-500/30"
+                                    : "bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-900 dark:text-white"
+                            }`}
+                        >
+                            {plan.buttonText}
+                        </a>
+                    </div>
+                ))
+            }
+        </div>
+
+        <!-- Trust Footnote -->
+        <div
+            class="mt-16 text-center border-t border-slate-200 dark:border-slate-800/50 pt-8 transition-colors"
+        >
+            <p
+                class="text-sm text-slate-500 dark:text-slate-500 font-medium flex items-center justify-center gap-6"
+            >
+                <span class="flex items-center gap-2">
+                    <svg
+                        class="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        ><path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                        ></path></svg
+                    >
+                    {t.footer.secure}
+                </span>
+                <span class="flex items-center gap-2">
+                    <svg
+                        class="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        ><path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg
+                    >
+                    {t.footer.fast}
+                </span>
+            </p>
+        </div>
+    </div>
+</section>

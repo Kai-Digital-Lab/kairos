@@ -1,0 +1,149 @@
+---
+const lang = Astro.currentLocale || "en";
+
+const translations = {
+    en: {
+        title: "Our Expertise",
+        subtitle: "From concept to code, we deliver complete digital products.",
+        service1Title: "Strategic Web Design",
+        service1Desc:
+            "Aligning visual identity with business goals to maximize conversion.",
+        service1Details:
+            "Our strategic design process begins with a deep dive into your brand DNA and market positioning. We craft visual systems that not only look stunning but also guide user behavior towards your key conversion metrics, ensuring every pixel serves a business purpose.",
+        service2Title: "SPA Development",
+        service2Desc:
+            "Building high-performance, reactive front-ends using React & TypeScript.",
+        service2Details:
+            "We engineer single-page applications that offer app-like fluidity on the web. Utilizing modern state management and component architecture, we ensure your platform is scalable, maintainable, and provides instant feedback to user interactions.",
+        service3Title: "Design Systems",
+        service3Desc:
+            "Creating scalable atomic design libraries for consistent brand application.",
+        service3Details:
+            "Move beyond chaos with a centralized design language. We build comprehensive UI kits and component libraries that bridge the gap between design and development, accelerating future feature rollouts while maintaining perfect consistency.",
+        learnMore: "Learn More",
+        showLess: "Show Less",
+    },
+    "zh-tw": {
+        title: "專業領域",
+        subtitle: "從概念到程式碼，我們提供完整的數位產品解決方案。",
+        service1Title: "策略網頁設計",
+        service1Desc: "將視覺識別與商業目標對齊，最大化轉換率。",
+        service1Details:
+            "我們的策略設計流程始於深入了解您的品牌基因與市場定位。我們打造的視覺系統不僅美觀，更能引導使用者行為達成關鍵轉換指標，確保每一個像素都服務於商業目的。",
+        service2Title: "單頁應用開發 (SPA)",
+        service2Desc: "使用 React 與 TypeScript 構建高效能、響應式的現代前端。",
+        service2Details:
+            "我們開發的單頁應用程式提供如原生 App 般的流暢網頁體驗。運用現代狀態管理與元件架構，確保您的平台具備可擴展性與易維護性，並對使用者互動提供即時反饋。",
+        service3Title: "設計系統",
+        service3Desc: "建立可擴展的原子設計庫，確保品牌應用的一致性。",
+        service3Details:
+            "透過集中化的設計語言擺脫混亂。我們建立全面的 UI 套件與元件庫，縮短設計與開發之間的差距，在加速未來功能推出的同時，保持完美的品牌一致性。",
+        learnMore: "了解更多",
+        showLess: "收起",
+    },
+};
+
+const t = translations[lang] || translations.en;
+
+const services = [
+    {
+        title: t.service1Title,
+        desc: t.service1Desc,
+        details: t.service1Details,
+        iconPath:
+            "M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z",
+    },
+    {
+        title: t.service2Title,
+        desc: t.service2Desc,
+        details: t.service2Details,
+        iconPath: "M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4",
+    },
+    {
+        title: t.service3Title,
+        desc: t.service3Desc,
+        details: t.service3Details,
+        iconPath:
+            "M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z",
+    },
+];
+---
+
+<section
+    id="services"
+    class="py-20 bg-white dark:bg-slate-900 transition-colors duration-300"
+>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <h2
+                class="text-3xl md:text-4xl font-bold font-mono text-slate-900 dark:text-white mb-4"
+            >
+                {t.title}
+            </h2>
+            <p
+                class="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto"
+            >
+                {t.subtitle}
+            </p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-8">
+            {
+                services.map((s) => (
+                    <div class="bg-slate-50 dark:bg-slate-800 rounded-xl p-8 border border-slate-100 dark:border-slate-700 hover:shadow-lg transition-all duration-300 group">
+                        <div class="w-12 h-12 bg-primary-100 dark:bg-primary-900/30 rounded-lg flex items-center justify-center text-primary-600 dark:text-primary-400 mb-6 group-hover:scale-110 transition-transform duration-300">
+                            <svg
+                                class="w-6 h-6"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d={s.iconPath}
+                                />
+                            </svg>
+                        </div>
+
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3">
+                            {s.title}
+                        </h3>
+
+                        <p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-6">
+                            {s.desc}
+                        </p>
+
+                        <details class="group/details">
+                            <summary class="cursor-pointer list-none text-primary-600 dark:text-primary-400 font-medium flex items-center hover:text-primary-700 dark:hover:text-primary-300 transition-colors select-none">
+                                <span class="group-open/details:hidden">
+                                    {t.learnMore}
+                                </span>
+                                <span class="hidden group-open/details:block">
+                                    {t.showLess}
+                                </span>
+                                <svg
+                                    class="w-4 h-4 ml-1 transition-transform duration-300 group-open/details:rotate-180"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M19 9l-7 7-7-7"
+                                    />
+                                </svg>
+                            </summary>
+                            <div class="mt-4 pt-4 border-t border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 text-sm leading-relaxed animate-in fade-in slide-in-from-top-2 duration-300">
+                                {s.details}
+                            </div>
+                        </details>
+                    </div>
+                ))
+            }
+        </div>
+    </div>
+</section>

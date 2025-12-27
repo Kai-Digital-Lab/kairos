@@ -7,6 +7,7 @@ const translations = {
     en: {
         portfolio: "Portfolio",
         services: "Services",
+        pricing: "Pricing",
         about: "About",
         contact: "Contact",
         toggleLabel: "TW",
@@ -16,6 +17,7 @@ const translations = {
     "zh-tw": {
         portfolio: "精選專案",
         services: "服務項目",
+        pricing: "方案價格",
         about: "關於我",
         contact: "聯絡資訊",
         toggleLabel: "EN",
@@ -29,7 +31,9 @@ const t = translations[lang] || translations.en;
 const navItems = [
     { name: t.portfolio, href: "#portfolio" },
     { name: t.services, href: "#services" },
+    { name: t.pricing, href: "#pricing" },
     { name: t.about, href: "#about" },
+    { name: t.contact, href: "#contact" },
 ];
 
 // Manual path logic for debugging
@@ -148,14 +152,6 @@ const toggleUrl = lang === "en" ? "/zh-tw/" : "/";
                     </a>
                 ))
             }
-            <div class="pt-4 border-t border-slate-100 dark:border-slate-800">
-                <a
-                    href="#contact"
-                    class="block text-center w-full px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-lg transition-colors"
-                >
-                    {t.contact}
-                </a>
-            </div>
         </div>
     </div>
 </header>
@@ -165,23 +161,40 @@ const toggleUrl = lang === "en" ? "/zh-tw/" : "/";
 
     // Smart Navigation Logic
     function initSmartNav() {
-        const links = document.querySelectorAll('a[href^="/#"]');
+        // Updated to include hash links that might not start with slash in some contexts if modified, but keeping original selector is safer usually.
+        // But here we want to target all links locally.
+        const links = document.querySelectorAll('a[href^="#"], a[href^="/#"]');
+
         links.forEach((anchor) => {
             anchor.addEventListener("click", (e) => {
+                // Close menu first
                 isMenuOpen.set(false);
 
                 const href = anchor.getAttribute("href");
                 if (!href) return;
 
+                // Handle hash only links (e.g. #portfolio)
+                if (href.startsWith("#")) {
+                    e.preventDefault();
+                    const targetId = href.substring(1);
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: "smooth" });
+                        history.pushState(null, "", href);
+                    }
+                    return;
+                }
+
+                // Handle /#portfolio type links if on home page
                 if (
                     window.location.pathname === "/" ||
                     window.location.pathname === "/zh-tw/" ||
                     window.location.pathname === "/en/"
                 ) {
-                    e.preventDefault();
-                    // Extract ID from #hash
+                    // Check if it's a hash link
                     const hashIndex = href.indexOf("#");
                     if (hashIndex !== -1) {
+                        e.preventDefault();
                         const targetId = href.substring(hashIndex + 1);
                         const targetElement = document.getElementById(targetId);
                         if (targetElement) {
@@ -272,8 +285,11 @@ const toggleUrl = lang === "en" ? "/zh-tw/" : "/";
                     navLinks.forEach((link) => {
                         const href = link.getAttribute("href");
                         const span = link.querySelector("span");
-                        // Robust check for hash
-                        if (href && href.endsWith(`#${id}`)) {
+                        // Check if href ends with specific hash
+                        if (
+                            href &&
+                            (href === `#${id}` || href.endsWith(`#${id}`))
+                        ) {
                             link.classList.add(
                                 "text-primary-600",
                                 "dark:text-primary-400",

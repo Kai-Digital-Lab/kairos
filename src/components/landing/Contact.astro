@@ -1,5 +1,36 @@
 ---
+const lang = Astro.currentLocale || "en";
 
+const translations = {
+    en: {
+        title: "Let's Start a Conversation",
+        subtitle:
+            "I'm currently open to full-time leadership roles (Senior TPM / Engineering Manager) and select consulting opportunities.",
+        emailCard: {
+            title: "Email Me",
+            subtitle: "kai.digital.lab@gmail.com",
+        },
+        linkedinCard: {
+            title: "LinkedIn",
+            subtitle: "Professional Profile & Resume",
+        },
+    },
+    "zh-tw": {
+        title: "開始對話",
+        subtitle:
+            "我目前開放全職領導職位 (資深 TPM / 工程經理) 與精選顧問機會的討論。",
+        emailCard: {
+            title: "發送郵件",
+            subtitle: "kai.digital.lab@gmail.com",
+        },
+        linkedinCard: {
+            title: "LinkedIn",
+            subtitle: "專業履歷與檔案",
+        },
+    },
+};
+
+const t = translations[lang] || translations.en;
 ---
 
 <section
@@ -8,13 +39,12 @@
 >
     <div class="max-w-4xl mx-auto px-4 text-center">
         <h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-6">
-            Let's Start a Conversation
+            {t.title}
         </h2>
         <p
             class="text-lg text-slate-600 dark:text-slate-400 mb-10 max-w-2xl mx-auto"
         >
-            I'm currently open to full-time leadership roles (Senior TPM /
-            Engineering Manager) and select consulting opportunities.
+            {t.subtitle}
         </p>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -41,10 +71,10 @@
                 </div>
                 <div>
                     <h3 class="font-bold text-slate-900 dark:text-white mb-1">
-                        Email Me
+                        {t.emailCard.title}
                     </h3>
                     <p class="text-slate-500 dark:text-slate-400 text-sm">
-                        kai.digital.lab@gmail.com
+                        {t.emailCard.subtitle}
                     </p>
                 </div>
             </a>
@@ -70,10 +100,10 @@
                 </div>
                 <div>
                     <h3 class="font-bold text-slate-900 dark:text-white mb-1">
-                        LinkedIn
+                        {t.linkedinCard.title}
                     </h3>
                     <p class="text-slate-500 dark:text-slate-400 text-sm">
-                        Professional Profile & Resume
+                        {t.linkedinCard.subtitle}
                     </p>
                 </div>
             </a>

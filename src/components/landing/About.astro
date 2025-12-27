@@ -1,16 +1,58 @@
 ---
-// 定義核心技能標籤
-const skills = [
-    "Technical Program Management",
-    "Cloud Architecture",
-    "Agile & Scrum",
-    "Modern Web (Astro/React)",
-    "GenAI Workflow",
-    "Team Leadership",
-];
+const lang = Astro.currentLocale || "en";
+
+const translations = {
+    en: {
+        title: "The Engineer meets The Strategist",
+        founder: "Kevin Hsieh - Founder",
+        p1: "With a dual background in Full-Stack Engineering and Project Management, I realized that most digital portfolios are static graveyards of screenshots.",
+        p2: 'Project Insanity was born from a simple question: "Can a website architecturally rearrange itself to fit the user\'s mental model in real-time?"',
+        eng: "Engineering",
+        engDesc: "React, Node, Cloud Arch",
+        strat: "Strategy",
+        stratDesc: "PMP, Product Market Fit",
+        experience: "Experience",
+        yearsInTech: "Years in Tech Industry",
+        connect: "Connect on LinkedIn",
+        skills: [
+            "Technical Program Management",
+            "Cloud Architecture",
+            "Agile & Scrum",
+            "Modern Web (Astro/React)",
+            "GenAI Workflow",
+            "Team Leadership",
+        ],
+    },
+    "zh-tw": {
+        title: "工程師與策略家的相遇",
+        founder: "Kevin Hsieh - 創辦人",
+        p1: "擁全端工程與專案管理的雙重背景，我意識到大多數的數位作品集僅是靜態的截圖墓場。",
+        p2: "Project Insanity 誕生於一個簡單的問題：「網站能否在架構上即時重組，以符合使用者的心智模型？」",
+        eng: "工程技術",
+        engDesc: "React, Node, Cloud Arch",
+        strat: "商業策略",
+        stratDesc: "PMP, 產品市場契合度",
+        experience: "經歷",
+        yearsInTech: "科技產業資歷",
+        connect: "LinkedIn 連結",
+        skills: [
+            "技術專案管理",
+            "雲端架構",
+            "敏捷開發",
+            "現代網頁 (Astro/React)",
+            "GenAI 工作流",
+            "團隊領導",
+        ],
+    },
+};
+
+const t = translations[lang] || translations.en;
 ---
 
-<section id="about" class="py-20 bg-white dark:bg-slate-900 overflow-hidden">
+<section
+    id="about"
+    class="py-20 bg-white dark:bg-slate-900 overflow-hidden text-left"
+>
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="lg:grid lg:grid-cols-2 lg:gap-16 items-center">
             <div class="relative mb-12 lg:mb-0">
@@ -26,11 +68,11 @@ const skills = [
                 <div
                     class="relative rounded-2xl overflow-hidden shadow-2xl border border-slate-100 dark:border-slate-800 aspect-[4/5] bg-slate-200 dark:bg-slate-800 flex items-center justify-center group"
                 >
-                    <span
-                        class="text-slate-400 font-mono text-sm group-hover:text-primary-500 transition-colors"
-                    >
-                        [Insert Portrait Here]
-                    </span>
+                    <img
+                        src="https://picsum.photos/600/800?grayscale"
+                        alt="Kevin Hsieh"
+                        class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
+                    />
 
                     <div
                         class="absolute bottom-6 left-6 right-6 bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-lg"
@@ -45,12 +87,12 @@ const skills = [
                                 <p
                                     class="text-xs text-slate-500 uppercase tracking-wide font-semibold"
                                 >
-                                    Experience
+                                    {t.experience}
                                 </p>
                                 <p
                                     class="text-sm font-bold text-slate-900 dark:text-white"
                                 >
-                                    Years in Tech Industry
+                                    {t.yearsInTech}
                                 </p>
                             </div>
                         </div>
@@ -62,45 +104,54 @@ const skills = [
                 <h2
                     class="text-3xl md:text-4xl font-bold font-mono text-slate-900 dark:text-white mb-6"
                 >
-                    More Than Just Code. <br />
-                    <span class="text-primary-600">I Build Solutions.</span>
+                    {t.title}
                 </h2>
+                <h3
+                    class="text-xl text-primary-600 dark:text-primary-400 font-medium mb-4"
+                >
+                    {t.founder}
+                </h3>
 
                 <div
                     class="prose prose-lg dark:prose-invert text-slate-600 dark:text-slate-400 mb-8"
                 >
                     <p>
-                        I am a <strong>Senior Solution Architect & TPM</strong> with
-                        over two decades of experience helping clients navigate complex
-                        digital transformations.
+                        {t.p1}
                     </p>
                     <p>
-                        After years of leading high-stakes projects, I took a <span
-                            class="text-slate-900 dark:text-slate-200 font-medium bg-primary-50 dark:bg-primary-900/20 px-1 rounded"
-                            >strategic career break</span
-                        > to deeply immerse myself in the latest evolution of Web
-                        Architecture (Astro, Islands Architecture) and Generative
-                        AI workflows.
-                    </p>
-                    <p>
-                        My goal is simple: <strong
-                            >Bridge the gap between business vision and
-                            technical execution</strong
-                        >. Whether it's optimizing legacy systems or building
-                        zero-runtime applications, I bring both the "Hands-on"
-                        capability and the "Big Picture" strategy.
+                        {t.p2}
                     </p>
                 </div>
 
-                <div class="space-y-4">
-                    <h3
-                        class="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider"
+                <div class="grid grid-cols-2 gap-4 mb-8">
+                    <div
+                        class="bg-slate-50 dark:bg-slate-800 p-4 rounded border-l-4 border-slate-800 dark:border-slate-500"
                     >
-                        Core Competencies
-                    </h3>
+                        <span
+                            class="block font-bold text-slate-900 dark:text-white"
+                            >{t.eng}</span
+                        >
+                        <span class="text-sm text-slate-500 dark:text-slate-400"
+                            >{t.engDesc}</span
+                        >
+                    </div>
+                    <div
+                        class="bg-slate-50 dark:bg-slate-800 p-4 rounded border-l-4 border-primary-600 dark:border-primary-500"
+                    >
+                        <span
+                            class="block font-bold text-slate-900 dark:text-white"
+                            >{t.strat}</span
+                        >
+                        <span class="text-sm text-slate-500 dark:text-slate-400"
+                            >{t.stratDesc}</span
+                        >
+                    </div>
+                </div>
+
+                <div class="space-y-4">
                     <div class="flex flex-wrap gap-2">
                         {
-                            skills.map((skill) => (
+                            t.skills.map((skill) => (
                                 <span class="px-3 py-1.5 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-md text-sm font-medium border border-slate-200 dark:border-slate-700">
                                     {skill}
                                 </span>
@@ -118,7 +169,7 @@ const skills = [
                         rel="noopener noreferrer"
                         class="inline-flex items-center font-semibold text-primary-600 hover:text-primary-700 transition-colors"
                     >
-                        Connect on LinkedIn
+                        {t.connect}
                         <svg
                             class="w-4 h-4 ml-1"
                             fill="none"

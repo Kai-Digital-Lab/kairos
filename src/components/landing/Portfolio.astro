@@ -2,36 +2,86 @@
 import ProjectModal from "@/components/design-system/molecules/ProjectModal.astro";
 import type { ProjectData } from "@/stores/portfolio.store";
 
-// 擴充資料結構，加入 fullDescription
-const projects: ProjectData[] = [
-    {
-        title: "K-LAB Official Site",
-        description: "基於 Astro 5.0 的高效能個人作品集網站。",
-        fullDescription:
-            "這是一個採用 Astro 5.0 Server-first 渲染技術的現代化網站。透過 View Transitions 達成 SPA 體驗，並使用 Nano Stores 管理跨元件狀態，實現了 Zero Runtime Overhead 的架構目標。專案整合了 Tailwind CSS 與 Cloudflare Pages 自動化部署流程。",
-        tags: ["Astro 5", "TypeScript", "Tailwind", "Nano Stores"],
-        image: "bg-gradient-to-br from-blue-500 to-cyan-400",
-        link: "https://github.com/Kai-Digital-Lab",
+const lang = Astro.currentLocale || "en";
+
+const translations = {
+    en: {
+        sectionTitle: "Selected Works",
+        sectionSubtitle:
+            "Bridging the gap between business requirements and technical excellence.",
+        viewDetails: "View Details",
+        projects: [
+            {
+                title: "K-LAB Official Site",
+                description:
+                    "High-performance personal portfolio powered by Astro 5.0.",
+                fullDescription:
+                    "A modern website utilizing Astro 5.0 Server-first rendering. Achieved SPA-like experience via View Transitions and Zero Runtime Overhead using Nano Stores. Integrated with Tailwind CSS and Cloudflare Pages for automated deployment.",
+                tags: ["Astro 5", "TypeScript", "Tailwind", "Nano Stores"],
+                image: "bg-gradient-to-br from-blue-500 to-cyan-400",
+                link: "https://github.com/Kai-Digital-Lab",
+            },
+            {
+                title: "Nano Banana Model",
+                description:
+                    "Prompt Engineering Guide for AI Image Generation Models.",
+                fullDescription:
+                    "Deep dive into Stable Diffusion & Midjourney Prompt Engineering. Established a standardized S-V-O pattern prompt structure and built a visual reference library with 50+ art styles and lighting effects, significantly improving generation controllability.",
+                tags: ["GenAI", "Prompt Engineering", "Python"],
+                image: "bg-gradient-to-br from-purple-500 to-pink-400",
+                link: "#",
+            },
+            {
+                title: "Legacy Migration Project",
+                description:
+                    "Enterprise React Legacy Migration to Modern Web Architecture.",
+                fullDescription:
+                    "A consulting case study. The client had a massive React SPA facing severe loading issues (LCP > 4s). I led the migration plan, introducing Islands Architecture to switch static content to server-side rendering, keeping hydration only for interactive blocks, reducing TTI by 60%.",
+                tags: ["React", "Architecture", "Consulting"],
+                image: "bg-gradient-to-br from-emerald-500 to-teal-400",
+                link: "#",
+            },
+        ],
     },
-    {
-        title: "Nano Banana Model",
-        description: "針對 AI 圖像生成模型的 Prompt Engineering 指南。",
-        fullDescription:
-            "深入研究 Stable Diffusion 與 Midjourney 的提示詞工程 (Prompt Engineering)。本專案整理了一套標準化的提示詞結構 (S-V-O pattern)，並建立了一份包含 50+ 種藝術風格與光影效果的視覺參考庫，大幅提升生成圖像的可控性。",
-        tags: ["GenAI", "Prompt Engineering", "Python"],
-        image: "bg-gradient-to-br from-purple-500 to-pink-400",
-        link: "#",
+    "zh-tw": {
+        sectionTitle: "精選專案",
+        sectionSubtitle: "連結商業策略與工程執行的關鍵橋樑。",
+        viewDetails: "查看詳情",
+        projects: [
+            {
+                title: "K-LAB 官方網站",
+                description: "基於 Astro 5.0 的高效能個人作品集網站。",
+                fullDescription:
+                    "這是一個採用 Astro 5.0 Server-first 渲染技術的現代化網站。透過 View Transitions 達成 SPA 體驗，並使用 Nano Stores 管理跨元件狀態，實現了 Zero Runtime Overhead 的架構目標。專案整合了 Tailwind CSS 與 Cloudflare Pages 自動化部署流程。",
+                tags: ["Astro 5", "TypeScript", "Tailwind", "Nano Stores"],
+                image: "bg-gradient-to-br from-blue-500 to-cyan-400",
+                link: "https://github.com/Kai-Digital-Lab",
+            },
+            {
+                title: "Nano Banana 模型",
+                description: "針對 AI 圖像生成模型的 Prompt Engineering 指南。",
+                fullDescription:
+                    "深入研究 Stable Diffusion 與 Midjourney 的提示詞工程 (Prompt Engineering)。本專案整理了一套標準化的提示詞結構 (S-V-O pattern)，並建立了一份包含 50+ 種藝術風格與光影效果的視覺參考庫，大幅提升生成圖像的可控性。",
+                tags: ["GenAI", "Prompt Engineering", "Python"],
+                image: "bg-gradient-to-br from-purple-500 to-pink-400",
+                link: "#",
+            },
+            {
+                title: "舊制重構計畫",
+                description:
+                    "協助企業將傳統 React 專案遷移至 Modern Web 架構。",
+                fullDescription:
+                    "這是一個顧問案範例。客戶原本擁有一個龐大的 React SPA，面臨嚴重的載入效能問題 (LCP > 4s)。我主導了遷移計畫，導入 Islands Architecture，將靜態內容改為伺服器渲染，僅在需要互動的區塊保留 Hydration，最終將 TTI 縮短了 60%。",
+                tags: ["React", "Architecture", "Consulting"],
+                image: "bg-gradient-to-br from-emerald-500 to-teal-400",
+                link: "#",
+            },
+        ],
     },
-    {
-        title: "Legacy Migration Project",
-        description: "協助企業將傳統 React 專案遷移至 Modern Web 架構。",
-        fullDescription:
-            "這是一個顧問案範例。客戶原本擁有一個龐大的 React SPA，面臨嚴重的載入效能問題 (LCP > 4s)。我主導了遷移計畫，導入 Islands Architecture，將靜態內容改為伺服器渲染，僅在需要互動的區塊保留 Hydration，最終將 TTI 縮短了 60%。",
-        tags: ["React", "Architecture", "Consulting"],
-        image: "bg-gradient-to-br from-emerald-500 to-teal-400",
-        link: "#",
-    },
-];
+};
+
+const t = translations[lang] || translations.en;
+const projects: ProjectData[] = t.projects;
 ---
 
 <section
@@ -43,13 +93,12 @@ const projects: ProjectData[] = [
             <h2
                 class="text-3xl md:text-4xl font-bold font-mono text-slate-900 dark:text-white mb-4"
             >
-                Selected Works
+                {t.sectionTitle}
             </h2>
             <p
                 class="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto"
             >
-                Bridging the gap between business requirements and technical
-                excellence.
+                {t.sectionSubtitle}
             </p>
         </div>
 
@@ -85,7 +134,7 @@ const projects: ProjectData[] = [
                                     class="view-project-btn flex items-center text-primary-600 dark:text-primary-400 font-medium text-sm hover:underline focus:outline-none"
                                     data-project={JSON.stringify(project)}
                                 >
-                                    View Details
+                                    {t.viewDetails}
                                     <svg
                                         class="w-4 h-4 ml-1 transition-transform group-hover:translate-x-1"
                                         fill="none"
@@ -114,23 +163,19 @@ const projects: ProjectData[] = [
 <script>
     import { activeProject, type ProjectData } from "@/stores/portfolio.store";
 
-    // 綁定點擊事件
     function initPortfolio() {
         const buttons = document.querySelectorAll(".view-project-btn");
 
         buttons.forEach((btn) => {
             btn.addEventListener("click", (e) => {
-                // 從 HTML data attribute 取出專案資料
                 const data = (e.currentTarget as HTMLElement).dataset.project;
                 if (data) {
                     const project: ProjectData = JSON.parse(data);
-                    // 設定 Store -> 觸發 Modal 開啟
                     activeProject.set(project);
                 }
             });
         });
     }
 
-    // 支援 View Transitions (換頁後重新綁定)
     document.addEventListener("astro:page-load", initPortfolio);
 </script>
