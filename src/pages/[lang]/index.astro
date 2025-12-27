@@ -1,0 +1,31 @@
+---
+import MainLayout from "@/layouts/MainLayout.astro";
+import Header from "@/components/layout/Header.astro";
+import Footer from "@/components/layout/Footer.astro";
+import Hero from "@/components/landing/Hero.astro";
+import Portfolio from "@/components/landing/Portfolio.astro";
+import About from "@/components/landing/About.astro";
+import Contact from "@/components/landing/Contact.astro";
+
+export function getStaticPaths() {
+	return [{ params: { lang: "en" } }, { params: { lang: "zh-tw" } }];
+}
+
+const { lang } = Astro.params;
+---
+
+<MainLayout title="K@i DIGITAL LAB | Senior TPM Portfolio" lang={lang}>
+	<Header />
+
+	<main>
+		<Hero />
+
+		<Portfolio />
+
+		<About />
+
+		<Contact />
+	</main>
+
+	<Footer />
+</MainLayout>

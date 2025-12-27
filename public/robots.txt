@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: /
+
+# Sitemap: https://kairos-559.pages.dev/sitemap-index.xml

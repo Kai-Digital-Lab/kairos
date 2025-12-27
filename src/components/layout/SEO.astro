@@ -1,0 +1,37 @@
+---
+interface Props {
+    title?: string;
+    description?: string;
+    image?: string;
+    article?: boolean;
+}
+
+// 1. 設定預設值 (Default Values)
+const {
+    title = "K@i DIGITAL LAB | Senior TPM Portfolio",
+    description = "Senior Technical Program Manager & Architecture Consultant. Bridging the gap between business requirements and technical excellence.",
+    image = "/og-image.jpg", // 預設的分享預覽圖 (我們稍後要準備這張圖)
+    article = false,
+} = Astro.props;
+
+// 2. 處理 URL 邏輯
+const siteUrl = Astro.site ? Astro.site.href : "https://kairos-559.pages.dev"; // Fallback 到您的 Pages 網址
+const canonicalURL = new URL(Astro.url.pathname, siteUrl);
+const socialImageURL = new URL(image, siteUrl);
+---
+
+<link rel="canonical" href={canonicalURL} />
+
+<meta name="title" content={title} />
+
+<meta property="og:type" content={article ? "article" : "website"} />
+<meta property="og:url" content={Astro.url} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={socialImageURL} />
+
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content={Astro.url} />
+<meta property="twitter:title" content={title} />
+<meta property="twitter:description" content={description} />
+<meta property="twitter:image" content={socialImageURL} />

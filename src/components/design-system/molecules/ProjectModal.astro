@@ -1,0 +1,165 @@
+---
+// Server-side: 這裡只負責輸出基本的 HTML 骨架
+---
+
+<project-modal class="contents">
+    <dialog
+        class="backdrop:bg-slate-900/50 backdrop:backdrop-blur-sm bg-transparent p-0 m-auto max-w-2xl w-full rounded-2xl shadow-2xl open:animate-fade-in text-left"
+    >
+        <div
+            class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 overflow-hidden flex flex-col max-h-[90vh]"
+        >
+            <div id="modal-image" class="h-48 w-full bg-slate-200 relative">
+                <button
+                    id="close-btn"
+                    class="absolute top-4 right-4 p-2 bg-black/20 hover:bg-black/40 text-white rounded-full backdrop-blur-md transition-colors"
+                >
+                    <svg
+                        class="w-5 h-5"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        ><path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12"></path></svg
+                    >
+                </button>
+            </div>
+
+            <div class="p-6 overflow-y-auto">
+                <h3
+                    id="modal-title"
+                    class="text-2xl font-bold text-slate-900 dark:text-white mb-2"
+                >
+                </h3>
+
+                <div id="modal-tags" class="flex flex-wrap gap-2 mb-6"></div>
+
+                <div class="prose prose-slate dark:prose-invert max-w-none">
+                    <p
+                        id="modal-desc"
+                        class="text-slate-600 dark:text-slate-300 leading-relaxed"
+                    >
+                    </p>
+                </div>
+            </div>
+
+            <div
+                class="p-6 border-t border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 flex justify-end gap-3"
+            >
+                <button
+                    id="cancel-btn"
+                    class="px-4 py-2 text-slate-600 dark:text-slate-400 font-medium hover:bg-slate-200 dark:hover:bg-slate-700 rounded-lg transition-colors"
+                >
+                    Close
+                </button>
+                <a
+                    id="modal-link"
+                    href="#"
+                    target="_blank"
+                    class="px-6 py-2 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-lg transition-colors flex items-center"
+                >
+                    Visit Site
+                    <svg
+                        class="w-4 h-4 ml-2"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        ><path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                        ></path></svg
+                    >
+                </a>
+            </div>
+        </div>
+    </dialog>
+</project-modal>
+
+<script>
+    import { activeProject } from "@/stores/portfolio.store";
+
+    // 定義 Web Component
+    class ProjectModal extends HTMLElement {
+        constructor() {
+            super();
+            const dialog = this.querySelector("dialog");
+            const closeBtn = this.querySelector("#close-btn");
+            const cancelBtn = this.querySelector("#cancel-btn");
+            const elements = {
+                title: this.querySelector("#modal-title"),
+                desc: this.querySelector("#modal-desc"),
+                image: this.querySelector("#modal-image"),
+                tags: this.querySelector("#modal-tags"),
+                link: this.querySelector("#modal-link") as HTMLAnchorElement,
+            };
+
+            if (!dialog) return;
+
+            // 1. 訂閱 Store：當資料改變時，更新 DOM 並開啟/關閉 Modal
+            activeProject.subscribe((project) => {
+                if (project) {
+                    // 填入資料 (DOM Manipulation)
+                    elements.title!.textContent = project.title;
+                    elements.desc!.textContent = project.fullDescription; // 使用詳細說明
+                    elements.link!.href = project.link;
+
+                    // 處理圖片 (這裡用 Class 替換，您也可以改成 src)
+                    elements.image!.className = `h-48 w-full relative ${project.image}`;
+                    elements.image!.appendChild(closeBtn!); // 把按鈕放回去
+
+                    // 處理 Tags (清空後重建)
+                    elements.tags!.innerHTML = "";
+                    project.tags.forEach((tag) => {
+                        const span = document.createElement("span");
+                        span.className =
+                            "px-2 py-1 text-xs font-semibold rounded-md bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300";
+                        span.textContent = tag;
+                        elements.tags!.appendChild(span);
+                    });
+
+                    dialog.showModal();
+                } else {
+                    dialog.close();
+                }
+            });
+
+            // 2. 關閉邏輯
+            const close = () => activeProject.set(null);
+
+            closeBtn?.addEventListener("click", close);
+            cancelBtn?.addEventListener("click", close);
+
+            // 點擊背景關閉 (Native Dialog Feature)
+            dialog.addEventListener("click", (e) => {
+                if (e.target === dialog) close();
+            });
+
+            // 監聽原生 close 事件 (例如按 ESC)
+            dialog.addEventListener("close", close);
+        }
+    }
+
+    customElements.define("project-modal", ProjectModal);
+</script>
+
+<style>
+    /* 簡單的淡入動畫 */
+    dialog[open] {
+        animation: fade-in 0.2s ease-out;
+    }
+    @keyframes fade-in {
+        from {
+            opacity: 0;
+            transform: scale(0.95);
+        }
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+</style>

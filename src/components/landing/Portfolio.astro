@@ -1,0 +1,136 @@
+---
+import ProjectModal from "@/components/design-system/molecules/ProjectModal.astro";
+import type { ProjectData } from "@/stores/portfolio.store";
+
+// 擴充資料結構，加入 fullDescription
+const projects: ProjectData[] = [
+    {
+        title: "K-LAB Official Site",
+        description: "基於 Astro 5.0 的高效能個人作品集網站。",
+        fullDescription:
+            "這是一個採用 Astro 5.0 Server-first 渲染技術的現代化網站。透過 View Transitions 達成 SPA 體驗，並使用 Nano Stores 管理跨元件狀態，實現了 Zero Runtime Overhead 的架構目標。專案整合了 Tailwind CSS 與 Cloudflare Pages 自動化部署流程。",
+        tags: ["Astro 5", "TypeScript", "Tailwind", "Nano Stores"],
+        image: "bg-gradient-to-br from-blue-500 to-cyan-400",
+        link: "https://github.com/Kai-Digital-Lab",
+    },
+    {
+        title: "Nano Banana Model",
+        description: "針對 AI 圖像生成模型的 Prompt Engineering 指南。",
+        fullDescription:
+            "深入研究 Stable Diffusion 與 Midjourney 的提示詞工程 (Prompt Engineering)。本專案整理了一套標準化的提示詞結構 (S-V-O pattern)，並建立了一份包含 50+ 種藝術風格與光影效果的視覺參考庫，大幅提升生成圖像的可控性。",
+        tags: ["GenAI", "Prompt Engineering", "Python"],
+        image: "bg-gradient-to-br from-purple-500 to-pink-400",
+        link: "#",
+    },
+    {
+        title: "Legacy Migration Project",
+        description: "協助企業將傳統 React 專案遷移至 Modern Web 架構。",
+        fullDescription:
+            "這是一個顧問案範例。客戶原本擁有一個龐大的 React SPA，面臨嚴重的載入效能問題 (LCP > 4s)。我主導了遷移計畫，導入 Islands Architecture，將靜態內容改為伺服器渲染，僅在需要互動的區塊保留 Hydration，最終將 TTI 縮短了 60%。",
+        tags: ["React", "Architecture", "Consulting"],
+        image: "bg-gradient-to-br from-emerald-500 to-teal-400",
+        link: "#",
+    },
+];
+---
+
+<section
+    id="portfolio"
+    class="py-20 bg-slate-50 dark:bg-slate-900/50 transition-colors duration-300"
+>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <h2
+                class="text-3xl md:text-4xl font-bold font-mono text-slate-900 dark:text-white mb-4"
+            >
+                Selected Works
+            </h2>
+            <p
+                class="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto"
+            >
+                Bridging the gap between business requirements and technical
+                excellence.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {
+                projects.map((project) => (
+                    <article class="group bg-white dark:bg-slate-800 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-100 dark:border-slate-700 flex flex-col h-full">
+                        <div
+                            class={`aspect-video w-full ${project.image} relative overflow-hidden`}
+                        >
+                            <div class="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors" />
+                        </div>
+
+                        <div class="p-6 flex-1 flex flex-col">
+                            <div class="flex gap-2 mb-3 flex-wrap">
+                                {project.tags.map((tag) => (
+                                    <span class="px-2 py-1 text-xs font-semibold rounded-md bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300">
+                                        {tag}
+                                    </span>
+                                ))}
+                            </div>
+
+                            <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">
+                                {project.title}
+                            </h3>
+
+                            <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mb-4 flex-1">
+                                {project.description}
+                            </p>
+
+                            <div class="mt-auto pt-4 border-t border-slate-100 dark:border-slate-700">
+                                <button
+                                    class="view-project-btn flex items-center text-primary-600 dark:text-primary-400 font-medium text-sm hover:underline focus:outline-none"
+                                    data-project={JSON.stringify(project)}
+                                >
+                                    View Details
+                                    <svg
+                                        class="w-4 h-4 ml-1 transition-transform group-hover:translate-x-1"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke="currentColor"
+                                    >
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M17 8l4 4m0 0l-4 4m4-4H3"
+                                        />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </article>
+                ))
+            }
+        </div>
+
+        <ProjectModal />
+    </div>
+</section>
+
+<script>
+    import { activeProject, type ProjectData } from "@/stores/portfolio.store";
+
+    // 綁定點擊事件
+    function initPortfolio() {
+        const buttons = document.querySelectorAll(".view-project-btn");
+
+        buttons.forEach((btn) => {
+            btn.addEventListener("click", (e) => {
+                // 從 HTML data attribute 取出專案資料
+                const data = (e.currentTarget as HTMLElement).dataset.project;
+                if (data) {
+                    const project: ProjectData = JSON.parse(data);
+                    // 設定 Store -> 觸發 Modal 開啟
+                    activeProject.set(project);
+                }
+            });
+        });
+    }
+
+    // 支援 View Transitions (換頁後重新綁定)
+    document.addEventListener("astro:page-load", initPortfolio);
+</script>

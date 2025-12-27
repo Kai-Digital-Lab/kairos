@@ -1,43 +1,60 @@
 ---
 import { ClientRouter } from "astro:transitions";
+import SEO from "@/components/layout/SEO.astro";
 import "../styles/global.css";
 
 interface Props {
     title?: string;
     description?: string;
+    image?: string;
+    lang?: string;
 }
 
 const {
     title = "K@i DIGITAL LAB",
     description = "Senior TPM & Modern Web Architecture Portfolio",
+    image,
+    lang = "en",
 } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="en" class="scroll-smooth">
+<html lang={lang} class="scroll-smooth">
     <head>
         <meta charset="UTF-8" />
         <meta name="description" content={description} />
+        <meta name="robots" content="noindex, nofollow" />
         <meta name="viewport" content="width=device-width" />
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
         <meta name="generator" content={Astro.generator} />
         <title>{title}</title>
+        <SEO title={title} description={description} image={image} />
 
         <ClientRouter />
 
         <script is:inline>
-            // 立即執行，不等待 DOM Ready
-            const theme = localStorage.getItem("pref:themeId") || "default";
-            document.documentElement.setAttribute("data-theme", theme);
-            const mode = localStorage.getItem("pref:mode");
+            // 1. 封裝設定主題的邏輯
+            function applyTheme() {
+                const mode = localStorage.getItem("pref:mode");
+                const isDark =
+                    mode === "dark" ||
+                    (!mode &&
+                        window.matchMedia("(prefers-color-scheme: dark)")
+                            .matches);
 
-            if (
-                mode === "dark" ||
-                (!mode &&
-                    window.matchMedia("(prefers-color-scheme: dark)").matches)
-            ) {
-                document.documentElement.classList.add("dark");
+                if (isDark) {
+                    document.documentElement.classList.add("dark");
+                } else {
+                    document.documentElement.classList.remove("dark");
+                }
             }
+
+            // 2. 初始載入時執行 (Initial Load)
+            applyTheme();
+
+            // 3. 關鍵修正：換頁後再次執行 (View Transitions)
+            // 當 Astro 交換了 HTML 內容後，立即把 class 加回去
+            document.addEventListener("astro:after-swap", applyTheme);
         </script>
     </head>
     <body

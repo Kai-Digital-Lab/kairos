@@ -44,9 +44,9 @@ As a **Senior Technical Program Manager**, I believe code should be as organized
 
 ## 🗺️ Roadmap
 
-* [x] **Phase 1: Infrastructure** - Core layout, FOUC prevention, and CI/CD setup.
-* [ ] **Phase 2: Design System** - Atomic components and accessible UI modules.
-* [ ] **Phase 3: Content & SEO** - I18n routing and MDX-based case studies.
+* [x] **Phase 1: Core Systems & Routing** - Astro I18n setup, Store refactoring (Nano Stores), and Layout architecture.
+* [ ] **Phase 2: Static Content** - Migration of Landing Page sections (Hero, Portfolio, etc.) to Astro Components.
+* [ ] **Phase 3: Dynamic Features** - Theme Explorer migration using dynamic routes and SSG.
 * [ ] **Phase 4: Optimization** - Final performance audit and Lighthouse certification.
 
 ## 👨‍💻 About the Author

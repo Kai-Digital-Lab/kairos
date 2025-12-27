@@ -1,0 +1,138 @@
+---
+// 定義核心技能標籤
+const skills = [
+    "Technical Program Management",
+    "Cloud Architecture",
+    "Agile & Scrum",
+    "Modern Web (Astro/React)",
+    "GenAI Workflow",
+    "Team Leadership",
+];
+---
+
+<section id="about" class="py-20 bg-white dark:bg-slate-900 overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="lg:grid lg:grid-cols-2 lg:gap-16 items-center">
+            <div class="relative mb-12 lg:mb-0">
+                <div
+                    class="absolute -top-4 -left-4 w-72 h-72 bg-primary-500/10 rounded-full blur-3xl filter opacity-70 animate-blob"
+                >
+                </div>
+                <div
+                    class="absolute -bottom-8 -right-8 w-72 h-72 bg-purple-500/10 rounded-full blur-3xl filter opacity-70 animate-blob animation-delay-2000"
+                >
+                </div>
+
+                <div
+                    class="relative rounded-2xl overflow-hidden shadow-2xl border border-slate-100 dark:border-slate-800 aspect-[4/5] bg-slate-200 dark:bg-slate-800 flex items-center justify-center group"
+                >
+                    <span
+                        class="text-slate-400 font-mono text-sm group-hover:text-primary-500 transition-colors"
+                    >
+                        [Insert Portrait Here]
+                    </span>
+
+                    <div
+                        class="absolute bottom-6 left-6 right-6 bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-lg"
+                    >
+                        <div class="flex items-center gap-4">
+                            <div
+                                class="h-10 w-10 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center text-primary-600 dark:text-primary-400 font-bold"
+                            >
+                                20+
+                            </div>
+                            <div>
+                                <p
+                                    class="text-xs text-slate-500 uppercase tracking-wide font-semibold"
+                                >
+                                    Experience
+                                </p>
+                                <p
+                                    class="text-sm font-bold text-slate-900 dark:text-white"
+                                >
+                                    Years in Tech Industry
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="relative">
+                <h2
+                    class="text-3xl md:text-4xl font-bold font-mono text-slate-900 dark:text-white mb-6"
+                >
+                    More Than Just Code. <br />
+                    <span class="text-primary-600">I Build Solutions.</span>
+                </h2>
+
+                <div
+                    class="prose prose-lg dark:prose-invert text-slate-600 dark:text-slate-400 mb-8"
+                >
+                    <p>
+                        I am a <strong>Senior Solution Architect & TPM</strong> with
+                        over two decades of experience helping clients navigate complex
+                        digital transformations.
+                    </p>
+                    <p>
+                        After years of leading high-stakes projects, I took a <span
+                            class="text-slate-900 dark:text-slate-200 font-medium bg-primary-50 dark:bg-primary-900/20 px-1 rounded"
+                            >strategic career break</span
+                        > to deeply immerse myself in the latest evolution of Web
+                        Architecture (Astro, Islands Architecture) and Generative
+                        AI workflows.
+                    </p>
+                    <p>
+                        My goal is simple: <strong
+                            >Bridge the gap between business vision and
+                            technical execution</strong
+                        >. Whether it's optimizing legacy systems or building
+                        zero-runtime applications, I bring both the "Hands-on"
+                        capability and the "Big Picture" strategy.
+                    </p>
+                </div>
+
+                <div class="space-y-4">
+                    <h3
+                        class="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider"
+                    >
+                        Core Competencies
+                    </h3>
+                    <div class="flex flex-wrap gap-2">
+                        {
+                            skills.map((skill) => (
+                                <span class="px-3 py-1.5 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-md text-sm font-medium border border-slate-200 dark:border-slate-700">
+                                    {skill}
+                                </span>
+                            ))
+                        }
+                    </div>
+                </div>
+
+                <div
+                    class="mt-10 pt-8 border-t border-slate-200 dark:border-slate-800 flex items-center gap-4"
+                >
+                    <a
+                        href="https://www.linkedin.com/in/kevin-hsieh-13264421/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="inline-flex items-center font-semibold text-primary-600 hover:text-primary-700 transition-colors"
+                    >
+                        Connect on LinkedIn
+                        <svg
+                            class="w-4 h-4 ml-1"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            ><path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg
+                        >
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

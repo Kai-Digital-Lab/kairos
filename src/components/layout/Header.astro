@@ -1,20 +1,52 @@
 ---
-// 定義導航項目
+import ThemeToggle from "@/components/ui/ThemeToggle.astro";
+
+const lang = Astro.currentLocale || "en";
+
+const translations = {
+    en: {
+        portfolio: "Portfolio",
+        services: "Services",
+        about: "About",
+        contact: "Contact",
+        toggleLabel: "TW",
+        toggleTitle: "Switch to Traditional Chinese",
+        targetLang: "zh-tw",
+    },
+    "zh-tw": {
+        portfolio: "精選專案",
+        services: "服務項目",
+        about: "關於我",
+        contact: "聯絡資訊",
+        toggleLabel: "EN",
+        toggleTitle: "Switch to English",
+        targetLang: "en",
+    },
+};
+
+const t = translations[lang] || translations.en;
+
 const navItems = [
-    { name: "Portfolio", href: "/#portfolio" },
-    { name: "Services", href: "/#services" },
-    { name: "About", href: "/#about" },
+    { name: t.portfolio, href: "#portfolio" },
+    { name: t.services, href: "#services" },
+    { name: t.about, href: "#about" },
 ];
+
+// Manual path logic for debugging
+const homeUrl = lang === "en" ? "/" : `/${lang}/`;
+const toggleUrl = lang === "en" ? "/zh-tw/" : "/";
 ---
 
 <header
     class="fixed w-full top-0 z-50 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 transition-colors duration-300"
 >
+    <!-- ... Rest of HTML structure ... -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center h-16">
             <div class="flex-shrink-0 flex items-center">
                 <a
-                    href="/"
+                    href={homeUrl}
+                    id="site-logo"
                     class="text-2xl font-bold font-mono tracking-tighter group"
                 >
                     <span
@@ -24,26 +56,52 @@ const navItems = [
                 </a>
             </div>
 
-            <nav class="hidden md:flex space-x-8">
+            <nav class="hidden md:flex space-x-8 items-center">
                 {
                     navItems.map((item) => (
                         <a
                             href={item.href}
-                            class="nav-link text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+                            class="text-sm font-medium hover:text-primary-600 dark:hover:text-primary-400 transition-colors relative group"
+                            data-nav-link
                         >
                             {item.name}
+                            <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary-600 transition-all group-hover:w-full" />
                         </a>
                     ))
                 }
+
+                <div
+                    class="flex items-center ml-4 pl-4 border-l border-slate-200 dark:border-slate-700 gap-2"
+                >
+                    <a
+                        href={toggleUrl}
+                        class="p-2 rounded-md transition-colors font-bold font-mono text-xs text-gray-800 hover:bg-slate-100 dark:text-white dark:hover:bg-slate-800"
+                        title={t.toggleTitle}
+                    >
+                        {t.toggleLabel}
+                    </a>
+                    <ThemeToggle />
+                </div>
             </nav>
 
-            <div class="md:hidden">
-                <button
-                    type="button"
-                    class="p-2 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
+            <div class="flex items-center gap-4 md:hidden">
+                <a
+                    href={toggleUrl}
+                    class="p-2 rounded-md transition-colors font-bold font-mono text-xs text-gray-800 hover:bg-slate-100 dark:text-white dark:hover:bg-slate-800"
+                    title={t.toggleTitle}
                 >
-                    <span class="sr-only">Open menu</span>
+                    {t.toggleLabel}
+                </a>
+                <ThemeToggle />
+
+                <button
+                    id="menu-btn"
+                    type="button"
+                    class="p-2 text-slate-500 hover:text-primary-600 transition-colors"
+                    aria-label="Toggle menu"
+                >
                     <svg
+                        id="icon-bars"
                         class="h-6 w-6"
                         fill="none"
                         viewBox="0 0 24 24"
@@ -56,38 +114,191 @@ const navItems = [
                             d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
                         ></path>
                     </svg>
+                    <svg
+                        id="icon-close"
+                        class="hidden h-6 w-6"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="1.5"
+                        stroke="currentColor"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
                 </button>
+            </div>
+        </div>
+    </div>
+
+    <div
+        id="mobile-menu"
+        class="hidden md:hidden absolute top-16 left-0 w-full bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 shadow-lg"
+    >
+        <div class="px-4 pt-2 pb-6 space-y-2">
+            {
+                navItems.map((item) => (
+                    <a
+                        href={item.href}
+                        class="block px-3 py-3 rounded-md text-base font-medium text-slate-700 dark:text-slate-200 hover:text-primary-600 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+                        data-nav-link-mobile
+                    >
+                        {item.name}
+                    </a>
+                ))
+            }
+            <div class="pt-4 border-t border-slate-100 dark:border-slate-800">
+                <a
+                    href="#contact"
+                    class="block text-center w-full px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-lg transition-colors"
+                >
+                    {t.contact}
+                </a>
             </div>
         </div>
     </div>
 </header>
 
 <script>
-    document.addEventListener("astro:page-load", () => {
-        document.querySelectorAll('a[href^="/#"]').forEach((anchor) => {
+    import { isMenuOpen } from "@/stores/layout.store";
+
+    // Smart Navigation Logic
+    function initSmartNav() {
+        const links = document.querySelectorAll('a[href^="/#"]');
+        links.forEach((anchor) => {
             anchor.addEventListener("click", (e) => {
+                isMenuOpen.set(false);
+
                 const href = anchor.getAttribute("href");
                 if (!href) return;
 
-                // 如果當前已經在首頁 (pathname 為 '/' 或空)
                 if (
                     window.location.pathname === "/" ||
-                    window.location.pathname === ""
+                    window.location.pathname === "/zh-tw/" ||
+                    window.location.pathname === "/en/"
                 ) {
-                    e.preventDefault(); // 阻止瀏覽器預設跳轉
-
-                    const id = href.replace("/", ""); // 取得 #id (例如 #portfolio)
-                    const target = document.querySelector(id);
-
-                    if (target) {
-                        // 1. 原生平滑捲動
-                        target.scrollIntoView({ behavior: "smooth" });
-                        // 2. 手動更新 URL (History API)，保持狀態一致但不刷新
-                        history.pushState(null, "", id);
+                    e.preventDefault();
+                    // Extract ID from #hash
+                    const hashIndex = href.indexOf("#");
+                    if (hashIndex !== -1) {
+                        const targetId = href.substring(hashIndex + 1);
+                        const targetElement = document.getElementById(targetId);
+                        if (targetElement) {
+                            targetElement.scrollIntoView({
+                                behavior: "smooth",
+                            });
+                            history.pushState(null, "", `#${targetId}`);
+                        }
                     }
                 }
-                // 若不在首頁，什麼都不做，讓 <a href> 正常運作觸發 Astro 路由跳轉
             });
         });
+    }
+
+    function initLogoClick() {
+        const logo = document.getElementById("site-logo");
+        logo?.addEventListener("click", (e) => {
+            const currentPath = window.location.pathname;
+            // Simplified check
+            if (
+                currentPath === "/" ||
+                currentPath === "/zh-tw/" ||
+                currentPath === "/en/"
+            ) {
+                e.preventDefault();
+                window.scrollTo({ top: 0, behavior: "smooth" });
+                history.pushState(null, "", currentPath);
+            }
+        });
+    }
+
+    // Mobile Menu Logic
+    function initMobileMenu() {
+        const menuBtn = document.getElementById("menu-btn");
+        const mobileMenu = document.getElementById("mobile-menu");
+        const iconBars = document.getElementById("icon-bars");
+        const iconClose = document.getElementById("icon-close");
+
+        if (menuBtn && mobileMenu && iconBars && iconClose) {
+            menuBtn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                isMenuOpen.set(!isMenuOpen.get());
+            });
+
+            isMenuOpen.subscribe((open) => {
+                if (open) {
+                    mobileMenu.classList.remove("hidden");
+                    iconBars.classList.add("hidden");
+                    iconClose.classList.remove("hidden");
+                } else {
+                    mobileMenu.classList.add("hidden");
+                    iconBars.classList.remove("hidden");
+                    iconClose.classList.add("hidden");
+                }
+            });
+
+            document.addEventListener("click", (e) => {
+                const target = e.target as HTMLElement;
+                if (
+                    isMenuOpen.get() &&
+                    !mobileMenu.contains(target) &&
+                    !menuBtn.contains(target)
+                ) {
+                    isMenuOpen.set(false);
+                }
+            });
+        }
+    }
+
+    // Scroll Spy Logic
+    function initScrollSpy() {
+        const sections = document.querySelectorAll("section[id]");
+        const navLinks = document.querySelectorAll("[data-nav-link]");
+
+        if (sections.length === 0) return;
+
+        const observerOptions = {
+            root: null,
+            rootMargin: "-20% 0px -79% 0px", // 20% top offset
+            threshold: 0,
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    const id = entry.target.getAttribute("id");
+                    // Update Desktop Nav
+                    navLinks.forEach((link) => {
+                        const href = link.getAttribute("href");
+                        const span = link.querySelector("span");
+                        // Robust check for hash
+                        if (href && href.endsWith(`#${id}`)) {
+                            link.classList.add(
+                                "text-primary-600",
+                                "dark:text-primary-400",
+                            );
+                            if (span) span.classList.add("w-full");
+                        } else {
+                            link.classList.remove(
+                                "text-primary-600",
+                                "dark:text-primary-400",
+                            );
+                            if (span) span.classList.remove("w-full");
+                        }
+                    });
+                }
+            });
+        }, observerOptions);
+
+        sections.forEach((section) => observer.observe(section));
+    }
+
+    // Initialize
+    document.addEventListener("astro:page-load", () => {
+        initSmartNav();
+        initLogoClick();
+        initMobileMenu();
+        initScrollSpy();
     });
 </script>
