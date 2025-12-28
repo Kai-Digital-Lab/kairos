@@ -14,6 +14,10 @@ import {
     corporateThemesEN,
     corporateThemesTW,
 } from "@/data/themes/corporateData";
+import {
+    contentNewsThemesEN,
+    contentNewsThemesTW,
+} from "@/data/themes/contentNewsData";
 import { getRelativeLocaleUrl } from "astro:i18n";
 
 // Portfolio Components
@@ -37,6 +41,13 @@ import NonProfitImpactLayout from "@/components/themes/corporate/NonProfitImpact
 import RestaurantVisualLayout from "@/components/themes/corporate/RestaurantVisualLayout.astro";
 import MedicalClinicLayout from "@/components/themes/corporate/MedicalClinicLayout.astro";
 
+// Content/News Components
+import ThreeColumnReviewLayout from "@/components/themes/contentNews/ThreeColumnReviewLayout.astro";
+import StructuredRecipeLayout from "@/components/themes/contentNews/StructuredRecipeLayout.astro";
+import TravelVisualStoryLayout from "@/components/themes/contentNews/TravelVisualStoryLayout.astro";
+import GossipDenseGridLayout from "@/components/themes/contentNews/GossipDenseGridLayout.astro";
+import AcademicMinimalLayout from "@/components/themes/contentNews/AcademicMinimalLayout.astro";
+
 const ComponentMap = {
     // Portfolio
     WaterfallGridLayout,
@@ -56,6 +67,12 @@ const ComponentMap = {
     NonProfitImpactLayout,
     RestaurantVisualLayout,
     MedicalClinicLayout,
+    // Content/News
+    ThreeColumnReviewLayout,
+    StructuredRecipeLayout,
+    TravelVisualStoryLayout,
+    GossipDenseGridLayout,
+    AcademicMinimalLayout,
 };
 
 export function getStaticPaths() {
@@ -89,6 +106,20 @@ export function getStaticPaths() {
         ...corporateThemesTW.map((theme) => ({
             params: { lang: "zh-tw", category: "corporate", theme: theme.id },
             props: { theme, themes: corporateThemesTW },
+        })),
+        // English - Content/News
+        ...contentNewsThemesEN.map((theme) => ({
+            params: { lang: "en", category: "content-news", theme: theme.id },
+            props: { theme, themes: contentNewsThemesEN },
+        })),
+        // Traditional Chinese - Content/News
+        ...contentNewsThemesTW.map((theme) => ({
+            params: {
+                lang: "zh-tw",
+                category: "content-news",
+                theme: theme.id,
+            },
+            props: { theme, themes: contentNewsThemesTW },
         })),
     ];
 }

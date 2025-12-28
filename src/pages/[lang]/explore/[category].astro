@@ -12,9 +12,13 @@ import {
     corporateThemesEN,
     corporateThemesTW,
 } from "@/data/themes/corporateData";
+import {
+    contentNewsThemesEN,
+    contentNewsThemesTW,
+} from "@/data/themes/contentNewsData";
 
 export function getStaticPaths() {
-    const categories = ["portfolio", "ecommerce", "corporate"];
+    const categories = ["portfolio", "ecommerce", "corporate", "content-news"];
     const langs = ["en", "zh-tw"];
 
     return langs.flatMap((lang) =>
@@ -36,6 +40,9 @@ function getThemes(cat: string, l: string) {
     }
     if (cat === "corporate") {
         return l === "zh-tw" ? corporateThemesTW : corporateThemesEN;
+    }
+    if (cat === "content-news") {
+        return l === "zh-tw" ? contentNewsThemesTW : contentNewsThemesEN;
     }
     return [];
 }

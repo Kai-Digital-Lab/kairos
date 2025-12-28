@@ -1,0 +1,172 @@
+---
+import type { ISubThemeDetail } from "@/types/Theme";
+
+interface Props {
+    theme: ISubThemeDetail;
+}
+
+const { theme } = Astro.props;
+const { contentFocus } = theme;
+const lang = Astro.currentLocale || "en";
+
+const t = {
+    en: {
+        time: "45 Mins",
+        diff: "Intermediate",
+        ingTitle: "Ingredients",
+        ingredients: [
+            "2 cups All-Purpose Flour",
+            "1/2 cup Unsalted Butter (cold)",
+            "1 tsp Vanilla Extract",
+            "3 Large Eggs",
+            "1 cup Granulated Sugar",
+        ],
+        instrTitle: "Instructions",
+        step: "Step",
+        stepDesc:
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Pre-heat oven to 350°F.",
+        tipTitle: "Chef's Tip",
+        tip: '"Ensure butter is strictly cold to achieve the flakiest texture possible."',
+    },
+    "zh-tw": {
+        time: "45 分鐘",
+        diff: "中級",
+        ingTitle: "食材",
+        ingredients: [
+            "2 杯中筋麵粉",
+            "1/2 杯無鹽奶油 (冷)",
+            "1 茶匙香草精",
+            "3 顆大雞蛋",
+            "1 杯砂糖",
+        ],
+        instrTitle: "步驟說明",
+        step: "步驟",
+        stepDesc: "Lorem ipsum dolor sit amet... (預熱烤箱至 350°F)。",
+        tipTitle: "主廚秘訣",
+        tip: "「確保奶油保持冰冷以達到最酥脆的口感。」",
+    },
+}[lang] || {
+    time: "",
+    diff: "",
+    ingTitle: "",
+    ingredients: [],
+    instrTitle: "",
+    step: "",
+    stepDesc: "",
+    tipTitle: "",
+    tip: "",
+};
+---
+
+<div
+    class="bg-yellow-50 dark:bg-yellow-950/20 font-serif text-gray-800 dark:text-gray-200 transition-colors duration-300 min-h-screen"
+>
+    <div
+        class="max-w-5xl mx-auto bg-white dark:bg-slate-900 shadow-xl min-h-[800px] my-8 md:my-12 relative"
+    >
+        <!-- Header Image -->
+        <div class="h-64 md:h-80 w-full relative">
+            <img
+                src="https://picsum.photos/1200/600?random=baking"
+                alt="Recipe"
+                class="w-full h-full object-cover"
+            />
+            <div class="absolute inset-0 bg-black/20"></div>
+            <div class="absolute bottom-0 left-0 p-8 text-white">
+                <h2 class="text-4xl md:text-5xl font-bold mb-2">
+                    {contentFocus.title}
+                </h2>
+                <div class="flex gap-4 text-sm font-sans">
+                    <span
+                        class="bg-yellow-500 px-2 py-1 rounded text-black font-bold"
+                        >{t.time}</span
+                    >
+                    <span
+                        class="bg-yellow-500 px-2 py-1 rounded text-black font-bold"
+                        >{t.diff}</span
+                    >
+                </div>
+            </div>
+        </div>
+
+        <div class="p-8 md:p-12 grid md:grid-cols-3 gap-12">
+            <!-- Ingredients Sidebar -->
+            <div
+                class="md:col-span-1 border-r border-dashed border-gray-300 dark:border-gray-700 pr-8"
+            >
+                <h3
+                    class="font-bold text-xl mb-6 uppercase tracking-widest text-orange-600 dark:text-orange-400"
+                >
+                    {t.ingTitle}
+                </h3>
+                <ul class="space-y-3 font-sans text-sm">
+                    {
+                        t.ingredients.map((ing: string) => (
+                            <li class="flex items-center gap-3 pb-3 border-b border-gray-100 dark:border-gray-800">
+                                <input
+                                    type="checkbox"
+                                    class="w-4 h-4 text-orange-500 rounded focus:ring-orange-500 border-gray-300 dark:border-gray-600 dark:bg-slate-700"
+                                />
+                                <span class="text-gray-700 dark:text-gray-300">
+                                    {ing}
+                                </span>
+                            </li>
+                        ))
+                    }
+                </ul>
+                {
+                    contentFocus.printableLayout && (
+                        <div class="mt-8">
+                            <button class="w-full border border-orange-400 text-orange-600 hover:bg-orange-50 dark:text-orange-400 dark:hover:bg-orange-900/20 py-2 rounded font-bold transition-colors">
+                                🖨️ {contentFocus.primaryCTA}
+                            </button>
+                        </div>
+                    )
+                }
+            </div>
+
+            <!-- Instructions Main -->
+            <div class="md:col-span-2">
+                <h3
+                    class="font-bold text-xl mb-6 uppercase tracking-widest text-orange-600 dark:text-orange-400"
+                >
+                    {t.instrTitle}
+                </h3>
+                <div class="space-y-8">
+                    {
+                        [1, 2, 3].map((step) => (
+                            <div class="flex gap-4">
+                                <div class="flex-shrink-0 w-10 h-10 bg-orange-100 dark:bg-orange-900 text-orange-800 dark:text-orange-100 rounded-full flex items-center justify-center font-bold font-sans">
+                                    {step}
+                                </div>
+                                <div>
+                                    <h4 class="font-bold mb-2 text-lg">
+                                        {t.step} {step}
+                                    </h4>
+                                    <p class="text-gray-600 dark:text-gray-400 leading-relaxed">
+                                        {t.stepDesc}
+                                    </p>
+                                </div>
+                            </div>
+                        ))
+                    }
+                </div>
+
+                <div
+                    class="mt-12 bg-orange-50 dark:bg-orange-900/20 p-6 rounded-lg border border-orange-200 dark:border-orange-800"
+                >
+                    <h4
+                        class="font-bold text-orange-800 dark:text-orange-200 mb-2"
+                    >
+                        {t.tipTitle}
+                    </h4>
+                    <p
+                        class="text-sm text-orange-700 dark:text-orange-300 italic"
+                    >
+                        {t.tip}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,157 @@
+import type { ISubThemeDetail } from "@/types/Theme";
+
+export const contentNewsThemesEN: ISubThemeDetail[] = [
+    {
+        id: "TechFinanceReview",
+        name: "Tech / Finance Review",
+        layoutComponent: "ThreeColumnReviewLayout",
+        styleClasses:
+            "bg-white text-gray-900 font-sans antialiased border-t-4 border-emerald-700",
+        contentFocus: {
+            title: "Analysis & Reports",
+            hasSidebar: true,
+            primaryCTA: "Subscribe for Reports",
+            metadataPriority: ["Charts", "Quotes"],
+        },
+        description:
+            "Two or three-column layout with a sidebar for hot articles and advertising, emphasizing charts and quote blocks for data presentation.",
+    },
+    {
+        id: "RecipeDIYTutorial",
+        name: "Recipe / DIY Tutorial",
+        layoutComponent: "StructuredRecipeLayout",
+        styleClasses:
+            "bg-yellow-50 text-gray-800 font-serif antialiased border-t-4 border-orange-400",
+        contentFocus: {
+            title: "Ingredients & Step-by-Step Guide",
+            printableLayout: true,
+            primaryCTA: "Print Recipe",
+            metadataPriority: ["Ingredients", "Steps"],
+        },
+        description:
+            "Structured page emphasizing clearly separated step blocks and printable layouts. The sidebar may contain essential ingredient lists.",
+    },
+    {
+        id: "TravelAdventure",
+        name: "Travel / Adventure",
+        layoutComponent: "TravelVisualStoryLayout",
+        styleClasses:
+            "bg-blue-900 text-white font-serif antialiased border-t-4 border-cyan-400",
+        contentFocus: {
+            title: "Destinations & Guides",
+            showMapEmbeds: true,
+            primaryCTA: "View Gallery",
+            metadataPriority: ["Location", "Gallery"],
+        },
+        description:
+            "Visual storytelling layout with heavy use of immersive, full-size imagery, including embedded maps or photo galleries.",
+    },
+    {
+        id: "EntertainmentGossip",
+        name: "Entertainment / Gossip",
+        layoutComponent: "GossipDenseGridLayout",
+        styleClasses:
+            "bg-pink-50 text-gray-900 font-sans antialiased border-t-4 border-pink-600",
+        contentFocus: {
+            title: "Breaking News & Buzz",
+            denseGrid: true,
+            primaryCTA: "Read More",
+            metadataPriority: ["Headlines", "Images"],
+        },
+        description:
+            "High information density design, often using a Waterfall or Grid layout with small images and dramatic headlines. Shallow navigation categories.",
+    },
+    {
+        id: "AcademicJournal",
+        name: "Professional Academic Journal",
+        layoutComponent: "AcademicMinimalLayout",
+        styleClasses:
+            "bg-white text-gray-900 font-serif antialiased border-t-4 border-slate-900",
+        contentFocus: {
+            title: "Abstracts & Downloads",
+            centerContent: true,
+            primaryCTA: "Download PDF",
+            metadataPriority: ["Abstract", "Citation"],
+        },
+        description:
+            "Extreme minimalism with centered content. Emphasis on downloadable PDF/EPUB links, avoiding complex graphics.",
+    },
+];
+
+export const contentNewsThemesTW: ISubThemeDetail[] = [
+    {
+        id: "TechFinanceReview",
+        name: "科技 / 財經評論",
+        layoutComponent: "ThreeColumnReviewLayout",
+        styleClasses:
+            "bg-white text-gray-900 font-sans antialiased border-t-4 border-emerald-700",
+        contentFocus: {
+            title: "分析與報告",
+            hasSidebar: true,
+            primaryCTA: "訂閱報告",
+            metadataPriority: ["趨勢圖表", "引用名言"],
+        },
+        description:
+            "兩欄或三欄佈局，帶有熱門文章和廣告側邊欄，強調圖表和引用區塊以呈現數據。",
+    },
+    {
+        id: "RecipeDIYTutorial",
+        name: "食譜 / DIY 教學",
+        layoutComponent: "StructuredRecipeLayout",
+        styleClasses:
+            "bg-yellow-50 text-gray-800 font-serif antialiased border-t-4 border-orange-400",
+        contentFocus: {
+            title: "食材與步驟指南",
+            printableLayout: true,
+            primaryCTA: "列印食譜",
+            metadataPriority: ["食材清單", "步驟說明"],
+        },
+        description:
+            "結構化頁面，強調清晰分隔的步驟區塊和可列印佈局。側邊欄包含食材清單。",
+    },
+    {
+        id: "TravelAdventure",
+        name: "旅遊 / 冒險",
+        layoutComponent: "TravelVisualStoryLayout",
+        styleClasses:
+            "bg-blue-900 text-white font-serif antialiased border-t-4 border-cyan-400",
+        contentFocus: {
+            title: "目的地與指南",
+            showMapEmbeds: true,
+            primaryCTA: "瀏覽圖庫",
+            metadataPriority: ["位置資訊", "相簿"],
+        },
+        description:
+            "視覺敘事佈局，大量使用沉浸式全尺寸圖像，包括嵌入式地圖或照片庫。",
+    },
+    {
+        id: "EntertainmentGossip",
+        name: "娛樂 / 八卦",
+        layoutComponent: "GossipDenseGridLayout",
+        styleClasses:
+            "bg-pink-50 text-gray-900 font-sans antialiased border-t-4 border-pink-600",
+        contentFocus: {
+            title: "即時新聞與話題",
+            denseGrid: true,
+            primaryCTA: "閱讀更多",
+            metadataPriority: ["頭條標題", "新聞圖片"],
+        },
+        description:
+            "高資訊密度設計，通常使用瀑布流或網格佈局，搭配小圖片和誇張標題。導航分類較淺。",
+    },
+    {
+        id: "AcademicJournal",
+        name: "專業學術期刊",
+        layoutComponent: "AcademicMinimalLayout",
+        styleClasses:
+            "bg-white text-gray-900 font-serif antialiased border-t-4 border-slate-900",
+        contentFocus: {
+            title: "摘要與下載",
+            centerContent: true,
+            primaryCTA: "下載 PDF",
+            metadataPriority: ["論文摘要", "引用格式"],
+        },
+        description:
+            "極簡主義與置中內容。強調可下載的 PDF/EPUB連結，避免複雜的圖形。",
+    },
+];
