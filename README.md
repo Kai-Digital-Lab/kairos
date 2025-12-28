@@ -10,7 +10,7 @@
 
 **"Kairos" (Ancient Greek: καιρός):** represents a critical moment or a supreme opportunity. Unlike chronological time, it signifies a decisive gap in time where a fleeting opportunity must be seized with precision.
 
-> **Last Updated:** December 28, 2025
+> **Last Updated:** December 29, 2025
 
 ## 🚀 Vision
 
@@ -46,7 +46,7 @@ As a **Senior Technical Program Manager**, I believe code should be as organized
 
 * [x] **Phase 1: Core Systems & Routing** - Astro I18n setup, Store refactoring (Nano Stores), and Layout architecture.
 * [x] **Phase 2: Static Content** - Migration of Landing Page sections (Hero, Portfolio, etc.) to Astro Components.
-* [ ] **Phase 3: Dynamic Features** - Theme Explorer migration using dynamic routes and SSG.
+* [x] **Phase 3: Dynamic Features** - Theme Explorer (Portfolio, E-Commerce, Corporate, Content, Software) & Floating Dock.
 * [ ] **Phase 4: Optimization** - Final performance audit and Lighthouse certification.
 
 ## 👨‍💻 About the Author
