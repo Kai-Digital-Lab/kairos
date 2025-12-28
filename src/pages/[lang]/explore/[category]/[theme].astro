@@ -10,6 +10,10 @@ import {
     ecommerceThemesEN,
     ecommerceThemesTW,
 } from "@/data/themes/ecommerceData";
+import {
+    corporateThemesEN,
+    corporateThemesTW,
+} from "@/data/themes/corporateData";
 import { getRelativeLocaleUrl } from "astro:i18n";
 
 // Portfolio Components
@@ -26,6 +30,13 @@ import SubscriptionLandingLayout from "@/components/themes/ecommerce/Subscriptio
 import FoodGroceryLayout from "@/components/themes/ecommerce/FoodGroceryLayout.astro";
 import DigitalProductLayout from "@/components/themes/ecommerce/DigitalProductLayout.astro";
 
+// Corporate Components
+import StrictProfessionalLayout from "@/components/themes/corporate/StrictProfessionalLayout.astro";
+import IndustrialModularLayout from "@/components/themes/corporate/IndustrialModularLayout.astro";
+import NonProfitImpactLayout from "@/components/themes/corporate/NonProfitImpactLayout.astro";
+import RestaurantVisualLayout from "@/components/themes/corporate/RestaurantVisualLayout.astro";
+import MedicalClinicLayout from "@/components/themes/corporate/MedicalClinicLayout.astro";
+
 const ComponentMap = {
     // Portfolio
     WaterfallGridLayout,
@@ -39,6 +50,12 @@ const ComponentMap = {
     SubscriptionLandingLayout,
     FoodGroceryLayout,
     DigitalProductLayout,
+    // Corporate
+    StrictProfessionalLayout,
+    IndustrialModularLayout,
+    NonProfitImpactLayout,
+    RestaurantVisualLayout,
+    MedicalClinicLayout,
 };
 
 export function getStaticPaths() {
@@ -62,6 +79,16 @@ export function getStaticPaths() {
         ...ecommerceThemesTW.map((theme) => ({
             params: { lang: "zh-tw", category: "ecommerce", theme: theme.id },
             props: { theme, themes: ecommerceThemesTW },
+        })),
+        // English - Corporate
+        ...corporateThemesEN.map((theme) => ({
+            params: { lang: "en", category: "corporate", theme: theme.id },
+            props: { theme, themes: corporateThemesEN },
+        })),
+        // Traditional Chinese - Corporate
+        ...corporateThemesTW.map((theme) => ({
+            params: { lang: "zh-tw", category: "corporate", theme: theme.id },
+            props: { theme, themes: corporateThemesTW },
         })),
     ];
 }

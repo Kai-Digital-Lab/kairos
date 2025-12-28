@@ -8,9 +8,13 @@ import {
     ecommerceThemesEN,
     ecommerceThemesTW,
 } from "@/data/themes/ecommerceData";
+import {
+    corporateThemesEN,
+    corporateThemesTW,
+} from "@/data/themes/corporateData";
 
 export function getStaticPaths() {
-    const categories = ["portfolio", "ecommerce"];
+    const categories = ["portfolio", "ecommerce", "corporate"];
     const langs = ["en", "zh-tw"];
 
     return langs.flatMap((lang) =>
@@ -29,6 +33,9 @@ function getThemes(cat: string, l: string) {
     }
     if (cat === "ecommerce") {
         return l === "zh-tw" ? ecommerceThemesTW : ecommerceThemesEN;
+    }
+    if (cat === "corporate") {
+        return l === "zh-tw" ? corporateThemesTW : corporateThemesEN;
     }
     return [];
 }
