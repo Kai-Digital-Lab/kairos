@@ -34,7 +34,16 @@ const navItems = [
     { name: t.pricing, href: "#pricing" },
     { name: t.about, href: "#about" },
     { name: t.contact, href: "#contact" },
-];
+].map((item) => {
+    // If we are not on the home page, prepend the home URL to the hash
+    if (
+        Astro.url.pathname !== `/${lang}/` &&
+        Astro.url.pathname !== `/${lang}`
+    ) {
+        return { ...item, href: `/${lang}/${item.href}` };
+    }
+    return item;
+});
 
 // Manual path logic for debugging
 const homeUrl = lang === "en" ? "/en/" : `/${lang}/`;
@@ -321,11 +330,44 @@ if (lang === "en") {
         sections.forEach((section) => observer.observe(section));
     }
 
+    // Language Toggle Scroll Preservation
+    function initLanguageToggle() {
+        const toggleLinks = document.querySelectorAll(
+            'a[href*="/en/"], a[href*="/zh-tw/"]',
+        );
+
+        toggleLinks.forEach((link) => {
+            // Only target the specific toggle buttons in the header (which have specific classes)
+            if (
+                link.classList.contains("font-mono") &&
+                link.classList.contains("text-xs")
+            ) {
+                link.addEventListener("click", () => {
+                    sessionStorage.setItem(
+                        "scrollPosition",
+                        window.scrollY.toString(),
+                    );
+                });
+            }
+        });
+
+        // Restore
+        const savedScroll = sessionStorage.getItem("scrollPosition");
+        if (savedScroll) {
+            window.scrollTo({
+                top: parseInt(savedScroll),
+                behavior: "instant",
+            });
+            sessionStorage.removeItem("scrollPosition");
+        }
+    }
+
     // Initialize
     document.addEventListener("astro:page-load", () => {
         initSmartNav();
         initLogoClick();
         initMobileMenu();
         initScrollSpy();
+        initLanguageToggle();
     });
 </script>

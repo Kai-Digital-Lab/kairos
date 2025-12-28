@@ -2,6 +2,7 @@
 import MainLayout from "@/layouts/MainLayout.astro";
 import Header from "@/components/layout/Header.astro";
 import Footer from "@/components/layout/Footer.astro";
+import ThemeDock from "@/components/ui/ThemeDock.astro";
 import {
     portfolioThemesEN,
     portfolioThemesTW,
@@ -169,42 +170,13 @@ function getThemeLink(lang: string, category: string, themeId: string) {
                 {category} Explorer
             </h1>
 
-            <div
-                class="mb-8 p-4 bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700"
-            >
-                <p class="text-sm text-slate-500 mb-2">Debug Info:</p>
-                <code
-                    class="block bg-slate-100 dark:bg-slate-900 p-2 rounded text-xs overflow-auto"
-                >
-                    Lang: {lang}
-                    <br />
-                    Category: {category}
-                    <br />
-                    Active Theme ID: {activeTheme.id}
-                    <br />
-                    Theme Name: {activeTheme.name}
-                    <br />
-                    Layout Component: {activeTheme.layoutComponent}
-                </code>
-            </div>
-
-            <!-- Theme Switcher UI -->
-            <div class="flex flex-wrap gap-2 mb-8">
-                {
-                    themes.map((t) => (
-                        <a
-                            href={getThemeLink(lang, category, t.id)}
-                            class={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                                t.id === activeTheme.id
-                                    ? "bg-primary-600 text-white shadow-md"
-                                    : "bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700"
-                            }`}
-                        >
-                            {t.name}
-                        </a>
-                    ))
-                }
-            </div>
+            <!-- Floating Theme Dock -->
+            <ThemeDock
+                themes={themes}
+                activeThemeId={activeTheme.id}
+                lang={lang}
+                category={category}
+            />
 
             <!-- Preview Area -->
             <div

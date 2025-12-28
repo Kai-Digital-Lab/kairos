@@ -1,0 +1,181 @@
+---
+interface Theme {
+    id: string;
+    name: string;
+}
+
+interface Props {
+    themes: Theme[];
+    activeThemeId: string;
+    lang: string;
+    category: string;
+}
+
+const { themes, activeThemeId, lang, category } = Astro.props;
+
+function getThemeLink(lang: string, category: string, themeId: string) {
+    return `/${lang}/explore/${category}/${themeId}`;
+}
+
+const categories = [
+    { id: "portfolio", name: "Portfolio", nameTW: "精選專案" },
+    { id: "ecommerce", name: "E-Commerce", nameTW: "電商購物" },
+    { id: "corporate", name: "Corporate", nameTW: "企業形象" },
+    { id: "content-news", name: "Content/News", nameTW: "內容新聞" },
+    { id: "software", name: "Software/SaaS", nameTW: "軟體服務" },
+];
+
+function getCategoryName(catId: string) {
+    const cat = categories.find((c) => c.id === catId);
+    return lang === "zh-tw" ? cat?.nameTW : cat?.name;
+}
+---
+
+<div
+    id="theme-dock"
+    class="fixed bottom-6 left-0 right-0 z-40 flex items-center justify-center p-1.5 transition-all duration-500 ease-in-out pointer-events-none"
+>
+    <!-- Main Container: Constrained width on mobile with max-w-[95vw] -->
+    <div
+        class="pointer-events-auto relative flex items-center gap-1.5 p-1.5 backdrop-blur-xl bg-white/80 dark:bg-slate-900/80 border border-white/20 dark:border-white/10 shadow-2xl rounded-full ring-1 ring-black/5 dark:ring-white/5 transition-all duration-300 hover:scale-[1.02] max-w-[95vw] sm:max-w-fit"
+    >
+        <!-- Category Switcher (Stays fixed) -->
+        <div class="relative group flex-shrink-0">
+            <button
+                id="cat-Menu-Btn"
+                class="flex items-center justify-center w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+                aria-label="Switch Category"
+            >
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="w-4 h-4"
+                >
+                    <rect x="3" y="3" width="7" height="7"></rect>
+                    <rect x="14" y="3" width="7" height="7"></rect>
+                    <rect x="14" y="14" width="7" height="7"></rect>
+                    <rect x="3" y="14" width="7" height="7"></rect>
+                </svg>
+            </button>
+
+            <!-- Dropdown Menu -->
+            <div
+                class="absolute bottom-full left-0 mb-3 w-48 py-1 bg-white dark:bg-slate-900 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform origin-bottom-left"
+            >
+                {
+                    categories.map((cat) => (
+                        <a
+                            href={`/${lang}/explore/${cat.id}`}
+                            class={`block px-4 py-2 text-sm font-medium transition-colors ${
+                                category === cat.id
+                                    ? "text-primary-600 bg-primary-50 dark:bg-primary-900/20"
+                                    : "text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-primary-600"
+                            }`}
+                        >
+                            {lang === "zh-tw" ? cat.nameTW : cat.name}
+                        </a>
+                    ))
+                }
+            </div>
+        </div>
+
+        <!-- Vertical Divider -->
+        <div class="w-px h-5 bg-slate-200 dark:bg-slate-700 mx-1 flex-shrink-0">
+        </div>
+
+        <!-- Theme List (Scrollable) -->
+        <div
+            class="flex items-center gap-1.5 overflow-x-auto no-scrollbar mask-image-linear-to-r overscroll-contain touch-pan-x px-2"
+            style="scrollbar-width: none; -ms-overflow-style: none;"
+        >
+            {
+                themes.map((t) => {
+                    const isActive = t.id === activeThemeId;
+                    return (
+                        <a
+                            href={getThemeLink(lang, category, t.id)}
+                            draggable="false"
+                            data-active={isActive}
+                            class={`
+                        relative px-4 py-2 rounded-full text-xs font-medium transition-all duration-300 whitespace-nowrap flex-shrink-0 select-none
+                        ${
+                            isActive
+                                ? "bg-gradient-to-r from-primary-600 to-purple-600 text-white shadow-lg shadow-primary-500/30 scale-105"
+                                : "text-slate-600 dark:text-slate-300 hover:bg-white/50 dark:hover:bg-slate-800 hover:text-primary-600 dark:hover:text-primary-400"
+                        }
+                    `}
+                        >
+                            {t.name}
+                            {isActive && (
+                                <span class="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 bg-white/50 rounded-full" />
+                            )}
+                        </a>
+                    );
+                })
+            }
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("astro:page-load", () => {
+        const dock = document.getElementById("theme-dock");
+        const footer = document.querySelector("footer");
+        const activeItem = dock?.querySelector('[data-active="true"]');
+
+        // 1. Auto-center active item
+        if (activeItem) {
+            activeItem.scrollIntoView({
+                behavior: "smooth",
+                block: "nearest",
+                inline: "center",
+            });
+        }
+
+        // 2. Footer Collision Detection
+        if (!dock || !footer) return;
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        // Footer is visible, hide dock
+                        dock.classList.add("opacity-0", "translate-y-10");
+                    } else {
+                        // Footer is not visible, show dock
+                        dock.classList.remove("opacity-0", "translate-y-10");
+                    }
+                });
+            },
+            {
+                root: null, // viewport
+                threshold: 0.1, // Trigger when 10% of footer is visible
+            },
+        );
+
+        observer.observe(footer);
+    });
+</script>
+
+<style>
+    /* Optional: Add a subtle entry animation */
+    #theme-dock > div {
+        animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+    }
+
+    @keyframes slideUp {
+        from {
+            transform: translateY(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+</style>

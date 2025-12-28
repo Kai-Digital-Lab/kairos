@@ -6,7 +6,7 @@ export const softwareThemesEN: ISubThemeDetail[] = [
         name: "Freemium Software",
         layoutComponent: "FreemiumSinglePageLayout",
         styleClasses:
-            "bg-green-50 text-gray-900 font-sans antialiased border-t-4 border-green-500",
+            "bg-green-50 dark:bg-green-950 text-gray-900 font-sans antialiased border-t-4 border-green-500",
         contentFocus: {
             title: "Features & Free Tier Value",
             highlightFreeTier: true,
@@ -21,7 +21,7 @@ export const softwareThemesEN: ISubThemeDetail[] = [
         name: "High-Value Enterprise",
         layoutComponent: "EnterpriseSalesLayout",
         styleClasses:
-            "bg-gray-100 text-gray-900 font-serif antialiased border-t-4 border-slate-700",
+            "bg-gray-100 dark:bg-slate-900 text-gray-900 font-serif antialiased border-t-4 border-slate-700",
         contentFocus: {
             title: "Solutions for Enterprise",
             shortForm: true,
@@ -36,7 +36,7 @@ export const softwareThemesEN: ISubThemeDetail[] = [
         name: "Mobile Application (App)",
         layoutComponent: "MobileAppVerticalLayout",
         styleClasses:
-            "bg-blue-600 text-white font-sans antialiased border-t-4 border-blue-400",
+            "bg-blue-600 dark:bg-blue-900 text-white font-sans antialiased border-t-4 border-blue-400",
         contentFocus: {
             title: "App Screenshots & Features",
             verticalLayout: true,
@@ -51,7 +51,7 @@ export const softwareThemesEN: ISubThemeDetail[] = [
         name: "Project Management Tool",
         layoutComponent: "ProjectManagementKanbanLayout",
         styleClasses:
-            "bg-yellow-50 text-gray-900 font-sans antialiased border-t-4 border-yellow-400",
+            "bg-yellow-50 dark:bg-yellow-950 text-gray-900 font-sans antialiased border-t-4 border-yellow-400",
         contentFocus: {
             title: "Team Collaboration & Pricing",
             showKanban: true,
@@ -66,7 +66,7 @@ export const softwareThemesEN: ISubThemeDetail[] = [
         name: "Fintech",
         layoutComponent: "FintechDataLayout",
         styleClasses:
-            "bg-black text-white font-sans antialiased border-t-4 border-emerald-500",
+            "bg-black dark:bg-black text-white font-sans antialiased border-t-4 border-emerald-500",
         contentFocus: {
             title: "Security & Financial Data",
             showRegulatedTrust: true,
@@ -84,7 +84,7 @@ export const softwareThemesTW: ISubThemeDetail[] = [
         name: "免費增值軟體",
         layoutComponent: "FreemiumSinglePageLayout",
         styleClasses:
-            "bg-green-50 text-gray-900 font-sans antialiased border-t-4 border-green-500",
+            "bg-green-50 dark:bg-green-950 text-gray-900 font-sans antialiased border-t-4 border-green-500",
         contentFocus: {
             title: "功能與免費版價值",
             highlightFreeTier: true,
@@ -99,7 +99,7 @@ export const softwareThemesTW: ISubThemeDetail[] = [
         name: "高價值企業方案",
         layoutComponent: "EnterpriseSalesLayout",
         styleClasses:
-            "bg-gray-100 text-gray-900 font-serif antialiased border-t-4 border-slate-700",
+            "bg-gray-100 dark:bg-slate-900 text-gray-900 font-serif antialiased border-t-4 border-slate-700",
         contentFocus: {
             title: "企業級解決方案",
             shortForm: true,
@@ -114,7 +114,7 @@ export const softwareThemesTW: ISubThemeDetail[] = [
         name: "行動應用程式 (App)",
         layoutComponent: "MobileAppVerticalLayout",
         styleClasses:
-            "bg-blue-600 text-white font-sans antialiased border-t-4 border-blue-400",
+            "bg-blue-600 dark:bg-blue-900 text-white font-sans antialiased border-t-4 border-blue-400",
         contentFocus: {
             title: "App 截圖與功能",
             verticalLayout: true,
@@ -129,7 +129,7 @@ export const softwareThemesTW: ISubThemeDetail[] = [
         name: "專案管理工具",
         layoutComponent: "ProjectManagementKanbanLayout",
         styleClasses:
-            "bg-yellow-50 text-gray-900 font-sans antialiased border-t-4 border-yellow-400",
+            "bg-yellow-50 dark:bg-yellow-950 text-gray-900 font-sans antialiased border-t-4 border-yellow-400",
         contentFocus: {
             title: "團隊協作與定價",
             showKanban: true,
@@ -144,7 +144,7 @@ export const softwareThemesTW: ISubThemeDetail[] = [
         name: "金融科技",
         layoutComponent: "FintechDataLayout",
         styleClasses:
-            "bg-black text-white font-sans antialiased border-t-4 border-emerald-500",
+            "bg-black dark:bg-black text-white font-sans antialiased border-t-4 border-emerald-500",
         contentFocus: {
             title: "安全與金融數據",
             showRegulatedTrust: true,

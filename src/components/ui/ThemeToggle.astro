@@ -40,16 +40,19 @@
     import { toggleTheme, themeStore } from "@/stores/theme.store";
 
     // 2. 改用 querySelectorAll 抓取所有按鈕 (電腦版 + 手機版)
-    const buttons = document.querySelectorAll(".theme-toggle-btn");
+    // 3. 關鍵修正：使用 astro:page-load 以支援 View Transitions
+    document.addEventListener("astro:page-load", () => {
+        const buttons = document.querySelectorAll(".theme-toggle-btn");
 
-    buttons.forEach((btn) => {
-        // 防止重複綁定 (以防 View Transitions 導致 script 重跑)
-        // 這裡我們直接綁定，因為 Astro 的 script 如果沒有 is:inline，通常只會執行一次
-        // 但為了保險起見，簡單的 addEventListener 沒問題
-        btn.addEventListener("click", (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            toggleTheme();
+        buttons.forEach((btn) => {
+            // 防止重複綁定 (以防 View Transitions 導致 script 重跑)
+            // 這裡我們直接綁定，因為 Astro 的 script 如果沒有 is:inline，通常只會執行一次
+            // 但為了保險起見，簡單的 addEventListener 沒問題
+            btn.addEventListener("click", (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                toggleTheme();
+            });
         });
     });
 
