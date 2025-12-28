@@ -6,6 +6,10 @@ import {
     portfolioThemesEN,
     portfolioThemesTW,
 } from "@/data/themes/portfolioData";
+import {
+    ecommerceThemesEN,
+    ecommerceThemesTW,
+} from "@/data/themes/ecommerceData";
 import { getRelativeLocaleUrl } from "astro:i18n";
 
 // Portfolio Components
@@ -15,12 +19,26 @@ import LongPageLandingLayout from "@/components/themes/portfolio/LongPageLanding
 import FullBleedCarouselLayout from "@/components/themes/portfolio/FullBleedCarouselLayout.astro";
 import StructuredCaseStudyLayout from "@/components/themes/portfolio/StructuredCaseStudyLayout.astro";
 
+// E-Commerce Components
+import EditorialMagazineLayout from "@/components/themes/ecommerce/EditorialMagazineLayout.astro";
+import TechElectronicsLayout from "@/components/themes/ecommerce/TechElectronicsLayout.astro";
+import SubscriptionLandingLayout from "@/components/themes/ecommerce/SubscriptionLandingLayout.astro";
+import FoodGroceryLayout from "@/components/themes/ecommerce/FoodGroceryLayout.astro";
+import DigitalProductLayout from "@/components/themes/ecommerce/DigitalProductLayout.astro";
+
 const ComponentMap = {
+    // Portfolio
     WaterfallGridLayout,
     StandardDividedLayout,
     LongPageLandingLayout,
     FullBleedCarouselLayout,
     StructuredCaseStudyLayout,
+    // E-Commerce
+    EditorialMagazineLayout,
+    TechElectronicsLayout,
+    SubscriptionLandingLayout,
+    FoodGroceryLayout,
+    DigitalProductLayout,
 };
 
 export function getStaticPaths() {
@@ -34,6 +52,16 @@ export function getStaticPaths() {
         ...portfolioThemesTW.map((theme) => ({
             params: { lang: "zh-tw", category: "portfolio", theme: theme.id },
             props: { theme, themes: portfolioThemesTW },
+        })),
+        // English - E-Commerce
+        ...ecommerceThemesEN.map((theme) => ({
+            params: { lang: "en", category: "ecommerce", theme: theme.id },
+            props: { theme, themes: ecommerceThemesEN },
+        })),
+        // Traditional Chinese - E-Commerce
+        ...ecommerceThemesTW.map((theme) => ({
+            params: { lang: "zh-tw", category: "ecommerce", theme: theme.id },
+            props: { theme, themes: ecommerceThemesTW },
         })),
     ];
 }

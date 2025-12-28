@@ -1,0 +1,163 @@
+---
+import type { ISubThemeDetail } from "@/types/Theme";
+
+interface Props {
+    theme: ISubThemeDetail;
+}
+
+const { theme } = Astro.props;
+const { contentFocus } = theme;
+const lang = Astro.currentLocale || "en";
+
+const t = {
+    en: {
+        desc: "Fresh from local farms to your table.",
+        cats: ["Vegetables", "Fruits", "Specials"],
+        products: [
+            {
+                name: "Organic Avocados",
+                badge: "Organic",
+                badgeType: "success",
+            },
+            { name: "Sourdough Bread", badge: "Fresh", badgeType: "warning" },
+            { name: "Farm Eggs (Doz)", badge: "Local", badgeType: "info" },
+            { name: "Almond Milk", badge: null, badgeType: "neutral" },
+        ],
+        boxTitle: "Weekly Harvest Box",
+        boxDesc: "Get 20% off your first subscription order.",
+        boxBtn: "Subscribe",
+    },
+    "zh-tw": {
+        desc: "從在地農場新鮮直送餐桌。",
+        cats: ["蔬菜", "水果", "特價"],
+        products: [
+            { name: "有機酪梨", badge: "有機", badgeType: "success" },
+            { name: "酸種麵包", badge: "新鮮", badgeType: "warning" },
+            { name: "農場雞蛋 (打)", badge: "在地", badgeType: "info" },
+            { name: "杏仁奶", badge: null, badgeType: "neutral" },
+        ],
+        boxTitle: "每週豐收箱",
+        boxDesc: "首次訂閱享八折優惠。",
+        boxBtn: "訂閱",
+    },
+}[lang] || {
+    desc: "",
+    cats: [],
+    products: [],
+    boxTitle: "",
+    boxDesc: "",
+    boxBtn: "",
+};
+
+const baseProducts = [
+    { price: "$4.99", img: "https://picsum.photos/200/200?random=food1" },
+    { price: "$6.50", img: "https://picsum.photos/200/200?random=food2" },
+    { price: "$5.25", img: "https://picsum.photos/200/200?random=food3" },
+    { price: "$3.99", img: "https://picsum.photos/200/200?random=food4" },
+];
+
+const products = baseProducts.map((p, i) => ({
+    ...p,
+    ...(t.products[i] || {}),
+}));
+
+const badgeClasses: Record<string, string> = {
+    success: "bg-green-600 text-white",
+    warning: "bg-yellow-500 text-white",
+    info: "bg-blue-500 text-white",
+    neutral: "bg-gray-500 text-white",
+};
+---
+
+<div
+    class="bg-green-50 dark:bg-green-950/30 p-8 font-sans transition-colors duration-300 min-h-screen"
+>
+    <!-- Header -->
+    <div
+        class="flex justify-between items-end mb-8 border-b-2 border-green-200 dark:border-green-800 pb-4"
+    >
+        <div>
+            <h2 class="text-3xl font-bold text-green-900 dark:text-green-100">
+                {contentFocus.title}
+            </h2>
+            <p class="text-green-700 dark:text-green-300">{t.desc}</p>
+        </div>
+        <div class="hidden md:flex gap-2">
+            {
+                t.cats &&
+                    t.cats.map((cat: string, index: number) => (
+                        <span
+                            class={`px-3 py-1 rounded border cursor-pointer text-sm ${
+                                index === 2
+                                    ? "bg-green-600 text-white border-none"
+                                    : "bg-white dark:bg-green-900 hover:bg-green-100 dark:hover:bg-green-800 border-green-200 dark:border-green-800 text-green-800 dark:text-green-100"
+                            }`}
+                        >
+                            {cat}
+                        </span>
+                    ))
+            }
+        </div>
+    </div>
+
+    <!-- Grid -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+        {
+            products.map((p, i) => (
+                <div class="bg-white dark:bg-slate-800 rounded-xl shadow hover:shadow-lg transition-shadow overflow-hidden group">
+                    <div class="relative h-48 overflow-hidden">
+                        <img
+                            src={p.img}
+                            alt={p.name}
+                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
+                        {p.badge && (
+                            <div class="absolute top-2 left-2">
+                                <span
+                                    class={`px-2 py-0.5 rounded text-xs font-bold shadow-sm ${
+                                        badgeClasses[p.badgeType as string] ||
+                                        badgeClasses.neutral
+                                    }`}
+                                >
+                                    {p.badge}
+                                </span>
+                            </div>
+                        )}
+                    </div>
+                    <div class="p-4">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="font-bold text-gray-800 dark:text-gray-100 text-sm md:text-base">
+                                {p.name}
+                            </h3>
+                            <span class="font-bold text-green-600">
+                                {p.price}
+                            </span>
+                        </div>
+                        <button class="w-full bg-green-600 hover:bg-green-700 text-white rounded-lg mt-2 py-1 text-sm transition-colors">
+                            {contentFocus.primaryCTA}
+                        </button>
+                    </div>
+                </div>
+            ))
+        }
+    </div>
+
+    <!-- Specials Box -->
+    {
+        contentFocus.showSpecials && (
+            <div class="mt-12 bg-orange-100 dark:bg-orange-900/40 rounded-xl p-8 flex flex-col md:flex-row items-center justify-between border border-orange-200 dark:border-orange-800 gap-4">
+                <div>
+                    <h3 class="text-2xl font-bold text-orange-900 dark:text-orange-100">
+                        {t.boxTitle}
+                    </h3>
+                    <p class="text-orange-800 dark:text-orange-200">
+                        {t.boxDesc}
+                    </p>
+                </div>
+                <button class="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded font-bold transition-colors">
+                    {t.boxBtn}
+                </button>
+            </div>
+        )
+    }
+</div>

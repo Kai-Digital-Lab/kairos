@@ -4,9 +4,13 @@ import {
     portfolioThemesEN,
     portfolioThemesTW,
 } from "@/data/themes/portfolioData";
+import {
+    ecommerceThemesEN,
+    ecommerceThemesTW,
+} from "@/data/themes/ecommerceData";
 
 export function getStaticPaths() {
-    const categories = ["portfolio"];
+    const categories = ["portfolio", "ecommerce"];
     const langs = ["en", "zh-tw"];
 
     return langs.flatMap((lang) =>
@@ -22,6 +26,9 @@ const { lang, category } = Astro.params;
 function getThemes(cat: string, l: string) {
     if (cat === "portfolio") {
         return l === "zh-tw" ? portfolioThemesTW : portfolioThemesEN;
+    }
+    if (cat === "ecommerce") {
+        return l === "zh-tw" ? ecommerceThemesTW : ecommerceThemesEN;
     }
     return [];
 }
