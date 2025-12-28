@@ -18,6 +18,7 @@ import {
     contentNewsThemesEN,
     contentNewsThemesTW,
 } from "@/data/themes/contentNewsData";
+import { softwareThemesEN, softwareThemesTW } from "@/data/themes/softwareData";
 import { getRelativeLocaleUrl } from "astro:i18n";
 
 // Portfolio Components
@@ -48,6 +49,13 @@ import TravelVisualStoryLayout from "@/components/themes/contentNews/TravelVisua
 import GossipDenseGridLayout from "@/components/themes/contentNews/GossipDenseGridLayout.astro";
 import AcademicMinimalLayout from "@/components/themes/contentNews/AcademicMinimalLayout.astro";
 
+// Software/SaaS Components
+import FreemiumSinglePageLayout from "@/components/themes/software/FreemiumSinglePageLayout.astro";
+import EnterpriseSalesLayout from "@/components/themes/software/EnterpriseSalesLayout.astro";
+import MobileAppVerticalLayout from "@/components/themes/software/MobileAppVerticalLayout.astro";
+import ProjectManagementKanbanLayout from "@/components/themes/software/ProjectManagementKanbanLayout.astro";
+import FintechDataLayout from "@/components/themes/software/FintechDataLayout.astro";
+
 const ComponentMap = {
     // Portfolio
     WaterfallGridLayout,
@@ -73,6 +81,12 @@ const ComponentMap = {
     TravelVisualStoryLayout,
     GossipDenseGridLayout,
     AcademicMinimalLayout,
+    // Software/SaaS
+    FreemiumSinglePageLayout,
+    EnterpriseSalesLayout,
+    MobileAppVerticalLayout,
+    ProjectManagementKanbanLayout,
+    FintechDataLayout,
 };
 
 export function getStaticPaths() {
@@ -120,6 +134,16 @@ export function getStaticPaths() {
                 theme: theme.id,
             },
             props: { theme, themes: contentNewsThemesTW },
+        })),
+        // English - Software
+        ...softwareThemesEN.map((theme) => ({
+            params: { lang: "en", category: "software", theme: theme.id },
+            props: { theme, themes: softwareThemesEN },
+        })),
+        // Traditional Chinese - Software
+        ...softwareThemesTW.map((theme) => ({
+            params: { lang: "zh-tw", category: "software", theme: theme.id },
+            props: { theme, themes: softwareThemesTW },
         })),
     ];
 }

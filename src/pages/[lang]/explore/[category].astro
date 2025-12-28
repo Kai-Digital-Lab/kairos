@@ -16,9 +16,16 @@ import {
     contentNewsThemesEN,
     contentNewsThemesTW,
 } from "@/data/themes/contentNewsData";
+import { softwareThemesEN, softwareThemesTW } from "@/data/themes/softwareData";
 
 export function getStaticPaths() {
-    const categories = ["portfolio", "ecommerce", "corporate", "content-news"];
+    const categories = [
+        "portfolio",
+        "ecommerce",
+        "corporate",
+        "content-news",
+        "software",
+    ];
     const langs = ["en", "zh-tw"];
 
     return langs.flatMap((lang) =>
@@ -43,6 +50,9 @@ function getThemes(cat: string, l: string) {
     }
     if (cat === "content-news") {
         return l === "zh-tw" ? contentNewsThemesTW : contentNewsThemesEN;
+    }
+    if (cat === "software") {
+        return l === "zh-tw" ? softwareThemesTW : softwareThemesEN;
     }
     return [];
 }

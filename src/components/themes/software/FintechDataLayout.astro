@@ -1,0 +1,143 @@
+---
+import type { ISubThemeDetail } from "@/types/Theme";
+
+interface Props {
+    theme: ISubThemeDetail;
+}
+
+const { theme } = Astro.props;
+const { contentFocus } = theme;
+const lang = Astro.currentLocale || "en";
+
+const t = {
+    en: {
+        status: "SYSTEM OPERATIONAL",
+        desc: "Institutional-grade infrastructure for the modern economy. Execute trades with zero latency and complete transparency.",
+        docs: "View API Docs",
+        regTitle: "Regulated & Secure",
+        regDesc:
+            "Your funds are protected by industry-leading security standards.",
+        tags: ["FDIC Insured", "SOC2 Certified", "AES-256 Encryption"],
+    },
+    "zh-tw": {
+        status: "系統運作中",
+        desc: "現代經濟的機構級基礎設施。零延遲、完全透明地執行交易。",
+        docs: "查看 API 文件",
+        regTitle: "合規與安全",
+        regDesc: "您的資金受到業界領先的安全標準保護。",
+        tags: ["FDIC 保險", "SOC2 認證", "AES-256 加密"],
+    },
+}[lang] || {
+    status: "",
+    desc: "",
+    docs: "",
+    regTitle: "",
+    regDesc: "",
+    tags: [],
+};
+---
+
+<div
+    class="bg-white dark:bg-black text-gray-900 dark:text-white font-sans min-h-[700px] transition-colors duration-300 min-h-screen"
+>
+    <div class="max-w-6xl mx-auto px-6 py-20">
+        <div
+            class="flex flex-col md:flex-row justify-between items-center mb-16 gap-12"
+        >
+            <div class="md:w-1/2">
+                <div
+                    class="text-emerald-600 dark:text-emerald-400 font-mono text-xs mb-4 flex items-center gap-2"
+                >
+                    <span
+                        class="w-2 h-2 rounded-full bg-emerald-500 dark:bg-emerald-400 animate-pulse"
+                    ></span>
+                    {t.status}
+                </div>
+                <h2
+                    class="text-5xl font-bold mb-6 tracking-tight text-gray-900 dark:text-white"
+                >
+                    {contentFocus.title}
+                </h2>
+                <p
+                    class="text-gray-600 dark:text-gray-400 text-lg mb-8 leading-relaxed"
+                >
+                    {t.desc}
+                </p>
+                <div class="flex gap-4">
+                    <button
+                        class="bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg shadow-emerald-200 dark:shadow-none px-8 py-3 rounded font-bold transition-colors"
+                    >
+                        {contentFocus.primaryCTA}
+                    </button>
+                    <button
+                        class="border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 px-8 py-3 rounded font-bold transition-colors"
+                    >
+                        {t.docs}
+                    </button>
+                </div>
+            </div>
+
+            {/* Abstract Data Visual */}
+            <div
+                class="md:w-1/2 relative bg-gray-50 dark:bg-gray-900 rounded-xl p-6 border border-gray-200 dark:border-gray-800 shadow-xl dark:shadow-none"
+            >
+                <div class="flex justify-between items-end h-40 gap-2">
+                    {
+                        [30, 50, 45, 70, 60, 90, 85, 100].map((h) => (
+                            <div class="w-full bg-emerald-100 dark:bg-emerald-900/50 rounded-t relative group">
+                                <div
+                                    style={{ height: `${h}%` }}
+                                    class="absolute bottom-0 w-full bg-gradient-to-t from-emerald-500 to-emerald-300 dark:from-emerald-600 dark:to-emerald-400 rounded-t transition-all duration-500 hover:bg-emerald-400 dark:hover:bg-emerald-300"
+                                />
+                            </div>
+                        ))
+                    }
+                </div>
+                <div
+                    class="flex justify-between text-xs text-gray-400 dark:text-gray-500 mt-4 font-mono"
+                >
+                    <span>09:00</span>
+                    <span>12:00</span>
+                    <span>15:00</span>
+                    <span>18:00</span>
+                </div>
+                <div class="absolute top-4 left-4">
+                    <span
+                        class="text-2xl font-bold text-gray-900 dark:text-white"
+                        >$42,093.12</span
+                    >
+                    <span
+                        class="text-sm text-emerald-600 dark:text-emerald-400 ml-2"
+                        >▲ 2.4%</span
+                    >
+                </div>
+            </div>
+        </div>
+
+        {
+            contentFocus.showRegulatedTrust && (
+                <div class="border-t border-gray-200 dark:border-gray-800 pt-12">
+                    <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                        <div>
+                            <h4 class="font-bold text-gray-700 dark:text-gray-300 mb-1">
+                                {t.regTitle}
+                            </h4>
+                            <p class="text-gray-500 text-sm">{t.regDesc}</p>
+                        </div>
+                        <div class="flex gap-6">
+                            <div class="bg-gray-100 dark:bg-gray-800 px-4 py-2 rounded text-gray-600 dark:text-gray-400 font-bold text-sm border border-gray-300 dark:border-gray-700">
+                                {t.tags[0]}
+                            </div>
+                            <div class="bg-gray-100 dark:bg-gray-800 px-4 py-2 rounded text-gray-600 dark:text-gray-400 font-bold text-sm border border-gray-300 dark:border-gray-700">
+                                {t.tags[1]}
+                            </div>
+                            <div class="bg-gray-100 dark:bg-gray-800 px-4 py-2 rounded text-gray-600 dark:text-gray-400 font-bold text-sm border border-gray-300 dark:border-gray-700">
+                                {t.tags[2]}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )
+        }
+    </div>
+</div>

@@ -1,0 +1,176 @@
+---
+import type { ISubThemeDetail } from "@/types/Theme";
+
+interface Props {
+    theme: ISubThemeDetail;
+}
+
+const { theme } = Astro.props;
+const { contentFocus } = theme;
+const lang = Astro.currentLocale || "en";
+
+const t = {
+    en: {
+        desc: "Empower your organization with intelligent automation and military-grade security at scale.",
+        trusted: "Trusted by Fortune 500 Companies",
+        why: "Why Industry Leaders Choose Us",
+        reason1Title: "Scalability",
+        reason1Desc:
+            "Infrastructure that grows with your needs, handling millions of transactions per second.",
+        reason2Title: "Compliance",
+        reason2Desc:
+            "SOC2 Type II, GDPR, and HIPAA compliant environments out of the box.",
+        quote: "\"Implementing this platform reduced our operational overhead by 40% within the first quarter. It's not just software; it's a competitive advantage.\"",
+        partners: "Strategic Technology Partners",
+    },
+    "zh-tw": {
+        desc: "以大規模的智能自動化和軍規級安全性賦能您的組織。",
+        trusted: "受財富 500 強企業信賴",
+        why: "為何業界領袖選擇我們",
+        reason1Title: "可擴展性",
+        reason1Desc: "隨您的需求增長的基礎設施，每秒處理數百萬筆交易。",
+        reason2Title: "合規性",
+        reason2Desc: "開箱即用的 SOC2 Type II、GDPR 和 HIPAA 合規環境。",
+        quote: "「導入此平台後，我們的營運成本在第一季降低了 40%。這不僅僅是軟體；這是競爭優勢。」",
+        partners: "策略技術合作夥伴",
+    },
+}[lang] || {
+    desc: "",
+    trusted: "",
+    why: "",
+    reason1Title: "",
+    reason1Desc: "",
+    reason2Title: "",
+    reason2Desc: "",
+    quote: "",
+    partners: "",
+};
+---
+
+<div
+    class="bg-gray-100 dark:bg-slate-900 font-serif text-gray-900 dark:text-white transition-colors duration-300 min-h-screen"
+>
+    <!-- Hero Section -->
+    <div class="bg-slate-900 dark:bg-black text-white py-20 px-6 text-center">
+        <h2
+            class="text-4xl md:text-5xl font-bold mb-6 max-w-4xl mx-auto leading-tight"
+        >
+            {contentFocus.title}
+        </h2>
+        <p class="text-xl text-slate-300 max-w-2xl mx-auto mb-10">
+            {t.desc}
+        </p>
+        <button
+            class="bg-white text-slate-900 hover:bg-gray-200 px-10 py-4 rounded font-sans font-bold transition-colors"
+        >
+            {contentFocus.primaryCTA}
+        </button>
+    </div>
+
+    <!-- Trusted By -->
+    <div
+        class="bg-white dark:bg-slate-800 border-b border-gray-200 dark:border-slate-700 py-8"
+    >
+        <p
+            class="text-center text-xs font-sans uppercase tracking-widest text-gray-400 dark:text-gray-500 mb-6"
+        >
+            {t.trusted}
+        </p>
+        <div
+            class="flex justify-center gap-12 flex-wrap px-6 opacity-60 grayscale"
+        >
+            {
+                ["Acme Corp", "Globex", "Soylent", "Initech", "Umbrella"].map(
+                    (logo) => (
+                        <span class="text-xl font-bold font-sans text-gray-400 dark:text-gray-500">
+                            {logo}
+                        </span>
+                    ),
+                )
+            }
+        </div>
+    </div>
+
+    <!-- Why Choose Us & Quote -->
+    <div
+        class="max-w-6xl mx-auto py-16 px-6 grid md:grid-cols-2 gap-16 items-center"
+    >
+        <div>
+            <h3 class="text-3xl font-bold mb-6">{t.why}</h3>
+            <ul class="space-y-6">
+                <li class="flex gap-4">
+                    <div
+                        class="w-12 h-12 bg-slate-200 dark:bg-slate-700 rounded-full flex items-center justify-center font-bold text-slate-700 dark:text-slate-300 flex-shrink-0"
+                    >
+                        01
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-lg">{t.reason1Title}</h4>
+                        <p class="text-gray-600 dark:text-gray-400">
+                            {t.reason1Desc}
+                        </p>
+                    </div>
+                </li>
+                <li class="flex gap-4">
+                    <div
+                        class="w-12 h-12 bg-slate-200 dark:bg-slate-700 rounded-full flex items-center justify-center font-bold text-slate-700 dark:text-slate-300 flex-shrink-0"
+                    >
+                        02
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-lg">{t.reason2Title}</h4>
+                        <p class="text-gray-600 dark:text-gray-400">
+                            {t.reason2Desc}
+                        </p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div
+            class="bg-white dark:bg-slate-800 p-8 shadow-xl rounded-lg border-l-4 border-slate-900 dark:border-slate-500"
+        >
+            <p class="text-lg italic text-gray-700 dark:text-gray-300 mb-6">
+                {t.quote}
+            </p>
+            <div class="flex items-center gap-4">
+                <div
+                    class="w-12 h-12 bg-gray-300 dark:bg-gray-600 rounded-full"
+                >
+                </div>
+                <div>
+                    <p class="font-bold font-sans">Elena Fisher</p>
+                    <p class="text-sm text-gray-500 font-sans">
+                        CTO, Global Dynamics
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Partners Grid -->
+    <div
+        class="py-16 bg-gray-50 dark:bg-slate-950/50 border-t border-gray-200 dark:border-slate-800"
+    >
+        <div class="max-w-6xl mx-auto px-6 text-center">
+            <h4
+                class="text-sm font-bold font-sans uppercase tracking-widest text-gray-500 dark:text-gray-400 mb-10"
+            >
+                {t.partners}
+            </h4>
+            <div class="flex flex-wrap justify-center gap-8 md:gap-16">
+                {
+                    ["Partner A", "Partner B", "Partner C", "Partner D"].map(
+                        () => (
+                            <div class="group flex items-center gap-3 opacity-60 hover:opacity-100 transition-opacity cursor-pointer">
+                                <div class="w-10 h-10 bg-slate-300 dark:bg-slate-700 rounded-md group-hover:bg-slate-400 dark:group-hover:bg-slate-600 transition-colors" />
+                                <span class="font-sans font-bold text-xl text-slate-400 dark:text-slate-500 group-hover:text-slate-600 dark:group-hover:text-slate-300 transition-colors">
+                                    LOGO
+                                </span>
+                            </div>
+                        ),
+                    )
+                }
+            </div>
+        </div>
+    </div>
+</div>

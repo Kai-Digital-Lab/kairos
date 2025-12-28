@@ -1,0 +1,244 @@
+---
+import type { ISubThemeDetail } from "@/types/Theme";
+
+interface Props {
+    theme: ISubThemeDetail;
+}
+
+const { theme } = Astro.props;
+const { contentFocus } = theme;
+const lang = Astro.currentLocale || "en";
+
+const t = {
+    en: {
+        desc: "The all-in-one platform for rapid growth. No credit card required.",
+        demo: "Watch Demo",
+        features: [
+            { title: "Deploy Fast", desc: "Push to production in seconds." },
+            {
+                title: "Secure by Default",
+                desc: "Enterprise-grade security built-in.",
+            },
+            {
+                title: "Scale Automatically",
+                desc: "Handle traffic spikes effortlessly.",
+            },
+        ],
+        pricingTitle: "Simple Pricing",
+        pricingDesc: "Start for free, upgrade as you grow.",
+        tiers: [
+            {
+                name: "Developer",
+                price: "$0",
+                tag: "FOREVER FREE",
+                feats: [
+                    "✅ Unlimited Projects",
+                    "✅ 500MB Storage",
+                    "✅ Community Support",
+                ],
+            },
+            {
+                name: "Pro",
+                price: "$15",
+                feats: [
+                    "✅ Everything in Free",
+                    "✅ 10GB Storage",
+                    "✅ Priority Email",
+                ],
+                btn: "Start Trial",
+            },
+            {
+                name: "Enterprise",
+                price: "$99",
+                feats: [
+                    "✅ Unlimited Storage",
+                    "✅ SSO & Audit Logs",
+                    "✅ 24/7 Phone Support",
+                ],
+                btn: "Contact Sales",
+            },
+        ],
+        perMo: "/mo",
+    },
+    "zh-tw": {
+        desc: "由全方位平台驅動的快速成長。無需信用卡。",
+        demo: "觀看演示",
+        features: [
+            { title: "快速部署", desc: "幾秒鐘內發布到生產環境。" },
+            { title: "預設安全", desc: "內建企業級安全性。" },
+            { title: "自動擴展", desc: "輕鬆處理流量高峰。" },
+        ],
+        pricingTitle: "簡單定價",
+        pricingDesc: "免費開始，隨成長升級。",
+        tiers: [
+            {
+                name: "開發者",
+                price: "$0",
+                tag: "永久免費",
+                feats: ["✅ 無限專案", "✅ 500MB 儲存空間", "✅ 社群支援"],
+            },
+            {
+                name: "專業版",
+                price: "$15",
+                feats: [
+                    "✅ 包含免費版所有功能",
+                    "✅ 10GB 儲存空間",
+                    "✅ 優先郵件支援",
+                ],
+                btn: "開始試用",
+            },
+            {
+                name: "企業版",
+                price: "$99",
+                feats: [
+                    "✅ 無限儲存空間",
+                    "✅ SSO 與稽核日誌",
+                    "✅ 24/7 電話支援",
+                ],
+                btn: "聯絡業務",
+            },
+        ],
+        perMo: "/月",
+    },
+}[lang] || {
+    desc: "",
+    demo: "",
+    features: [],
+    pricingTitle: "",
+    pricingDesc: "",
+    tiers: [],
+    perMo: "",
+};
+---
+
+<div
+    class="bg-green-50 dark:bg-green-950/20 text-gray-900 dark:text-white font-sans transition-colors duration-300 min-h-screen"
+>
+    <!-- Hero -->
+    <div
+        class="text-center py-16 px-6 bg-gradient-to-b from-white to-green-50 dark:from-slate-900 dark:to-slate-800"
+    >
+        <h2 class="text-4xl md:text-5xl font-bold mb-6 tracking-tight">
+            {contentFocus.title}
+        </h2>
+        <p
+            class="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto mb-8"
+        >
+            {t.desc}
+        </p>
+        <div class="flex justify-center gap-4">
+            <button
+                class="bg-green-600 hover:bg-green-700 text-white shadow-lg shadow-green-200 dark:shadow-none px-8 py-3 rounded-lg font-bold transition-all transform hover:scale-105"
+            >
+                {contentFocus.primaryCTA}
+            </button>
+            <button
+                class="border border-green-600 text-green-700 dark:text-green-400 hover:bg-green-100 dark:hover:bg-slate-800 px-8 py-3 rounded-lg font-bold transition-colors"
+            >
+                {t.demo}
+            </button>
+        </div>
+    </div>
+
+    <!-- Feature Value Props -->
+    <div class="max-w-5xl mx-auto py-16 px-6 grid md:grid-cols-3 gap-8">
+        {
+            [
+                { icon: "🚀", ...t.features[0] },
+                { icon: "🔒", ...t.features[1] },
+                { icon: "📈", ...t.features[2] },
+            ].map((f) => (
+                <div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-green-100 dark:border-green-900 text-center">
+                    <div class="text-4xl mb-4">{f.icon}</div>
+                    <h3 class="font-bold text-lg mb-2 text-gray-900 dark:text-white">
+                        {f.title}
+                    </h3>
+                    <p class="text-gray-600 dark:text-gray-400">{f.desc}</p>
+                </div>
+            ))
+        }
+    </div>
+
+    <!-- Pricing - Highlighting Free Tier -->
+    {
+        contentFocus.highlightFreeTier && (
+            <div class="max-w-5xl mx-auto py-16 px-6">
+                <div class="text-center mb-12">
+                    <h3 class="text-3xl font-bold">{t.pricingTitle}</h3>
+                    <p class="text-gray-500 dark:text-gray-400">
+                        {t.pricingDesc}
+                    </p>
+                </div>
+                <div class="grid md:grid-cols-3 gap-6 items-end">
+                    {/* Free Tier */}
+                    <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border-4 border-green-400 p-8 transform scale-105 z-10 relative">
+                        <div class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-green-500 text-white px-4 py-1 rounded-full text-sm font-bold">
+                            {t.tiers[0].tag}
+                        </div>
+                        <h4 class="text-xl font-bold text-green-700 dark:text-green-400">
+                            {t.tiers[0].name}
+                        </h4>
+                        <div class="text-4xl font-bold my-4 text-gray-900 dark:text-white">
+                            {t.tiers[0].price}
+                            <span class="text-sm font-normal text-gray-400">
+                                {t.perMo}
+                            </span>
+                        </div>
+                        <ul class="space-y-3 mb-8 text-sm">
+                            {t.tiers[0].feats.map((f: any) => (
+                                <li class="flex items-center text-gray-600 dark:text-gray-300">
+                                    {f}
+                                </li>
+                            ))}
+                        </ul>
+                        <button class="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg font-bold transition-colors">
+                            {contentFocus.primaryCTA}
+                        </button>
+                    </div>
+
+                    {/* Pro Tier */}
+                    <div class="bg-white dark:bg-slate-800 rounded-2xl shadow p-6 border border-gray-200 dark:border-slate-700">
+                        <h4 class="text-xl font-bold text-gray-800 dark:text-gray-100">
+                            {t.tiers[1].name}
+                        </h4>
+                        <div class="text-4xl font-bold my-4 text-gray-900 dark:text-white">
+                            {t.tiers[1].price}
+                            <span class="text-sm font-normal text-gray-400">
+                                {t.perMo}
+                            </span>
+                        </div>
+                        <ul class="space-y-3 mb-8 text-sm text-gray-600 dark:text-gray-300">
+                            {t.tiers[1].feats.map((f: any) => (
+                                <li class="flex items-center">{f}</li>
+                            ))}
+                        </ul>
+                        <button class="w-full border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 py-3 rounded-lg font-bold transition-colors">
+                            {t.tiers[1].btn}
+                        </button>
+                    </div>
+
+                    {/* Enterprise Tier */}
+                    <div class="bg-white dark:bg-slate-800 rounded-2xl shadow p-6 border border-gray-200 dark:border-slate-700">
+                        <h4 class="text-xl font-bold text-gray-800 dark:text-gray-100">
+                            {t.tiers[2].name}
+                        </h4>
+                        <div class="text-4xl font-bold my-4 text-gray-900 dark:text-white">
+                            {t.tiers[2].price}
+                            <span class="text-sm font-normal text-gray-400">
+                                {t.perMo}
+                            </span>
+                        </div>
+                        <ul class="space-y-3 mb-8 text-sm text-gray-600 dark:text-gray-300">
+                            {t.tiers[2].feats.map((f: any) => (
+                                <li class="flex items-center">{f}</li>
+                            ))}
+                        </ul>
+                        <button class="w-full border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 py-3 rounded-lg font-bold transition-colors">
+                            {t.tiers[2].btn}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        )
+    }
+</div>
