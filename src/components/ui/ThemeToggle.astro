@@ -47,7 +47,7 @@
         // 這裡我們直接綁定，因為 Astro 的 script 如果沒有 is:inline，通常只會執行一次
         // 但為了保險起見，簡單的 addEventListener 沒問題
         btn.addEventListener("click", (e) => {
-            // 阻止事件冒泡，避免觸發其他點擊事件
+            e.preventDefault();
             e.stopPropagation();
             toggleTheme();
         });

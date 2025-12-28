@@ -1,87 +1,42 @@
 ---
-import ProjectModal from "@/components/design-system/molecules/ProjectModal.astro";
-import type { ProjectData } from "@/stores/portfolio.store";
-
 const lang = Astro.currentLocale || "en";
 
 const translations = {
     en: {
-        sectionTitle: "Selected Works",
-        sectionSubtitle:
-            "Bridging the gap between business requirements and technical excellence.",
-        viewDetails: "View Details",
-        projects: [
-            {
-                title: "K-LAB Official Site",
-                description:
-                    "High-performance personal portfolio powered by Astro 5.0.",
-                fullDescription:
-                    "A modern website utilizing Astro 5.0 Server-first rendering. Achieved SPA-like experience via View Transitions and Zero Runtime Overhead using Nano Stores. Integrated with Tailwind CSS and Cloudflare Pages for automated deployment.",
-                tags: ["Astro 5", "TypeScript", "Tailwind", "Nano Stores"],
-                image: "bg-gradient-to-br from-blue-500 to-cyan-400",
-                link: "https://github.com/Kai-Digital-Lab",
+        sectionTitle: "Interactive Capability Showcase",
+        sectionSubtitle: 'Experience our "Project Insanity" engine.',
+        categories: {
+            portfolio: {
+                title: "Portfolio Collections",
+                desc: "Creative layouts for personal branding and portfolios.",
+                cta: "Explore Portfolio Themes",
             },
-            {
-                title: "Nano Banana Model",
-                description:
-                    "Prompt Engineering Guide for AI Image Generation Models.",
-                fullDescription:
-                    "Deep dive into Stable Diffusion & Midjourney Prompt Engineering. Established a standardized S-V-O pattern prompt structure and built a visual reference library with 50+ art styles and lighting effects, significantly improving generation controllability.",
-                tags: ["GenAI", "Prompt Engineering", "Python"],
-                image: "bg-gradient-to-br from-purple-500 to-pink-400",
-                link: "#",
+            ecommerce: {
+                title: "E-Commerce",
+                desc: "Conversion-optimized storefronts and product pages.",
+                cta: "Coming Soon",
             },
-            {
-                title: "Legacy Migration Project",
-                description:
-                    "Enterprise React Legacy Migration to Modern Web Architecture.",
-                fullDescription:
-                    "A consulting case study. The client had a massive React SPA facing severe loading issues (LCP > 4s). I led the migration plan, introducing Islands Architecture to switch static content to server-side rendering, keeping hydration only for interactive blocks, reducing TTI by 60%.",
-                tags: ["React", "Architecture", "Consulting"],
-                image: "bg-gradient-to-br from-emerald-500 to-teal-400",
-                link: "#",
-            },
-        ],
+        },
     },
     "zh-tw": {
-        sectionTitle: "精選專案",
-        sectionSubtitle: "連結商業策略與工程執行的關鍵橋樑。",
-        viewDetails: "查看詳情",
-        projects: [
-            {
-                title: "K-LAB 官方網站",
-                description: "基於 Astro 5.0 的高效能個人作品集網站。",
-                fullDescription:
-                    "這是一個採用 Astro 5.0 Server-first 渲染技術的現代化網站。透過 View Transitions 達成 SPA 體驗，並使用 Nano Stores 管理跨元件狀態，實現了 Zero Runtime Overhead 的架構目標。專案整合了 Tailwind CSS 與 Cloudflare Pages 自動化部署流程。",
-                tags: ["Astro 5", "TypeScript", "Tailwind", "Nano Stores"],
-                image: "bg-gradient-to-br from-blue-500 to-cyan-400",
-                link: "https://github.com/Kai-Digital-Lab",
+        sectionTitle: "互動能力展示",
+        sectionSubtitle: "體驗我們的「Project Insanity」引擎。",
+        categories: {
+            portfolio: {
+                title: "精選作品集",
+                desc: "個人品牌與作品集的創意佈局。",
+                cta: "探索作品集主題",
             },
-            {
-                title: "Nano Banana 模型",
-                description: "針對 AI 圖像生成模型的 Prompt Engineering 指南。",
-                fullDescription:
-                    "深入研究 Stable Diffusion 與 Midjourney 的提示詞工程 (Prompt Engineering)。本專案整理了一套標準化的提示詞結構 (S-V-O pattern)，並建立了一份包含 50+ 種藝術風格與光影效果的視覺參考庫，大幅提升生成圖像的可控性。",
-                tags: ["GenAI", "Prompt Engineering", "Python"],
-                image: "bg-gradient-to-br from-purple-500 to-pink-400",
-                link: "#",
+            ecommerce: {
+                title: "電子商務",
+                desc: "最佳化轉換率的商店與產品頁面。",
+                cta: "即將推出",
             },
-            {
-                title: "舊制重構計畫",
-                description:
-                    "協助企業將傳統 React 專案遷移至 Modern Web 架構。",
-                fullDescription:
-                    "這是一個顧問案範例。客戶原本擁有一個龐大的 React SPA，面臨嚴重的載入效能問題 (LCP > 4s)。我主導了遷移計畫，導入 Islands Architecture，將靜態內容改為伺服器渲染，僅在需要互動的區塊保留 Hydration，最終將 TTI 縮短了 60%。",
-                tags: ["React", "Architecture", "Consulting"],
-                image: "bg-gradient-to-br from-emerald-500 to-teal-400",
-                link: "#",
-            },
-        ],
+        },
     },
 };
 
-const t = translations[lang] || translations.en;
-const projects: ProjectData[] = t.projects;
+const t = translations[lang as keyof typeof translations] || translations.en;
 ---
 
 <section
@@ -102,80 +57,96 @@ const projects: ProjectData[] = t.projects;
             </p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {
-                projects.map((project) => (
-                    <article class="group bg-white dark:bg-slate-800 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-100 dark:border-slate-700 flex flex-col h-full">
-                        <div
-                            class={`aspect-video w-full ${project.image} relative overflow-hidden`}
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- Portfolio Category Card -->
+            <a
+                href={`/${lang}/explore/portfolio/VisualDesigner`}
+                class="group block bg-white dark:bg-slate-800 rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 border border-slate-100 dark:border-slate-700 relative"
+            >
+                <div
+                    class="aspect-video w-full bg-gradient-to-br from-pink-500 to-purple-600 relative overflow-hidden"
+                >
+                    <div
+                        class="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors"
+                    >
+                    </div>
+                    <!-- Placeholder for dynamic preview - using simple text/icon for now -->
+                    <div
+                        class="absolute inset-0 flex items-center justify-center text-white opacity-90"
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            class="h-20 w-20 transform group-hover:scale-110 transition-transform duration-500"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
                         >
-                            <div class="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors" />
-                        </div>
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="1.5"
+                                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                            ></path>
+                        </svg>
+                    </div>
+                </div>
 
-                        <div class="p-6 flex-1 flex flex-col">
-                            <div class="flex gap-2 mb-3 flex-wrap">
-                                {project.tags.map((tag) => (
-                                    <span class="px-2 py-1 text-xs font-semibold rounded-md bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300">
-                                        {tag}
-                                    </span>
-                                ))}
-                            </div>
+                <div class="p-8">
+                    <h3
+                        class="text-2xl font-bold text-slate-900 dark:text-white mb-3 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors"
+                    >
+                        {t.categories.portfolio.title}
+                    </h3>
+                    <p
+                        class="text-slate-600 dark:text-slate-400 leading-relaxed mb-6"
+                    >
+                        {t.categories.portfolio.desc}
+                    </p>
+                    <span
+                        class="inline-flex items-center text-primary-600 dark:text-primary-400 font-semibold group-hover:underline"
+                    >
+                        {t.categories.portfolio.cta}
+                        <svg
+                            class="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                        </svg>
+                    </span>
+                </div>
+            </a>
 
-                            <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">
-                                {project.title}
-                            </h3>
-
-                            <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mb-4 flex-1">
-                                {project.description}
-                            </p>
-
-                            <div class="mt-auto pt-4 border-t border-slate-100 dark:border-slate-700">
-                                <button
-                                    class="view-project-btn flex items-center text-primary-600 dark:text-primary-400 font-medium text-sm hover:underline focus:outline-none"
-                                    data-project={JSON.stringify(project)}
-                                >
-                                    {t.viewDetails}
-                                    <svg
-                                        class="w-4 h-4 ml-1 transition-transform group-hover:translate-x-1"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        stroke="currentColor"
-                                    >
-                                        <path
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            stroke-width="2"
-                                            d="M17 8l4 4m0 0l-4 4m4-4H3"
-                                        />
-                                    </svg>
-                                </button>
-                            </div>
-                        </div>
-                    </article>
-                ))
-            }
+            <!-- Other Categories (Placeholder/Coming Soon) -->
+            <div
+                class="group block bg-slate-100 dark:bg-slate-800/50 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 opacity-75 cursor-not-allowed"
+            >
+                <div
+                    class="aspect-video w-full bg-slate-200 dark:bg-slate-700 relative flex items-center justify-center"
+                >
+                    <span
+                        class="text-slate-400 dark:text-slate-500 font-mono uppercase tracking-widest"
+                        >{t.categories.ecommerce.cta}</span
+                    >
+                </div>
+                <div class="p-8">
+                    <h3
+                        class="text-2xl font-bold text-slate-500 dark:text-slate-400 mb-3"
+                    >
+                        {t.categories.ecommerce.title}
+                    </h3>
+                    <p
+                        class="text-slate-400 dark:text-slate-500 leading-relaxed"
+                    >
+                        {t.categories.ecommerce.desc}
+                    </p>
+                </div>
+            </div>
         </div>
-
-        <ProjectModal />
     </div>
 </section>
-
-<script>
-    import { activeProject, type ProjectData } from "@/stores/portfolio.store";
-
-    function initPortfolio() {
-        const buttons = document.querySelectorAll(".view-project-btn");
-
-        buttons.forEach((btn) => {
-            btn.addEventListener("click", (e) => {
-                const data = (e.currentTarget as HTMLElement).dataset.project;
-                if (data) {
-                    const project: ProjectData = JSON.parse(data);
-                    activeProject.set(project);
-                }
-            });
-        });
-    }
-
-    document.addEventListener("astro:page-load", initPortfolio);
-</script>

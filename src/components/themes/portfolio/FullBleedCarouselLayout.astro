@@ -1,0 +1,134 @@
+---
+import type { ISubThemeDetail } from "@/types/Theme";
+
+interface Props {
+    theme: ISubThemeDetail;
+}
+
+const { theme } = Astro.props;
+const { contentFocus } = theme;
+const lang = Astro.currentLocale || "en";
+
+const t = {
+    en: {
+        alt: "Art piece",
+        iso: "ISO 400 • f/1.8",
+    },
+    "zh-tw": {
+        alt: "藝術作品",
+        iso: "ISO 400 • f/1.8",
+    },
+}[lang] || { alt: "", iso: "" };
+
+const slides = [
+    "https://picsum.photos/1920/1080?random=101",
+    "https://picsum.photos/1920/1080?random=102",
+    "https://picsum.photos/1920/1080?random=103",
+];
+---
+
+<div
+    class="relative w-full h-[80vh] bg-black text-white overflow-hidden group carousel-container"
+>
+    {/* Background Image Layer */}
+    {
+        slides.map((slide, index) => (
+            <div
+                class={`absolute inset-0 transition-opacity duration-1000 ease-in-out slide ${index === 0 ? "opacity-100" : "opacity-0"}`}
+                data-index={index}
+            >
+                <img
+                    src={slide}
+                    alt={`${t.alt} ${index + 1}`}
+                    class="w-full h-full object-cover opacity-70"
+                />
+                <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent" />
+            </div>
+        ))
+    }
+
+    {/* Content Layer */}
+    <div class="absolute bottom-0 left-0 p-12 w-full md:w-2/3 lg:w-1/2 z-10">
+        <h2
+            class="text-5xl md:text-7xl font-serif font-light mb-6 tracking-wide text-white"
+        >
+            {contentFocus.title}
+        </h2>
+        <div
+            class="flex gap-8 mb-8 text-sm tracking-widest text-gray-300 border-l border-gray-500 pl-4"
+        >
+            {
+                contentFocus.metadataPriority.map((meta) => (
+                    <div class="flex flex-col">
+                        <span class="font-bold text-white">{meta}</span>
+                        <span class="text-xs text-gray-400">{t.iso}</span>
+                    </div>
+                ))
+            }
+        </div>
+        <button
+            class="text-white border border-white hover:bg-white hover:text-black transition-colors rounded-none px-8 py-3 uppercase tracking-widest text-xs bg-transparent"
+        >
+            {contentFocus.primaryCTA}
+        </button>
+    </div>
+
+    {/* Controls */}
+    <div class="absolute right-8 bottom-8 flex gap-4 z-20">
+        <button
+            id="prev-slide"
+            class="w-12 h-12 border border-gray-600 hover:border-white text-white rounded-full flex items-center justify-center hover:bg-white hover:text-black transition-all"
+            >←</button
+        >
+        <button
+            id="next-slide"
+            class="w-12 h-12 border border-gray-600 hover:border-white text-white rounded-full flex items-center justify-center hover:bg-white hover:text-black transition-all"
+            >→</button
+        >
+    </div>
+</div>
+
+<script>
+    // Simple Vanilla JS Carousel Logic
+    function initCarousel() {
+        const container = document.querySelector(".carousel-container");
+        if (!container) return;
+
+        const slides = container.querySelectorAll(".slide");
+        const prevBtn = container.querySelector("#prev-slide");
+        const nextBtn = container.querySelector("#next-slide");
+        let activeIndex = 0;
+        const totalSlides = slides.length;
+
+        function updateSlides() {
+            slides.forEach((slide, index) => {
+                if (index === activeIndex) {
+                    slide.classList.remove("opacity-0");
+                    slide.classList.add("opacity-100");
+                } else {
+                    slide.classList.remove("opacity-100");
+                    slide.classList.add("opacity-0");
+                }
+            });
+        }
+
+        nextBtn?.addEventListener("click", () => {
+            activeIndex = (activeIndex + 1) % totalSlides;
+            updateSlides();
+        });
+
+        prevBtn?.addEventListener("click", () => {
+            activeIndex = (activeIndex - 1 + totalSlides) % totalSlides;
+            updateSlides();
+        });
+    }
+
+    // Init on load and after view transitions
+    document.addEventListener("astro:page-load", initCarousel);
+    // Fallback for initial load if not using View Transitions yet
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initCarousel);
+    } else {
+        initCarousel();
+    }
+</script>

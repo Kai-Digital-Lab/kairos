@@ -1,0 +1,40 @@
+---
+import MainLayout from "@/layouts/MainLayout.astro";
+import {
+    portfolioThemesEN,
+    portfolioThemesTW,
+} from "@/data/themes/portfolioData";
+
+export function getStaticPaths() {
+    const categories = ["portfolio"];
+    const langs = ["en", "zh-tw"];
+
+    return langs.flatMap((lang) =>
+        categories.map((category) => ({
+            params: { lang, category },
+        })),
+    );
+}
+
+const { lang, category } = Astro.params;
+
+// Helper to get themes based on lang and category
+function getThemes(cat: string, l: string) {
+    if (cat === "portfolio") {
+        return l === "zh-tw" ? portfolioThemesTW : portfolioThemesEN;
+    }
+    return [];
+}
+
+const themes = getThemes(category, lang);
+const defaultThemeId = themes[0]?.id || "VisualDesigner"; // Fallback safe
+
+// Redirect to the first theme
+return Astro.redirect(`/${lang}/explore/${category}/${defaultThemeId}`);
+---
+
+<!-- 
+    This page is now a redirector. 
+    It ensures that visiting /[lang]/explore/[category] automatically 
+    takes the user to the first theme in that category.
+-->

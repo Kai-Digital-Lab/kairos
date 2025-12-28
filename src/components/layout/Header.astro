@@ -26,7 +26,7 @@ const translations = {
     },
 };
 
-const t = translations[lang] || translations.en;
+const t = translations[lang as keyof typeof translations] || translations.en;
 
 const navItems = [
     { name: t.portfolio, href: "#portfolio" },
@@ -37,8 +37,19 @@ const navItems = [
 ];
 
 // Manual path logic for debugging
-const homeUrl = lang === "en" ? "/" : `/${lang}/`;
-const toggleUrl = lang === "en" ? "/zh-tw/" : "/";
+const homeUrl = lang === "en" ? "/en/" : `/${lang}/`;
+
+// Calculate toggle URL
+const currentPath = Astro.url.pathname;
+let toggleUrl;
+
+if (lang === "en") {
+    // Current is /en/..., target is /zh-tw/...
+    toggleUrl = currentPath.replace("/en", "/zh-tw");
+} else {
+    // Current is /zh-tw/..., target is /en/...
+    toggleUrl = currentPath.replace("/zh-tw", "/en");
+}
 ---
 
 <header

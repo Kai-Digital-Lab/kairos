@@ -1,0 +1,117 @@
+---
+import MainLayout from "@/layouts/MainLayout.astro";
+import Header from "@/components/layout/Header.astro";
+import Footer from "@/components/layout/Footer.astro";
+import {
+    portfolioThemesEN,
+    portfolioThemesTW,
+} from "@/data/themes/portfolioData";
+import { getRelativeLocaleUrl } from "astro:i18n";
+
+// Portfolio Components
+import WaterfallGridLayout from "@/components/themes/portfolio/WaterfallGridLayout.astro";
+import StandardDividedLayout from "@/components/themes/portfolio/StandardDividedLayout.astro";
+import LongPageLandingLayout from "@/components/themes/portfolio/LongPageLandingLayout.astro";
+import FullBleedCarouselLayout from "@/components/themes/portfolio/FullBleedCarouselLayout.astro";
+import StructuredCaseStudyLayout from "@/components/themes/portfolio/StructuredCaseStudyLayout.astro";
+
+const ComponentMap = {
+    WaterfallGridLayout,
+    StandardDividedLayout,
+    LongPageLandingLayout,
+    FullBleedCarouselLayout,
+    StructuredCaseStudyLayout,
+};
+
+export function getStaticPaths() {
+    return [
+        // English - Portfolio
+        ...portfolioThemesEN.map((theme) => ({
+            params: { lang: "en", category: "portfolio", theme: theme.id },
+            props: { theme, themes: portfolioThemesEN },
+        })),
+        // Traditional Chinese - Portfolio
+        ...portfolioThemesTW.map((theme) => ({
+            params: { lang: "zh-tw", category: "portfolio", theme: theme.id },
+            props: { theme, themes: portfolioThemesTW },
+        })),
+    ];
+}
+
+const { lang, category } = Astro.params;
+const { theme: activeTheme, themes } = Astro.props;
+
+// Link generation helper
+function getThemeLink(lang: string, category: string, themeId: string) {
+    // Manually construct because getRelativeLocaleUrl might produce encoded paths differently
+    return `/${lang}/explore/${category}/${themeId}`;
+}
+---
+
+<MainLayout title={`Explorer - ${category}`} lang={lang}>
+    <Header />
+
+    <main class="pt-20 min-h-screen bg-slate-50 dark:bg-slate-900">
+        <div class="max-w-7xl mx-auto px-4 py-8">
+            <h1
+                class="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary-600 to-purple-600 mb-4 capitalize"
+            >
+                {category} Explorer
+            </h1>
+
+            <div
+                class="mb-8 p-4 bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700"
+            >
+                <p class="text-sm text-slate-500 mb-2">Debug Info:</p>
+                <code
+                    class="block bg-slate-100 dark:bg-slate-900 p-2 rounded text-xs overflow-auto"
+                >
+                    Lang: {lang}
+                    <br />
+                    Category: {category}
+                    <br />
+                    Active Theme ID: {activeTheme.id}
+                    <br />
+                    Theme Name: {activeTheme.name}
+                    <br />
+                    Layout Component: {activeTheme.layoutComponent}
+                </code>
+            </div>
+
+            <!-- Theme Switcher UI -->
+            <div class="flex flex-wrap gap-2 mb-8">
+                {
+                    themes.map((t) => (
+                        <a
+                            href={getThemeLink(lang, category, t.id)}
+                            class={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                                t.id === activeTheme.id
+                                    ? "bg-primary-600 text-white shadow-md"
+                                    : "bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700"
+                            }`}
+                        >
+                            {t.name}
+                        </a>
+                    ))
+                }
+            </div>
+
+            <!-- Preview Area -->
+            <div
+                class={`transition-all duration-500 rounded-xl overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-800 ${activeTheme.styleClasses}`}
+            >
+                {
+                    (() => {
+                        const Layout =
+                            ComponentMap[
+                                activeTheme.layoutComponent as keyof typeof ComponentMap
+                            ] || WaterfallGridLayout;
+                        return <Layout theme={activeTheme} />;
+                    })()
+                }
+            </div>
+        </div>
+    </main>
+
+    <Footer />
+</MainLayout>
