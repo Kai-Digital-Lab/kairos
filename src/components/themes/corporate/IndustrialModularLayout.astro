@@ -1,5 +1,6 @@
 ---
 import type { ISubThemeDetail } from "@/types/Theme";
+import Button from "@/components/design-system/atoms/Button.astro";
 
 interface Props {
     theme: ISubThemeDetail;
@@ -69,11 +70,12 @@ const t = {
                     {t.cert}
                 </p>
             </div>
-            <button
-                class="bg-orange-600 hover:bg-orange-700 text-white font-bold rounded-none px-8 py-3 transition-colors"
+            <Button
+                variant="primary"
+                class="bg-orange-600 hover:bg-orange-700 !rounded-none px-8 py-3"
             >
                 {contentFocus.primaryCTA}
-            </button>
+            </Button>
         </div>
 
         {

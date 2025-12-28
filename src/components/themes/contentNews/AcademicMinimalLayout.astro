@@ -1,5 +1,6 @@
 ---
 import type { ISubThemeDetail } from "@/types/Theme";
+import Button from "@/components/design-system/atoms/Button.astro";
 
 interface Props {
     theme: ISubThemeDetail;
@@ -89,16 +90,18 @@ const t = {
         <div
             class="flex flex-col md:flex-row gap-4 justify-center items-center border-t border-gray-200 dark:border-gray-700 pt-12"
         >
-            <button
-                class="bg-slate-900 dark:bg-white text-white dark:text-slate-900 hover:bg-slate-800 dark:hover:bg-gray-200 font-sans min-w-[200px] py-3 rounded font-bold transition-colors"
+            <Button
+                variant="primary"
+                class="min-w-[200px] py-3 font-sans !bg-slate-900 dark:!bg-white !text-white dark:!text-slate-900 hover:!bg-slate-800 dark:hover:!bg-gray-200"
             >
                 {contentFocus.primaryCTA} (2.4MB)
-            </button>
-            <button
-                class="border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 font-sans min-w-[200px] py-3 rounded font-bold transition-colors"
+            </Button>
+            <Button
+                variant="outline"
+                class="min-w-[200px] py-3 font-sans !border-slate-300 dark:!border-slate-600 !text-slate-700 dark:!text-slate-300 hover:!bg-slate-50 dark:hover:!bg-slate-800"
             >
                 {t.cite}
-            </button>
+            </Button>
         </div>
     </div>
 </div>

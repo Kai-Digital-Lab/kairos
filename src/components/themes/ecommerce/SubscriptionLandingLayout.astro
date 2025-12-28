@@ -1,5 +1,8 @@
 ---
 import type { ISubThemeDetail } from "@/types/Theme";
+import Button from "@/components/design-system/atoms/Button.astro";
+import Badge from "@/components/design-system/atoms/Badge.astro";
+import Card from "@/components/design-system/atoms/Card.astro";
 
 interface Props {
     theme: ISubThemeDetail;
@@ -106,7 +109,10 @@ const t = {
         contentFocus.showPlanComparison && (
             <div class="max-w-5xl mx-auto grid md:grid-cols-3 gap-8 items-center">
                 {/* Basic Plan */}
-                <div class="bg-white dark:bg-slate-800 rounded-xl shadow-md p-6 border border-gray-100 dark:border-slate-700 opacity-80 hover:opacity-100 transition-opacity">
+                <Card
+                    variant="bordered"
+                    class="opacity-80 hover:opacity-100 transition-opacity p-6"
+                >
                     <h3 class="text-xl font-bold text-gray-800 dark:text-gray-100">
                         {t.plans[0].name}
                     </h3>
@@ -123,15 +129,26 @@ const t = {
                             </li>
                         ))}
                     </ul>
-                    <button class="w-full border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 py-2 rounded hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors">
+                    <Button
+                        variant="outline"
+                        class="w-full !border-gray-300 dark:!border-gray-600 text-gray-700 dark:text-gray-200 py-2 hover:!bg-gray-50 dark:hover:!bg-slate-700"
+                    >
                         {t.plans[0].btn}
-                    </button>
-                </div>
+                    </Button>
+                </Card>
 
                 {/* Pro Plan */}
-                <div class="bg-white dark:bg-slate-800 rounded-xl shadow-xl p-8 border-2 border-yellow-400 relative transform scale-105 z-10">
-                    <div class="absolute top-0 right-0 bg-yellow-400 text-white text-xs font-bold px-3 py-1 rounded-bl-lg rounded-tr-lg">
-                        {t.plans[1].tag}
+                <Card
+                    variant="default"
+                    class="!shadow-xl p-8 border-2 !border-yellow-400 relative transform scale-105 z-10 bg-white dark:bg-slate-800"
+                >
+                    <div class="absolute top-0 right-0">
+                        <Badge
+                            variant="neutral"
+                            class="!bg-yellow-400 !text-white !rounded-none !rounded-bl-lg !rounded-tr-lg font-bold px-3 py-1"
+                        >
+                            {t.plans[1].tag}
+                        </Badge>
                     </div>
                     <h3 class="text-2xl font-bold text-gray-900 dark:text-white">
                         {t.plans[1].name}
@@ -150,13 +167,19 @@ const t = {
                             </li>
                         ))}
                     </ul>
-                    <button class="w-full bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-3 rounded transition-colors shadow-lg">
+                    <Button
+                        variant="primary"
+                        class="w-full !bg-yellow-500 hover:!bg-yellow-600 text-white font-bold py-3 !shadow-lg"
+                    >
                         {contentFocus.primaryCTA}
-                    </button>
-                </div>
+                    </Button>
+                </Card>
 
                 {/* Ultimate Plan */}
-                <div class="bg-white dark:bg-slate-800 rounded-xl shadow-md p-6 border border-gray-100 dark:border-slate-700 opacity-80 hover:opacity-100 transition-opacity">
+                <Card
+                    variant="bordered"
+                    class="opacity-80 hover:opacity-100 transition-opacity p-6"
+                >
                     <h3 class="text-xl font-bold text-gray-800 dark:text-gray-100">
                         {t.plans[2].name}
                     </h3>
@@ -173,10 +196,13 @@ const t = {
                             </li>
                         ))}
                     </ul>
-                    <button class="w-full border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 py-2 rounded hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors">
+                    <Button
+                        variant="outline"
+                        class="w-full !border-gray-300 dark:!border-gray-600 text-gray-700 dark:text-gray-200 py-2 hover:!bg-gray-50 dark:hover:!bg-slate-700"
+                    >
                         {t.plans[2].btn}
-                    </button>
-                </div>
+                    </Button>
+                </Card>
             </div>
         )
     }

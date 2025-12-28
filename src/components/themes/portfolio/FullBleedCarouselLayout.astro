@@ -1,5 +1,6 @@
 ---
 import type { ISubThemeDetail } from "@/types/Theme";
+import Button from "@/components/design-system/atoms/Button.astro";
 
 interface Props {
     theme: ISubThemeDetail;
@@ -66,24 +67,27 @@ const slides = [
                 ))
             }
         </div>
-        <button
-            class="text-white border border-white hover:bg-white hover:text-black transition-colors rounded-none px-8 py-3 uppercase tracking-widest text-xs bg-transparent"
+        <Button
+            variant="outline"
+            class="!text-white !border-white hover:!bg-white hover:!text-black !rounded-none px-8 py-3 !uppercase tracking-widest text-xs !bg-transparent"
         >
             {contentFocus.primaryCTA}
-        </button>
+        </Button>
     </div>
 
     {/* Controls */}
     <div class="absolute right-8 bottom-8 flex gap-4 z-20">
-        <button
+        <Button
             id="prev-slide"
-            class="w-12 h-12 border border-gray-600 hover:border-white text-white rounded-full flex items-center justify-center hover:bg-white hover:text-black transition-all"
-            >←</button
+            variant="outline"
+            class="!w-12 !h-12 !border-gray-600 hover:!border-white !text-white !rounded-full flex items-center justify-center hover:!bg-white hover:!text-black !p-0"
+            >←</Button
         >
-        <button
+        <Button
             id="next-slide"
-            class="w-12 h-12 border border-gray-600 hover:border-white text-white rounded-full flex items-center justify-center hover:bg-white hover:text-black transition-all"
-            >→</button
+            variant="outline"
+            class="!w-12 !h-12 !border-gray-600 hover:!border-white !text-white !rounded-full flex items-center justify-center hover:!bg-white hover:!text-black !p-0"
+            >→</Button
         >
     </div>
 </div>

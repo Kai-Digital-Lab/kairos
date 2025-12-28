@@ -1,5 +1,7 @@
 ---
 import type { ISubThemeDetail } from "@/types/Theme";
+import Button from "@/components/design-system/atoms/Button.astro";
+import Card from "@/components/design-system/atoms/Card.astro";
 
 interface Props {
     theme: ISubThemeDetail;
@@ -60,11 +62,12 @@ const t = {
         <p class="text-xl text-slate-300 max-w-2xl mx-auto mb-10">
             {t.desc}
         </p>
-        <button
-            class="bg-white text-slate-900 hover:bg-gray-200 px-10 py-4 rounded font-sans font-bold transition-colors"
+        <Button
+            variant="secondary"
+            class="px-10 py-4 font-sans font-bold hover:bg-gray-200"
         >
             {contentFocus.primaryCTA}
-        </button>
+        </Button>
     </div>
 
     <!-- Trusted By -->
@@ -126,8 +129,9 @@ const t = {
                 </li>
             </ul>
         </div>
-        <div
-            class="bg-white dark:bg-slate-800 p-8 shadow-xl rounded-lg border-l-4 border-slate-900 dark:border-slate-500"
+        <Card
+            variant="default"
+            class="p-8 shadow-xl border-none border-l-4 !border-l-slate-900 dark:!border-l-slate-500 rounded-lg"
         >
             <p class="text-lg italic text-gray-700 dark:text-gray-300 mb-6">
                 {t.quote}
@@ -144,7 +148,7 @@ const t = {
                     </p>
                 </div>
             </div>
-        </div>
+        </Card>
     </div>
 
     <!-- Partners Grid -->

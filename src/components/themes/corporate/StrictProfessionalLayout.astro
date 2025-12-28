@@ -1,5 +1,7 @@
 ---
 import type { ISubThemeDetail } from "@/types/Theme";
+import Button from "@/components/design-system/atoms/Button.astro";
+import Card from "@/components/design-system/atoms/Card.astro";
 
 interface Props {
     theme: ISubThemeDetail;
@@ -85,7 +87,10 @@ const t = {
                         ))}
                     </ul>
 
-                    <div class="mt-12 p-6 bg-slate-50 dark:bg-slate-800 rounded">
+                    <Card
+                        variant="default"
+                        class="mt-12 p-6 !bg-slate-50 dark:!bg-slate-800 rounded"
+                    >
                         <p class="font-bold mb-2 text-sm">{t.contact}</p>
                         <p class="text-xs text-slate-500 dark:text-slate-400">
                             +1 (555) 123-4567
@@ -93,7 +98,7 @@ const t = {
                         <p class="text-xs text-slate-500 dark:text-slate-400">
                             info@firmname.com
                         </p>
-                    </div>
+                    </Card>
                 </div>
             )
         }
@@ -115,7 +120,10 @@ const t = {
             <div class="grid md:grid-cols-2 gap-8 mb-12">
                 {
                     t.cases.map((c: any, i: number) => (
-                        <div class="bg-slate-50 dark:bg-slate-800 p-6 border border-slate-200 dark:border-slate-700">
+                        <Card
+                            variant="bordered"
+                            class="p-6 !bg-slate-50 dark:!bg-slate-800"
+                        >
                             <h3 class="font-bold text-xl mb-3">{c.title}</h3>
                             <p class="text-sm text-slate-600 dark:text-slate-400 mb-4">
                                 {c.desc}
@@ -123,7 +131,7 @@ const t = {
                             <span class="text-xs font-bold uppercase tracking-wide text-slate-500 dark:text-slate-400">
                                 Case Study #{402 - i * 100}
                             </span>
-                        </div>
+                        </Card>
                     ))
                 }
             </div>
@@ -135,11 +143,12 @@ const t = {
                     <h3 class="font-bold text-xl mb-1">{t.sched}</h3>
                     <p class="text-slate-400 text-sm">{t.confid}</p>
                 </div>
-                <button
-                    class="bg-white text-slate-900 hover:bg-slate-200 px-6 py-2 rounded-sm font-bold transition-colors"
+                <Button
+                    variant="secondary"
+                    class="bg-white text-slate-900 !rounded-sm hover:!bg-slate-200 border-none"
                 >
                     {contentFocus.primaryCTA}
-                </button>
+                </Button>
             </div>
         </div>
     </div>

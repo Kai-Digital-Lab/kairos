@@ -1,5 +1,7 @@
 ---
 import type { ISubThemeDetail } from "@/types/Theme";
+import Button from "@/components/design-system/atoms/Button.astro";
+import Card from "@/components/design-system/atoms/Card.astro";
 
 interface Props {
     theme: ISubThemeDetail;
@@ -71,8 +73,9 @@ const t = {
             {contentFocus.title}
         </h2>
 
-        <div
-            class="bg-white/60 dark:bg-white/5 backdrop-blur-md border border-stone-200 dark:border-white/10 p-8 rounded-lg max-w-2xl w-full mb-12 shadow-xl dark:shadow-none"
+        <Card
+            variant="default"
+            class="!bg-white/60 dark:!bg-white/5 backdrop-blur-md border border-stone-200 dark:border-white/10 p-8 rounded-lg max-w-2xl w-full mb-12 shadow-xl dark:shadow-none"
         >
             <h3
                 class="text-2xl mb-6 text-amber-700 dark:text-amber-200 border-b border-stone-300 dark:border-white/10 pb-4"
@@ -91,14 +94,15 @@ const t = {
                     ))
                 }
             </ul>
-        </div>
+        </Card>
 
         <div class="flex flex-col md:flex-row gap-6 items-center">
-            <button
-                class="bg-red-700 hover:bg-red-800 text-white px-10 py-4 rounded-sm border border-red-800 uppercase tracking-widest text-sm shadow-lg transition-colors"
+            <Button
+                variant="primary"
+                class="hover:bg-red-800 border-red-800 uppercase tracking-widest text-sm shadow-lg !rounded-sm px-10 py-4 !bg-red-700"
             >
                 {contentFocus.primaryCTA}
-            </button>
+            </Button>
             <div class="text-center md:text-left">
                 <p
                     class="text-xs uppercase tracking-widest text-stone-500 dark:text-stone-400 mb-1 font-bold"

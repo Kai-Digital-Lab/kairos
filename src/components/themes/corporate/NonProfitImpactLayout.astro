@@ -1,5 +1,7 @@
 ---
 import type { ISubThemeDetail } from "@/types/Theme";
+import Button from "@/components/design-system/atoms/Button.astro";
+import Card from "@/components/design-system/atoms/Card.astro";
 
 interface Props {
     theme: ISubThemeDetail;
@@ -52,11 +54,12 @@ const t = {
                 {contentFocus.title}
             </h2>
             <p class="text-sky-100 text-lg max-w-2xl mb-8">{t.desc}</p>
-            <button
-                class="bg-yellow-400 text-sky-900 hover:bg-yellow-300 font-bold px-8 py-3 rounded-full shadow-lg transform hover:-translate-y-1 transition-all"
+            <Button
+                variant="primary"
+                class="!bg-yellow-400 !text-sky-900 hover:!bg-yellow-300 shadow-lg px-8 py-3 rounded-full"
             >
                 {contentFocus.primaryCTA}
-            </button>
+            </Button>
         </div>
     </div>
 
@@ -64,7 +67,10 @@ const t = {
     {
         contentFocus.showImpactData && (
             <div class="max-w-6xl mx-auto px-6 -mt-16 relative z-10">
-                <div class="bg-white dark:bg-slate-800 rounded-xl shadow-xl p-8 grid md:grid-cols-3 gap-8 text-center border-b-4 border-sky-500">
+                <Card
+                    variant="default"
+                    class="!shadow-xl p-8 grid md:grid-cols-3 gap-8 text-center !border-b-4 !border-sky-500 border-x-0 border-t-0"
+                >
                     <div class="p-4">
                         <div class="text-4xl font-extrabold text-sky-600 mb-2">
                             50K+
@@ -89,7 +95,7 @@ const t = {
                             {t.stats[2]}
                         </div>
                     </div>
-                </div>
+                </Card>
             </div>
         )
     }
@@ -109,9 +115,10 @@ const t = {
                 >
                     {t.story}
                 </p>
-                <a
+                <Button
+                    variant="ghost"
                     href="#"
-                    class="text-sky-600 font-bold hover:underline flex items-center"
+                    class="text-sky-600 font-bold hover:underline flex items-center p-0 hover:bg-transparent"
                 >
                     {t.readMore}
                     <svg
@@ -125,7 +132,7 @@ const t = {
                             stroke-width={2}
                             d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg
                     >
-                </a>
+                </Button>
             </div>
             <div class="md:w-1/2">
                 <div

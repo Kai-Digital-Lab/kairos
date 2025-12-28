@@ -1,5 +1,7 @@
 ---
 import type { ISubThemeDetail } from "@/types/Theme";
+import Button from "@/components/design-system/atoms/Button.astro";
+import Badge from "@/components/design-system/atoms/Badge.astro";
 
 interface Props {
     theme: ISubThemeDetail;
@@ -88,10 +90,12 @@ const news = [
             <div
                 class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p-6"
             >
-                <span
-                    class="bg-pink-600 text-white text-xs font-bold px-2 py-1 w-fit mb-2 uppercase"
-                    >{t.breaking}</span
+                <Badge
+                    variant="neutral"
+                    class="!bg-pink-600 !text-white text-xs font-bold px-2 py-1 w-fit mb-2 uppercase rounded-none border-none"
                 >
+                    {t.breaking}
+                </Badge>
                 <h3
                     class="text-white text-2xl md:text-4xl font-black italic leading-none"
                 >
@@ -126,11 +130,12 @@ const news = [
         >
             <h4 class="font-black text-xl mb-2 italic">{t.ctaTitle}</h4>
             <p class="text-xs font-bold mb-4">{t.ctaDesc}</p>
-            <button
-                class="bg-black text-white hover:bg-gray-800 rounded-none w-full uppercase font-bold py-2 px-4 transition-colors"
+            <Button
+                variant="primary"
+                class="!bg-black !text-white hover:!bg-gray-800 !rounded-none w-full uppercase font-bold py-2 px-4 shadow-none"
             >
                 {contentFocus.primaryCTA}
-            </button>
+            </Button>
         </div>
     </div>
 </div>

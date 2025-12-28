@@ -1,5 +1,7 @@
 ---
 import type { ISubThemeDetail } from "@/types/Theme";
+import Button from "@/components/design-system/atoms/Button.astro";
+import Card from "@/components/design-system/atoms/Card.astro";
 
 interface Props {
     theme: ISubThemeDetail;
@@ -52,8 +54,9 @@ const t = {
             </p>
 
             <div class="flex flex-col sm:flex-row gap-4 mb-10">
-                <button
-                    class="bg-white dark:bg-slate-800 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-700 font-bold px-8 py-4 h-auto flex items-center gap-2 rounded-xl transition-colors"
+                <Button
+                    variant="secondary"
+                    class="h-auto flex items-center gap-2 rounded-xl px-8 py-4"
                 >
                     <span class="text-2xl"></span>
                     <span class="text-left leading-tight">
@@ -62,9 +65,10 @@ const t = {
                         >
                         App Store
                     </span>
-                </button>
-                <button
-                    class="bg-transparent border border-blue-300 text-white hover:bg-blue-700 dark:hover:bg-blue-800 px-8 py-4 h-auto flex items-center gap-2 rounded-xl transition-colors"
+                </Button>
+                <Button
+                    variant="ghost"
+                    class="h-auto flex items-center gap-2 rounded-xl px-8 py-4 border border-blue-300 text-white hover:bg-blue-700 dark:hover:bg-blue-800 hover:text-white"
                 >
                     <span class="text-2xl">▶</span>
                     <span class="text-left leading-tight">
@@ -73,7 +77,7 @@ const t = {
                         >
                         Google Play
                     </span>
-                </button>
+                </Button>
             </div>
 
             <div class="flex items-center gap-4 text-sm text-blue-200">
@@ -116,13 +120,16 @@ const t = {
                     <div class="space-y-4">
                         {
                             [1, 2, 3, 4].map((i) => (
-                                <div class="bg-gray-50 dark:bg-slate-800 p-4 rounded-xl shadow-sm flex items-center gap-3">
+                                <Card
+                                    variant="default"
+                                    class="bg-gray-50 dark:bg-slate-800 p-4 shadow-sm flex items-center gap-3 border-none"
+                                >
                                     <div class="w-5 h-5 border-2 border-blue-500 rounded-full" />
                                     <div class="w-full">
                                         <div class="h-2 w-3/4 bg-gray-200 dark:bg-slate-700 rounded mb-2" />
                                         <div class="h-2 w-1/2 bg-gray-100 dark:bg-slate-600 rounded" />
                                     </div>
-                                </div>
+                                </Card>
                             ))
                         }
                     </div>

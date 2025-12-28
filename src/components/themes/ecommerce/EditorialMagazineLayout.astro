@@ -1,5 +1,7 @@
 ---
 import type { ISubThemeDetail } from "@/types/Theme";
+import Button from "@/components/design-system/atoms/Button.astro";
+import Card from "@/components/design-system/atoms/Card.astro";
 
 interface Props {
     theme: ISubThemeDetail;
@@ -72,7 +74,10 @@ const t = {
             </div>
 
             <div class="grid grid-cols-2 gap-4 mb-12">
-                <div class="bg-stone-50 dark:bg-stone-800 p-4 text-center">
+                <Card
+                    variant="default"
+                    class="!bg-stone-50 dark:!bg-stone-800 p-4 text-center !rounded-none shadow-none"
+                >
                     <img
                         src="https://picsum.photos/300/400?random=bag"
                         alt="Item"
@@ -82,8 +87,11 @@ const t = {
                     <p class="text-xs text-stone-500 dark:text-stone-400">
                         $120.00
                     </p>
-                </div>
-                <div class="bg-stone-50 dark:bg-stone-800 p-4 text-center">
+                </Card>
+                <Card
+                    variant="default"
+                    class="!bg-stone-50 dark:!bg-stone-800 p-4 text-center !rounded-none shadow-none"
+                >
                     <img
                         src="https://picsum.photos/300/400?random=shoes"
                         alt="Item"
@@ -93,15 +101,16 @@ const t = {
                     <p class="text-xs text-stone-500 dark:text-stone-400">
                         $450.00
                     </p>
-                </div>
+                </Card>
             </div>
 
             <div class="text-center md:text-left">
-                <button
-                    class="rounded-none bg-stone-900 text-white px-10 py-4 uppercase tracking-widest hover:bg-stone-700 dark:bg-stone-100 dark:text-stone-900 dark:hover:bg-stone-300 transition-colors"
+                <Button
+                    variant="primary"
+                    class="!rounded-none !bg-stone-900 text-white px-10 py-4 uppercase tracking-widest hover:!bg-stone-700 dark:!bg-stone-100 dark:!text-stone-900 dark:hover:!bg-stone-300"
                 >
                     {contentFocus.primaryCTA}
-                </button>
+                </Button>
             </div>
         </div>
     </div>

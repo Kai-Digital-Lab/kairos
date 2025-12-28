@@ -1,5 +1,7 @@
 ---
 import type { ISubThemeDetail } from "@/types/Theme";
+import Button from "@/components/design-system/atoms/Button.astro";
+import Card from "@/components/design-system/atoms/Card.astro";
 
 interface Props {
     theme: ISubThemeDetail;
@@ -101,8 +103,9 @@ const t = {
             </p>
 
             <!-- Chart Placeholder -->
-            <div
-                class="bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 p-6 rounded mb-8"
+            <Card
+                variant="bordered"
+                class="p-6 rounded mb-8 !bg-gray-50 dark:!bg-slate-800 !border-gray-200 dark:!border-slate-700"
             >
                 <h4
                     class="font-bold text-sm text-gray-500 dark:text-gray-400 mb-4 uppercase"
@@ -142,7 +145,7 @@ const t = {
                     <span>Q1</span><span>Q2</span><span>Q3</span><span>Q4</span
                     ><span>Proj</span>
                 </div>
-            </div>
+            </Card>
         </div>
 
         <!-- Sidebar (4 cols) -->
@@ -150,17 +153,23 @@ const t = {
             contentFocus.hasSidebar && (
                 <div class="lg:col-span-4 space-y-8">
                     {/* CTA Box */}
-                    <div class="bg-emerald-50 dark:bg-emerald-900/20 p-6 rounded border border-emerald-100 dark:border-emerald-800">
+                    <Card
+                        variant="bordered"
+                        class="!bg-emerald-50 dark:!bg-emerald-900/20 p-6 rounded !border-emerald-100 dark:!border-emerald-800"
+                    >
                         <h3 class="font-bold text-emerald-900 dark:text-emerald-100 mb-2">
                             {t.premiumTitle}
                         </h3>
                         <p class="text-sm text-emerald-800 dark:text-emerald-200 mb-4">
                             {t.premiumDesc}
                         </p>
-                        <button class="w-full bg-emerald-700 hover:bg-emerald-800 text-white py-2 rounded font-bold transition-colors">
+                        <Button
+                            variant="primary"
+                            class="w-full !bg-emerald-700 hover:!bg-emerald-800 text-white py-2"
+                        >
                             {contentFocus.primaryCTA}
-                        </button>
-                    </div>
+                        </Button>
+                    </Card>
 
                     {/* Top Stories */}
                     <div>
@@ -182,9 +191,12 @@ const t = {
                     </div>
 
                     {/* Ad Placeholder */}
-                    <div class="bg-gray-100 dark:bg-slate-800 h-64 flex items-center justify-center text-gray-400 text-xs tracking-widest border border-dashed border-gray-300 dark:border-slate-600">
+                    <Card
+                        variant="default"
+                        class="!bg-gray-100 dark:!bg-slate-800 h-64 flex items-center justify-center text-gray-400 text-xs tracking-widest !border-dashed !border-gray-300 dark:!border-slate-600 shadow-none"
+                    >
                         {t.ad}
-                    </div>
+                    </Card>
                 </div>
             )
         }

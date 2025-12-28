@@ -1,5 +1,8 @@
 ---
 import type { ISubThemeDetail } from "@/types/Theme";
+import Button from "@/components/design-system/atoms/Button.astro";
+import Badge from "@/components/design-system/atoms/Badge.astro";
+import Card from "@/components/design-system/atoms/Card.astro";
 
 interface Props {
     theme: ISubThemeDetail;
@@ -61,11 +64,14 @@ const products = baseProducts.map((p, i) => ({
     ...(t.products[i] || {}),
 }));
 
-const badgeClasses: Record<string, string> = {
-    success: "bg-green-600 text-white",
-    warning: "bg-yellow-500 text-white",
-    info: "bg-blue-500 text-white",
-    neutral: "bg-gray-500 text-white",
+const badgeVariants: Record<
+    string,
+    "neutral" | "success" | "warning" | "error" | "info" | "primary"
+> = {
+    success: "success",
+    warning: "warning",
+    info: "info",
+    neutral: "neutral",
 };
 ---
 
@@ -86,15 +92,16 @@ const badgeClasses: Record<string, string> = {
             {
                 t.cats &&
                     t.cats.map((cat: string, index: number) => (
-                        <span
-                            class={`px-3 py-1 rounded border cursor-pointer text-sm ${
+                        <Badge
+                            variant={index === 2 ? "primary" : "neutral"}
+                            class={`px-3 py-1 cursor-pointer border ${
                                 index === 2
-                                    ? "bg-green-600 text-white border-none"
-                                    : "bg-white dark:bg-green-900 hover:bg-green-100 dark:hover:bg-green-800 border-green-200 dark:border-green-800 text-green-800 dark:text-green-100"
+                                    ? "!bg-green-600 !text-white !border-none"
+                                    : "!bg-white dark:!bg-green-900 hover:!bg-green-100 dark:hover:!bg-green-800 !border-green-200 dark:!border-green-800 !text-green-800 dark:!text-green-100"
                             }`}
                         >
                             {cat}
-                        </span>
+                        </Badge>
                     ))
             }
         </div>
@@ -104,7 +111,10 @@ const badgeClasses: Record<string, string> = {
     <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
         {
             products.map((p, i) => (
-                <div class="bg-white dark:bg-slate-800 rounded-xl shadow hover:shadow-lg transition-shadow overflow-hidden group">
+                <Card
+                    variant="hover"
+                    class="!bg-white dark:!bg-slate-800 rounded-xl overflow-hidden group p-0 !shadow hover:!shadow-lg border-none"
+                >
                     <div class="relative h-48 overflow-hidden">
                         <img
                             src={p.img}
@@ -113,14 +123,15 @@ const badgeClasses: Record<string, string> = {
                         />
                         {p.badge && (
                             <div class="absolute top-2 left-2">
-                                <span
-                                    class={`px-2 py-0.5 rounded text-xs font-bold shadow-sm ${
-                                        badgeClasses[p.badgeType as string] ||
-                                        badgeClasses.neutral
-                                    }`}
+                                <Badge
+                                    variant={
+                                        badgeVariants[p.badgeType as string] ||
+                                        "neutral"
+                                    }
+                                    class="!px-2 !py-0.5 !text-xs font-bold shadow-sm"
                                 >
                                     {p.badge}
-                                </span>
+                                </Badge>
                             </div>
                         )}
                     </div>
@@ -133,11 +144,14 @@ const badgeClasses: Record<string, string> = {
                                 {p.price}
                             </span>
                         </div>
-                        <button class="w-full bg-green-600 hover:bg-green-700 text-white rounded-lg mt-2 py-1 text-sm transition-colors">
+                        <Button
+                            variant="primary"
+                            class="w-full !bg-green-600 hover:!bg-green-700 text-white rounded-lg mt-2 py-1 text-sm"
+                        >
                             {contentFocus.primaryCTA}
-                        </button>
+                        </Button>
                     </div>
-                </div>
+                </Card>
             ))
         }
     </div>
@@ -145,7 +159,10 @@ const badgeClasses: Record<string, string> = {
     <!-- Specials Box -->
     {
         contentFocus.showSpecials && (
-            <div class="mt-12 bg-orange-100 dark:bg-orange-900/40 rounded-xl p-8 flex flex-col md:flex-row items-center justify-between border border-orange-200 dark:border-orange-800 gap-4">
+            <Card
+                variant="bordered"
+                class="mt-12 !bg-orange-100 dark:!bg-orange-900/40 rounded-xl p-8 flex flex-col md:flex-row items-center justify-between !border-orange-200 dark:!border-orange-800 gap-4"
+            >
                 <div>
                     <h3 class="text-2xl font-bold text-orange-900 dark:text-orange-100">
                         {t.boxTitle}
@@ -154,10 +171,13 @@ const badgeClasses: Record<string, string> = {
                         {t.boxDesc}
                     </p>
                 </div>
-                <button class="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded font-bold transition-colors">
+                <Button
+                    variant="primary"
+                    class="!bg-orange-500 hover:!bg-orange-600 text-white px-6 py-2 font-bold"
+                >
                     {t.boxBtn}
-                </button>
-            </div>
+                </Button>
+            </Card>
         )
     }
 </div>

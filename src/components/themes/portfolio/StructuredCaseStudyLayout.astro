@@ -1,5 +1,8 @@
 ---
 import type { ISubThemeDetail } from "@/types/Theme";
+import Button from "@/components/design-system/atoms/Button.astro";
+import Badge from "@/components/design-system/atoms/Badge.astro";
+import Card from "@/components/design-system/atoms/Card.astro";
 
 interface Props {
     theme: ISubThemeDetail;
@@ -79,22 +82,29 @@ const t = {
             <div class="flex flex-wrap gap-2 mb-8">
                 {
                     t.tags.map((tag, i) => (
-                        <span class="bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-gray-300 px-3 py-1 rounded-full text-xs">
+                        <Badge
+                            variant="neutral"
+                            class="!bg-gray-100 dark:!bg-slate-800 !text-gray-600 dark:!text-gray-300 px-3 py-1"
+                        >
                             {tag}
-                        </span>
+                        </Badge>
                     ))
                 }
                 {
                     contentFocus.metadataPriority.map((meta, i) => (
-                        <span class="bg-indigo-50 dark:bg-indigo-900/20 text-indigo-700 dark:text-indigo-300 px-3 py-1 rounded-full text-xs font-medium border border-indigo-100 dark:border-indigo-800">
+                        <Badge
+                            variant="neutral"
+                            class="!bg-indigo-50 dark:!bg-indigo-900/20 !text-indigo-700 dark:!text-indigo-300 px-3 py-1 !border !border-indigo-100 dark:!border-indigo-800"
+                        >
                             {meta}
-                        </span>
+                        </Badge>
                     ))
                 }
             </div>
-            <button
-                class="bg-indigo-600 hover:bg-indigo-700 w-fit text-white px-6 py-2 rounded-lg transition-colors font-medium cursor-pointer"
-                >{t.readBtn}</button
+            <Button
+                variant="primary"
+                class="!bg-indigo-600 hover:!bg-indigo-700 w-fit text-white px-6 py-2 rounded-lg font-medium"
+                >{t.readBtn}</Button
             >
         </div>
         <div
@@ -119,8 +129,9 @@ const t = {
     </div>
 
     <div class="grid md:grid-cols-2 gap-8">
-        <div
-            class="border border-gray-200 dark:border-slate-700 rounded-xl p-8 hover:shadow-lg transition-shadow bg-white dark:bg-slate-800"
+        <Card
+            variant="hover"
+            class="p-8 border border-gray-200 dark:border-slate-700"
         >
             <h3 class="font-bold text-xl mb-4 text-gray-800 dark:text-gray-100">
                 {t.problem}
@@ -128,9 +139,10 @@ const t = {
             <p class="text-gray-600 dark:text-gray-400 text-sm">
                 {t.problemDesc}
             </p>
-        </div>
-        <div
-            class="border border-gray-200 dark:border-slate-700 rounded-xl p-8 hover:shadow-lg transition-shadow bg-white dark:bg-slate-800"
+        </Card>
+        <Card
+            variant="hover"
+            class="p-8 border border-gray-200 dark:border-slate-700"
         >
             <h3 class="font-bold text-xl mb-4 text-gray-800 dark:text-gray-100">
                 {t.solution}
@@ -138,7 +150,7 @@ const t = {
             <p class="text-gray-600 dark:text-gray-400 text-sm">
                 {t.solutionDesc}
             </p>
-        </div>
+        </Card>
     </div>
 
     {
@@ -149,7 +161,10 @@ const t = {
                 </h3>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     {[1, 2, 3].map((i) => (
-                        <div class="aspect-[9/16] bg-white dark:bg-slate-900 border-2 border-dashed border-gray-300 dark:border-slate-700 rounded-xl p-4 flex flex-col gap-3 relative group hover:border-indigo-400 dark:hover:border-indigo-500 transition-colors cursor-pointer overflow-hidden max-w-xs mx-auto md:max-w-none w-full">
+                        <Card
+                            variant="bordered"
+                            class="aspect-[9/16] !bg-white dark:!bg-slate-900 border-2 !border-dashed !border-gray-300 dark:!border-slate-700 p-4 flex flex-col gap-3 relative group hover:!border-indigo-400 dark:hover:!border-indigo-500 cursor-pointer overflow-hidden max-w-xs mx-auto md:max-w-none w-full shadow-none"
+                        >
                             {/* Variation 1: Login / Auth */}
                             {i === 1 && (
                                 <>
@@ -247,7 +262,7 @@ const t = {
                                     </span>
                                 </div>
                             </div>
-                        </div>
+                        </Card>
                     ))}
                 </div>
             </div>

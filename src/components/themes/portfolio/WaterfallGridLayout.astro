@@ -1,5 +1,7 @@
 ---
 import type { ISubThemeDetail } from "@/types/Theme";
+import Button from "@/components/design-system/atoms/Button.astro";
+import Card from "@/components/design-system/atoms/Card.astro";
 
 interface Props {
     theme: ISubThemeDetail;
@@ -46,7 +48,10 @@ const items = [1, 2, 3, 4, 5, 6];
     <div class="columns-1 md:columns-2 lg:columns-3 gap-8 space-y-8">
         {
             items.map((item) => (
-                <div class="break-inside-avoid group relative overflow-hidden rounded-xl shadow-lg hover:shadow-2xl hover:scale-[1.02] transition-all duration-300 bg-white dark:bg-slate-800 cursor-pointer">
+                <Card
+                    variant="default"
+                    class="break-inside-avoid group relative overflow-hidden !rounded-xl !shadow-lg hover:!shadow-2xl hover:!scale-[1.02] transition-all duration-300 bg-white dark:bg-slate-800 cursor-pointer p-0"
+                >
                     <img
                         src={`https://picsum.photos/600/${400 + (item % 3) * 100}?random=${item}`}
                         alt={`Design Work ${item}`}
@@ -70,17 +75,18 @@ const items = [1, 2, 3, 4, 5, 6];
                             ))}
                         </div>
                     </div>
-                </div>
+                </Card>
             ))
         }
     </div>
 
     <div class="mt-16 text-center">
         <!-- Replaced Button with a styled button element -->
-        <button
-            class="px-8 py-3 rounded-lg font-bold transition-all transform hover:-translate-y-0.5 active:translate-y-0 bg-gradient-to-r from-pink-500 to-violet-500 text-white border-none shadow-lg hover:shadow-xl"
+        <Button
+            variant="primary"
+            class="px-8 py-3 rounded-lg font-bold transition-all transform hover:!-translate-y-0.5 active:!translate-y-0 !bg-gradient-to-r !from-pink-500 !to-violet-500 text-white !border-none !shadow-lg hover:!shadow-xl"
         >
             {contentFocus.primaryCTA}
-        </button>
+        </Button>
     </div>
 </div>

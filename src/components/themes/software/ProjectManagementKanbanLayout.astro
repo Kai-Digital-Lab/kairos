@@ -1,5 +1,8 @@
 ---
 import type { ISubThemeDetail } from "@/types/Theme";
+import Button from "@/components/design-system/atoms/Button.astro";
+import Badge from "@/components/design-system/atoms/Badge.astro";
+import Card from "@/components/design-system/atoms/Card.astro";
 
 interface Props {
     theme: ISubThemeDetail;
@@ -75,16 +78,12 @@ const t = {
                 <p class="text-gray-600 dark:text-gray-400">{t.desc}</p>
             </div>
             <div class="mt-4 md:mt-0 flex gap-2">
-                <button
-                    class="bg-white dark:bg-slate-800 text-gray-900 dark:text-white border border-gray-300 dark:border-slate-600 hover:bg-gray-50 dark:hover:bg-slate-700 px-4 py-2 rounded transition-colors"
-                >
+                <Button variant="secondary">
                     {t.login}
-                </button>
-                <button
-                    class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded transition-colors"
-                >
+                </Button>
+                <Button variant="primary">
                     {contentFocus.primaryCTA}
-                </button>
+                </Button>
             </div>
         </div>
 
@@ -95,32 +94,39 @@ const t = {
                     <div class="bg-gray-100 dark:bg-slate-800 p-4 rounded-xl min-w-[300px] shadow-sm">
                         <div class="flex justify-between items-center mb-4 text-gray-600 dark:text-gray-400 font-bold text-sm uppercase">
                             <span>{t.todo}</span>
-                            <span class="bg-gray-200 dark:bg-gray-700 text-xs px-2 py-1 rounded-full">
+                            <span>{t.todo}</span>
+                            <Badge variant="neutral" size="sm">
                                 3
-                            </span>
+                            </Badge>
                         </div>
                         <div class="space-y-3">
-                            <div class="bg-white dark:bg-slate-700 p-4 rounded shadow-sm border border-gray-200 dark:border-slate-600 cursor-grab active:cursor-grabbing hover:shadow-md transition-shadow">
+                            <Card
+                                variant="hover"
+                                class="p-4 cursor-grab active:cursor-grabbing"
+                            >
                                 <div class="flex gap-2 mb-2">
-                                    <span class="bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 text-xs px-2 py-0.5 rounded font-bold">
+                                    <Badge variant="error" size="sm">
                                         HIGH
-                                    </span>
-                                    <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs px-2 py-0.5 rounded font-bold">
+                                    </Badge>
+                                    <Badge variant="info" size="sm">
                                         DEV
-                                    </span>
+                                    </Badge>
                                 </div>
                                 <p class="font-medium text-sm text-gray-900 dark:text-white">
                                     {t.task1}
                                 </p>
-                            </div>
-                            <div class="bg-white dark:bg-slate-700 p-4 rounded shadow-sm border border-gray-200 dark:border-slate-600 cursor-grab active:cursor-grabbing hover:shadow-md transition-shadow">
+                            </Card>
+                            <Card
+                                variant="hover"
+                                class="p-4 cursor-grab active:cursor-grabbing"
+                            >
                                 <p class="font-medium text-sm text-gray-900 dark:text-white">
                                     {t.task2}
                                 </p>
                                 <div class="mt-2 flex -space-x-1">
                                     <div class="w-6 h-6 rounded-full bg-green-200 dark:bg-green-800 border border-white dark:border-slate-700" />
                                 </div>
-                            </div>
+                            </Card>
                         </div>
                         <div class="mt-3 text-gray-400 dark:text-gray-500 text-sm hover:text-gray-600 dark:hover:text-gray-300 cursor-pointer">
                             {t.add}
@@ -131,19 +137,22 @@ const t = {
                     <div class="bg-gray-100 dark:bg-slate-800 p-4 rounded-xl min-w-[300px] shadow-sm">
                         <div class="flex justify-between items-center mb-4 text-gray-600 dark:text-gray-400 font-bold text-sm uppercase">
                             <span>{t.prog}</span>
-                            <span class="bg-gray-200 dark:bg-gray-700 text-xs px-2 py-1 rounded-full">
+                            <Badge variant="neutral" size="sm">
                                 1
-                            </span>
+                            </Badge>
                         </div>
                         <div class="space-y-3">
-                            <div class="bg-white dark:bg-slate-700 p-4 rounded shadow-sm border border-gray-200 dark:border-slate-600 cursor-grab active:cursor-grabbing hover:shadow-md transition-shadow border-l-4 border-l-yellow-400 dark:border-l-yellow-600">
+                            <Card
+                                variant="hover"
+                                class="p-4 cursor-grab active:cursor-grabbing border-l-4 border-l-yellow-400 dark:border-l-yellow-600"
+                            >
                                 <p class="font-medium text-sm text-gray-900 dark:text-white">
                                     {t.task3}
                                 </p>
                                 <div class="mt-3 h-1 w-full bg-gray-100 dark:bg-slate-600 rounded overflow-hidden">
                                     <div class="h-full w-2/3 bg-yellow-400 dark:bg-yellow-600" />
                                 </div>
-                            </div>
+                            </Card>
                         </div>
                     </div>
 
@@ -151,21 +160,21 @@ const t = {
                     <div class="bg-gray-100 dark:bg-slate-800 p-4 rounded-xl min-w-[300px] shadow-sm">
                         <div class="flex justify-between items-center mb-4 text-gray-600 dark:text-gray-400 font-bold text-sm uppercase">
                             <span>{t.done}</span>
-                            <span class="bg-gray-200 dark:bg-gray-700 text-xs px-2 py-1 rounded-full">
+                            <Badge variant="neutral" size="sm">
                                 5
-                            </span>
+                            </Badge>
                         </div>
                         <div class="space-y-3 opacity-60">
-                            <div class="bg-white dark:bg-slate-700 p-4 rounded shadow-sm border border-gray-200 dark:border-slate-600">
+                            <Card variant="default" class="p-4">
                                 <p class="font-medium text-sm line-through text-gray-900 dark:text-white">
                                     {t.task4}
                                 </p>
-                            </div>
-                            <div class="bg-white dark:bg-slate-700 p-4 rounded shadow-sm border border-gray-200 dark:border-slate-600">
+                            </Card>
+                            <Card variant="default" class="p-4">
                                 <p class="font-medium text-sm line-through text-gray-900 dark:text-white">
                                     {t.task5}
                                 </p>
-                            </div>
+                            </Card>
                         </div>
                     </div>
                 </div>
@@ -173,9 +182,7 @@ const t = {
         }
 
         <!-- Team Pricing Snippet -->
-        <div
-            class="mt-12 text-center bg-white dark:bg-slate-800 p-8 rounded-xl border border-gray-200 dark:border-slate-700"
-        >
+        <Card variant="bordered" class="mt-12 text-center p-8">
             <h3 class="text-xl font-bold mb-4 text-gray-900 dark:text-white">
                 {t.scale}
             </h3>
@@ -203,6 +210,6 @@ const t = {
                     >
                 </div>
             </div>
-        </div>
+        </Card>
     </div>
 </div>

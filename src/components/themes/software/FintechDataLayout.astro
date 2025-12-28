@@ -1,5 +1,8 @@
 ---
 import type { ISubThemeDetail } from "@/types/Theme";
+import Button from "@/components/design-system/atoms/Button.astro";
+import Badge from "@/components/design-system/atoms/Badge.astro";
+import Card from "@/components/design-system/atoms/Card.astro";
 
 interface Props {
     theme: ISubThemeDetail;
@@ -64,22 +67,19 @@ const t = {
                     {t.desc}
                 </p>
                 <div class="flex gap-4">
-                    <button
-                        class="bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg shadow-emerald-200 dark:shadow-none px-8 py-3 rounded font-bold transition-colors"
-                    >
+                    <Button variant="primary" class="px-8 py-3">
                         {contentFocus.primaryCTA}
-                    </button>
-                    <button
-                        class="border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 px-8 py-3 rounded font-bold transition-colors"
-                    >
+                    </Button>
+                    <Button variant="secondary" class="px-8 py-3">
                         {t.docs}
-                    </button>
+                    </Button>
                 </div>
             </div>
 
             {/* Abstract Data Visual */}
-            <div
-                class="md:w-1/2 relative bg-gray-50 dark:bg-gray-900 rounded-xl p-6 border border-gray-200 dark:border-gray-800 shadow-xl dark:shadow-none"
+            <Card
+                variant="default"
+                class="md:w-1/2 relative p-6 shadow-xl dark:shadow-none"
             >
                 <div class="flex justify-between items-end h-40 gap-2">
                     {
@@ -111,7 +111,7 @@ const t = {
                         >▲ 2.4%</span
                     >
                 </div>
-            </div>
+            </Card>
         </div>
 
         {
@@ -125,15 +125,24 @@ const t = {
                             <p class="text-gray-500 text-sm">{t.regDesc}</p>
                         </div>
                         <div class="flex gap-6">
-                            <div class="bg-gray-100 dark:bg-gray-800 px-4 py-2 rounded text-gray-600 dark:text-gray-400 font-bold text-sm border border-gray-300 dark:border-gray-700">
+                            <Badge
+                                variant="neutral"
+                                class="px-4 py-2 font-bold text-sm"
+                            >
                                 {t.tags[0]}
-                            </div>
-                            <div class="bg-gray-100 dark:bg-gray-800 px-4 py-2 rounded text-gray-600 dark:text-gray-400 font-bold text-sm border border-gray-300 dark:border-gray-700">
+                            </Badge>
+                            <Badge
+                                variant="neutral"
+                                class="px-4 py-2 font-bold text-sm"
+                            >
                                 {t.tags[1]}
-                            </div>
-                            <div class="bg-gray-100 dark:bg-gray-800 px-4 py-2 rounded text-gray-600 dark:text-gray-400 font-bold text-sm border border-gray-300 dark:border-gray-700">
+                            </Badge>
+                            <Badge
+                                variant="neutral"
+                                class="px-4 py-2 font-bold text-sm"
+                            >
                                 {t.tags[2]}
-                            </div>
+                            </Badge>
                         </div>
                     </div>
                 </div>

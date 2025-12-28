@@ -1,5 +1,8 @@
 ---
 import type { ISubThemeDetail } from "@/types/Theme";
+import Button from "@/components/design-system/atoms/Button.astro";
+import Badge from "@/components/design-system/atoms/Badge.astro";
+import Card from "@/components/design-system/atoms/Card.astro";
 
 interface Props {
     theme: ISubThemeDetail;
@@ -127,16 +130,18 @@ const t = {
             {t.desc}
         </p>
         <div class="flex justify-center gap-4">
-            <button
-                class="bg-green-600 hover:bg-green-700 text-white shadow-lg shadow-green-200 dark:shadow-none px-8 py-3 rounded-lg font-bold transition-all transform hover:scale-105"
+            <Button
+                variant="primary"
+                class="shadow-lg shadow-green-200 dark:shadow-none px-8 py-3 !bg-green-600 hover:!bg-green-700"
             >
                 {contentFocus.primaryCTA}
-            </button>
-            <button
-                class="border border-green-600 text-green-700 dark:text-green-400 hover:bg-green-100 dark:hover:bg-slate-800 px-8 py-3 rounded-lg font-bold transition-colors"
+            </Button>
+            <Button
+                variant="outline"
+                class="hover:bg-green-100 px-8 py-3 !border-green-600 !text-green-700 dark:!text-green-400"
             >
                 {t.demo}
-            </button>
+            </Button>
         </div>
     </div>
 
@@ -148,13 +153,16 @@ const t = {
                 { icon: "🔒", ...t.features[1] },
                 { icon: "📈", ...t.features[2] },
             ].map((f) => (
-                <div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-green-100 dark:border-green-900 text-center">
+                <Card
+                    variant="default"
+                    class="p-6 border border-green-100 dark:border-green-900 text-center shadow-sm"
+                >
                     <div class="text-4xl mb-4">{f.icon}</div>
                     <h3 class="font-bold text-lg mb-2 text-gray-900 dark:text-white">
                         {f.title}
                     </h3>
                     <p class="text-gray-600 dark:text-gray-400">{f.desc}</p>
-                </div>
+                </Card>
             ))
         }
     </div>
@@ -171,9 +179,17 @@ const t = {
                 </div>
                 <div class="grid md:grid-cols-3 gap-6 items-end">
                     {/* Free Tier */}
-                    <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border-4 border-green-400 p-8 transform scale-105 z-10 relative">
-                        <div class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-green-500 text-white px-4 py-1 rounded-full text-sm font-bold">
-                            {t.tiers[0].tag}
+                    <Card
+                        variant="default"
+                        class="rounded-2xl shadow-xl border-4 border-green-400 p-8 transform scale-105 z-10 relative"
+                    >
+                        <div class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                            <Badge
+                                variant="success"
+                                class="!bg-green-500 !text-white px-4 py-1 text-sm"
+                            >
+                                {t.tiers[0].tag}
+                            </Badge>
                         </div>
                         <h4 class="text-xl font-bold text-green-700 dark:text-green-400">
                             {t.tiers[0].name}
@@ -191,13 +207,19 @@ const t = {
                                 </li>
                             ))}
                         </ul>
-                        <button class="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg font-bold transition-colors">
+                        <Button
+                            variant="primary"
+                            class="w-full py-3 !bg-green-600 hover:!bg-green-700"
+                        >
                             {contentFocus.primaryCTA}
-                        </button>
-                    </div>
+                        </Button>
+                    </Card>
 
                     {/* Pro Tier */}
-                    <div class="bg-white dark:bg-slate-800 rounded-2xl shadow p-6 border border-gray-200 dark:border-slate-700">
+                    <Card
+                        variant="default"
+                        class="rounded-2xl shadow p-6 border border-gray-200 dark:border-slate-700"
+                    >
                         <h4 class="text-xl font-bold text-gray-800 dark:text-gray-100">
                             {t.tiers[1].name}
                         </h4>
@@ -212,13 +234,16 @@ const t = {
                                 <li class="flex items-center">{f}</li>
                             ))}
                         </ul>
-                        <button class="w-full border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 py-3 rounded-lg font-bold transition-colors">
+                        <Button variant="secondary" class="w-full py-3">
                             {t.tiers[1].btn}
-                        </button>
-                    </div>
+                        </Button>
+                    </Card>
 
                     {/* Enterprise Tier */}
-                    <div class="bg-white dark:bg-slate-800 rounded-2xl shadow p-6 border border-gray-200 dark:border-slate-700">
+                    <Card
+                        variant="default"
+                        class="rounded-2xl shadow p-6 border border-gray-200 dark:border-slate-700"
+                    >
                         <h4 class="text-xl font-bold text-gray-800 dark:text-gray-100">
                             {t.tiers[2].name}
                         </h4>
@@ -233,10 +258,10 @@ const t = {
                                 <li class="flex items-center">{f}</li>
                             ))}
                         </ul>
-                        <button class="w-full border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 py-3 rounded-lg font-bold transition-colors">
+                        <Button variant="secondary" class="w-full py-3">
                             {t.tiers[2].btn}
-                        </button>
-                    </div>
+                        </Button>
+                    </Card>
                 </div>
             </div>
         )

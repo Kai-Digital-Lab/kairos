@@ -1,0 +1,24 @@
+---
+interface Props {
+    variant?: "default" | "hover" | "bordered";
+    class?: string;
+    [key: string]: any;
+}
+
+const { variant = "default", class: className, ...rest } = Astro.props;
+
+const baseStyles =
+    "bg-white dark:bg-slate-800 rounded-xl overflow-hidden transition-all duration-300";
+
+const variants = {
+    default: "shadow-sm border border-gray-100 dark:border-slate-700",
+    hover: "shadow-sm border border-gray-100 dark:border-slate-700 hover:shadow-lg hover:-translate-y-1",
+    bordered: "border border-gray-200 dark:border-slate-700 shadow-none",
+};
+
+const classes = [baseStyles, variants[variant], className].join(" ");
+---
+
+<div class={classes} {...rest}>
+    <slot />
+</div>
