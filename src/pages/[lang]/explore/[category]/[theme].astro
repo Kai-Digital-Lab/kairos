@@ -90,67 +90,34 @@ const ComponentMap = {
     FintechDataLayout,
 };
 
-export function getStaticPaths() {
-    return [
-        // English - Portfolio
-        ...portfolioThemesEN.map((theme) => ({
-            params: { lang: "en", category: "portfolio", theme: theme.id },
-            props: { theme, themes: portfolioThemesEN },
-        })),
-        // Traditional Chinese - Portfolio
-        ...portfolioThemesTW.map((theme) => ({
-            params: { lang: "zh-tw", category: "portfolio", theme: theme.id },
-            props: { theme, themes: portfolioThemesTW },
-        })),
-        // English - E-Commerce
-        ...ecommerceThemesEN.map((theme) => ({
-            params: { lang: "en", category: "ecommerce", theme: theme.id },
-            props: { theme, themes: ecommerceThemesEN },
-        })),
-        // Traditional Chinese - E-Commerce
-        ...ecommerceThemesTW.map((theme) => ({
-            params: { lang: "zh-tw", category: "ecommerce", theme: theme.id },
-            props: { theme, themes: ecommerceThemesTW },
-        })),
-        // English - Corporate
-        ...corporateThemesEN.map((theme) => ({
-            params: { lang: "en", category: "corporate", theme: theme.id },
-            props: { theme, themes: corporateThemesEN },
-        })),
-        // Traditional Chinese - Corporate
-        ...corporateThemesTW.map((theme) => ({
-            params: { lang: "zh-tw", category: "corporate", theme: theme.id },
-            props: { theme, themes: corporateThemesTW },
-        })),
-        // English - Content/News
-        ...contentNewsThemesEN.map((theme) => ({
-            params: { lang: "en", category: "content-news", theme: theme.id },
-            props: { theme, themes: contentNewsThemesEN },
-        })),
-        // Traditional Chinese - Content/News
-        ...contentNewsThemesTW.map((theme) => ({
-            params: {
-                lang: "zh-tw",
-                category: "content-news",
-                theme: theme.id,
-            },
-            props: { theme, themes: contentNewsThemesTW },
-        })),
-        // English - Software
-        ...softwareThemesEN.map((theme) => ({
-            params: { lang: "en", category: "software", theme: theme.id },
-            props: { theme, themes: softwareThemesEN },
-        })),
-        // Traditional Chinese - Software
-        ...softwareThemesTW.map((theme) => ({
-            params: { lang: "zh-tw", category: "software", theme: theme.id },
-            props: { theme, themes: softwareThemesTW },
-        })),
-    ];
+const { lang, category, theme } = Astro.params;
+
+// Helper to get themes based on lang and category
+function getThemes(cat: string | undefined, l: string | undefined) {
+    if (cat === "portfolio") {
+        return l === "zh-tw" ? portfolioThemesTW : portfolioThemesEN;
+    }
+    if (cat === "ecommerce") {
+        return l === "zh-tw" ? ecommerceThemesTW : ecommerceThemesEN;
+    }
+    if (cat === "corporate") {
+        return l === "zh-tw" ? corporateThemesTW : corporateThemesEN;
+    }
+    if (cat === "content-news") {
+        return l === "zh-tw" ? contentNewsThemesTW : contentNewsThemesEN;
+    }
+    if (cat === "software") {
+        return l === "zh-tw" ? softwareThemesTW : softwareThemesEN;
+    }
+    return [];
 }
 
-const { lang, category } = Astro.params;
-const { theme: activeTheme, themes } = Astro.props;
+const themes = getThemes(category, lang);
+const activeTheme = themes.find((t) => t.id === theme);
+
+if (!lang || !category || !activeTheme) {
+    return Astro.redirect("/404");
+}
 
 // Link generation helper
 function getThemeLink(lang: string, category: string, themeId: string) {
