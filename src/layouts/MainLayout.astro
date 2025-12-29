@@ -55,6 +55,15 @@ const {
             // 3. 關鍵修正：換頁後再次執行 (View Transitions)
             // 當 Astro 交換了 HTML 內容後，立即把 class 加回去
             document.addEventListener("astro:after-swap", applyTheme);
+
+            // 4. 防止閃爍：在交換前就把 class 同步過去
+            document.addEventListener("astro:before-swap", (ev) => {
+                const isDark =
+                    document.documentElement.classList.contains("dark");
+                if (isDark) {
+                    ev.newDocument.documentElement.classList.add("dark");
+                }
+            });
         </script>
     </head>
     <body
