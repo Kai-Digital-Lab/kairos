@@ -18,27 +18,10 @@ import {
 } from "@/data/themes/contentNewsData";
 import { softwareThemesEN, softwareThemesTW } from "@/data/themes/softwareData";
 
-export function getStaticPaths() {
-    const categories = [
-        "portfolio",
-        "ecommerce",
-        "corporate",
-        "content-news",
-        "software",
-    ];
-    const langs = ["en", "zh-tw"];
-
-    return langs.flatMap((lang) =>
-        categories.map((category) => ({
-            params: { lang, category },
-        })),
-    );
-}
-
 const { lang, category } = Astro.params;
 
 // Helper to get themes based on lang and category
-function getThemes(cat: string, l: string) {
+function getThemes(cat: string | undefined, l: string | undefined) {
     if (cat === "portfolio") {
         return l === "zh-tw" ? portfolioThemesTW : portfolioThemesEN;
     }
@@ -61,7 +44,11 @@ const themes = getThemes(category, lang);
 const defaultThemeId = themes[0]?.id || "VisualDesigner"; // Fallback safe
 
 // Redirect to the first theme
-return Astro.redirect(`/${lang}/explore/${category}/${defaultThemeId}`);
+if (lang && category) {
+    return Astro.redirect(`/${lang}/explore/${category}/${defaultThemeId}`);
+}
+
+return Astro.redirect("/404");
 ---
 
 <!-- 
