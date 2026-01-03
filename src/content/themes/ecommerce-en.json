@@ -1,0 +1,82 @@
+[
+    {
+        "id": "FashionLuxury",
+        "name": "Fashion / Luxury Goods",
+        "layoutComponent": "EditorialMagazineLayout",
+        "styleClasses": "bg-white text-gray-900 font-serif antialiased border-t-4 border-stone-800",
+        "contentFocus": {
+            "title": "Collections & Lookbooks",
+            "galleryType": "EditorialGrid",
+            "primaryCTA": "Shop Collection",
+            "metadataPriority": [
+                "ModelShots",
+                "MinimalDetail"
+            ]
+        },
+        "description": "Editorial (Magazine) style layout, emphasizing large, high-quality model photography and minimal product information."
+    },
+    {
+        "id": "TechElectronics",
+        "name": "Tech / Electronics",
+        "layoutComponent": "TechElectronicsLayout",
+        "styleClasses": "bg-gray-100 text-gray-800 font-mono antialiased border-t-4 border-cyan-500",
+        "contentFocus": {
+            "title": "Specs & Performance Data",
+            "displayCharts": true,
+            "primaryCTA": "Compare Models",
+            "metadataPriority": [
+                "Specifications",
+                "DataTables"
+            ]
+        },
+        "description": "Information-intensive design, prioritizing charts, data, and detailed specification tables for comparison."
+    },
+    {
+        "id": "SubscriptionBox",
+        "name": "Subscription / Box Service",
+        "layoutComponent": "SubscriptionLandingLayout",
+        "styleClasses": "bg-yellow-50 text-gray-900 font-sans antialiased border-t-4 border-yellow-500",
+        "contentFocus": {
+            "title": "Value Proposition & Plans",
+            "showPlanComparison": true,
+            "primaryCTA": "Start Free Trial",
+            "metadataPriority": [
+                "ValueProp",
+                "PlanBenefits"
+            ]
+        },
+        "description": "Landing Page structure focused on communicating value, with prominent plan comparison tables and clear onboarding."
+    },
+    {
+        "id": "FoodGrocery",
+        "name": "Food / Grocery",
+        "layoutComponent": "FoodGroceryLayout",
+        "styleClasses": "bg-green-50 text-gray-800 font-sans antialiased border-t-4 border-green-600",
+        "contentFocus": {
+            "title": "Daily / Seasonal Specials",
+            "showSpecials": true,
+            "primaryCTA": "Add to Cart",
+            "metadataPriority": [
+                "Seasonality",
+                "Origin"
+            ]
+        },
+        "description": "Card-based layout emphasizing daily and seasonal specials. Navigation is heavily categorized by food type."
+    },
+    {
+        "id": "DigitalProducts",
+        "name": "Digital Products / Courses",
+        "layoutComponent": "DigitalProductLayout",
+        "styleClasses": "bg-indigo-50 text-gray-900 font-sans antialiased border-t-4 border-indigo-600",
+        "contentFocus": {
+            "title": "Course Content & Reviews",
+            "showPlayer": true,
+            "primaryCTA": "Enroll Now",
+            "metadataPriority": [
+                "UnitList",
+                "Reviews"
+            ]
+        },
+        "description": "Content directory structure, with product pages centered around a media player, unit list, and robust review sections."
+    }
+]

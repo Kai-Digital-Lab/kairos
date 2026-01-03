@@ -10,7 +10,7 @@
 
 **"Kairos" (Ancient Greek: καιρός):** represents a critical moment or a supreme opportunity. Unlike chronological time, it signifies a decisive gap in time where a fleeting opportunity must be seized with precision.
 
-> **Last Updated:** December 29, 2025
+> **Last Updated:** January 02, 2026
 
 ## 🚀 Vision
 
@@ -26,6 +26,8 @@ This project adheres to a **Zero-Runtime Overhead** philosophy, leveraging moder
 
 * **Styling:** Tailwind CSS v4 - Next-generation CSS engine with Vite integration.
 
+* **Data Layer:** Astro Content Collections - Type-safe content management with Zod schemas.
+
 * **State Management:** Nano Stores - Framework-agnostic, lightweight (<1kb) state manager.
 
 * **Interactivity: Vanilla Web Components** - Replacing heavy framework runtimes with native Custom Elements.
@@ -34,20 +36,20 @@ This project adheres to a **Zero-Runtime Overhead** philosophy, leveraging moder
 
 ## 📐 Architectural Philosophy
 
-As a **Senior Technical Program Manager**, I believe code should be as organized as a project roadmap:
+As a **Senior Technical Program Manager**, I believe code should be as organized as a project roadmap. This project follows the **"Gold Standard" Astro Architecture**:
 
-* 1. **Clean Architecture:** Feature-based module separation and Atomic Design patterns.
+* 1. **Domain-Driven Component Design:** Clear separation between `common` (UI atoms), `sections` (landing blocks), and `domain` (business logic) components.
 
-* 2. **Zero-Dependency Interaction:** Using native `HTMLElement` and `<dialog>` to eliminate framework bloat.
+* 2. **Type-Safe Data Flow:** All dynamic content is managed through strict Zod schemas in `src/content`, ensuring build-time integrity.
 
-* 3. **Strict Engineering Discipline:** Fully typed with TypeScript (Strict Mode) and documented through Conventional Commits.
+* 3. **Clean Layout Composition:** Hierarchical layout system separating SEO/HTML concerns (`BaseLayout`) from UI scaffolding (`PageLayout`).
 
 ## 🗺️ Roadmap
 
-* [x] **Phase 1: Core Systems & Routing** - Astro I18n setup, Store refactoring (Nano Stores), and Layout architecture.
-* [x] **Phase 2: Static Content** - Migration of Landing Page sections (Hero, Portfolio, etc.) to Astro Components.
-* [x] **Phase 3: Dynamic Features** - Theme Explorer (Portfolio, E-Commerce, Corporate, Content, Software) & Floating Dock.
-* [ ] **Phase 4: Optimization** - Final performance audit and Lighthouse certification.
+* [x] **Phase 1: Core Infrastructure** - Astro I18n setup, Content Collections migration, and Schema definitions.
+* [x] **Phase 2: Component Architecture** - Migration to Atomic Design (Common vs Domain components).
+* [x] **Phase 3: Dynamic Features** - Theme Explorer with "Project Insanity" engine and Content Collection integration.
+* [x] **Phase 4: Optimization & Cleanup** - Layout refactoring and removal of legacy debt.
 
 ## 👨‍💻 About the Author
 

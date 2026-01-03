@@ -1,67 +1,22 @@
 ---
-import MainLayout from "@/layouts/MainLayout.astro";
-import {
-    portfolioThemesEN,
-    portfolioThemesTW,
-} from "@/data/themes/portfolioData";
-import {
-    ecommerceThemesEN,
-    ecommerceThemesTW,
-} from "@/data/themes/ecommerceData";
-import {
-    corporateThemesEN,
-    corporateThemesTW,
-} from "@/data/themes/corporateData";
-import {
-    contentNewsThemesEN,
-    contentNewsThemesTW,
-} from "@/data/themes/contentNewsData";
-import { softwareThemesEN, softwareThemesTW } from "@/data/themes/softwareData";
+import { getEntry, getCollection } from "astro:content";
 
-export function getStaticPaths() {
-    const categories = [
-        "portfolio",
-        "ecommerce",
-        "corporate",
-        "content-news",
-        "software",
-    ];
-    const langs = ["en", "zh-tw"];
-
-    return langs.flatMap((lang) =>
-        categories.map((category) => ({
-            params: { lang, category },
-        })),
-    );
-}
+// export const prerender = true;
 
 const { lang, category } = Astro.params;
 
-// Helper to get themes based on lang and category
-function getThemes(cat: string, l: string) {
-    if (cat === "portfolio") {
-        return l === "zh-tw" ? portfolioThemesTW : portfolioThemesEN;
-    }
-    if (cat === "ecommerce") {
-        return l === "zh-tw" ? ecommerceThemesTW : ecommerceThemesEN;
-    }
-    if (cat === "corporate") {
-        return l === "zh-tw" ? corporateThemesTW : corporateThemesEN;
-    }
-    if (cat === "content-news") {
-        return l === "zh-tw" ? contentNewsThemesTW : contentNewsThemesEN;
-    }
-    if (cat === "software") {
-        return l === "zh-tw" ? softwareThemesTW : softwareThemesEN;
-    }
-    return [];
-}
-
-const themes = getThemes(category, lang);
+// Fetch themes from Content Collections
+const entryId = `${category}-${lang}`;
+const entry = await getEntry("themes", entryId);
+const themes = entry ? entry.data : [];
 const defaultThemeId = themes[0]?.id || "VisualDesigner"; // Fallback safe
 
 // Redirect to the first theme
-return Astro.redirect(`/${lang}/explore/${category}/${defaultThemeId}`);
+if (lang && category) {
+    return Astro.redirect(`/${lang}/explore/${category}/${defaultThemeId}`);
+}
+
+return Astro.redirect("/404");
 ---
 
 <!-- 

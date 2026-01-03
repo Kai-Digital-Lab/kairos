@@ -1,61 +1,44 @@
 ---
-import MainLayout from "@/layouts/MainLayout.astro";
-import Header from "@/components/layout/Header.astro";
-import Footer from "@/components/layout/Footer.astro";
-import ThemeDock from "@/components/ui/ThemeDock.astro";
-import {
-    portfolioThemesEN,
-    portfolioThemesTW,
-} from "@/data/themes/portfolioData";
-import {
-    ecommerceThemesEN,
-    ecommerceThemesTW,
-} from "@/data/themes/ecommerceData";
-import {
-    corporateThemesEN,
-    corporateThemesTW,
-} from "@/data/themes/corporateData";
-import {
-    contentNewsThemesEN,
-    contentNewsThemesTW,
-} from "@/data/themes/contentNewsData";
-import { softwareThemesEN, softwareThemesTW } from "@/data/themes/softwareData";
-import { getRelativeLocaleUrl } from "astro:i18n";
+import PageLayout from "@/layouts/PageLayout.astro";
+import ThemeDock from "@/components/domain/theme/ThemeDock.astro";
+import { getEntry, getCollection } from "astro:content";
 
 // Portfolio Components
-import WaterfallGridLayout from "@/components/themes/portfolio/WaterfallGridLayout.astro";
-import StandardDividedLayout from "@/components/themes/portfolio/StandardDividedLayout.astro";
-import LongPageLandingLayout from "@/components/themes/portfolio/LongPageLandingLayout.astro";
-import FullBleedCarouselLayout from "@/components/themes/portfolio/FullBleedCarouselLayout.astro";
-import StructuredCaseStudyLayout from "@/components/themes/portfolio/StructuredCaseStudyLayout.astro";
+
+// Portfolio Components
+import WaterfallGridLayout from "@/components/domain/portfolio/WaterfallGridLayout.astro";
+import StandardDividedLayout from "@/components/domain/portfolio/StandardDividedLayout.astro";
+import LongPageLandingLayout from "@/components/domain/portfolio/LongPageLandingLayout.astro";
+import FullBleedCarouselLayout from "@/components/domain/portfolio/FullBleedCarouselLayout.astro";
+import StructuredCaseStudyLayout from "@/components/domain/portfolio/StructuredCaseStudyLayout.astro";
 
 // E-Commerce Components
-import EditorialMagazineLayout from "@/components/themes/ecommerce/EditorialMagazineLayout.astro";
-import TechElectronicsLayout from "@/components/themes/ecommerce/TechElectronicsLayout.astro";
-import SubscriptionLandingLayout from "@/components/themes/ecommerce/SubscriptionLandingLayout.astro";
-import FoodGroceryLayout from "@/components/themes/ecommerce/FoodGroceryLayout.astro";
-import DigitalProductLayout from "@/components/themes/ecommerce/DigitalProductLayout.astro";
+import EditorialMagazineLayout from "@/components/domain/ecommerce/EditorialMagazineLayout.astro";
+import TechElectronicsLayout from "@/components/domain/ecommerce/TechElectronicsLayout.astro";
+import SubscriptionLandingLayout from "@/components/domain/ecommerce/SubscriptionLandingLayout.astro";
+import FoodGroceryLayout from "@/components/domain/ecommerce/FoodGroceryLayout.astro";
+import DigitalProductLayout from "@/components/domain/ecommerce/DigitalProductLayout.astro";
 
 // Corporate Components
-import StrictProfessionalLayout from "@/components/themes/corporate/StrictProfessionalLayout.astro";
-import IndustrialModularLayout from "@/components/themes/corporate/IndustrialModularLayout.astro";
-import NonProfitImpactLayout from "@/components/themes/corporate/NonProfitImpactLayout.astro";
-import RestaurantVisualLayout from "@/components/themes/corporate/RestaurantVisualLayout.astro";
-import MedicalClinicLayout from "@/components/themes/corporate/MedicalClinicLayout.astro";
+import StrictProfessionalLayout from "@/components/domain/corporate/StrictProfessionalLayout.astro";
+import IndustrialModularLayout from "@/components/domain/corporate/IndustrialModularLayout.astro";
+import NonProfitImpactLayout from "@/components/domain/corporate/NonProfitImpactLayout.astro";
+import RestaurantVisualLayout from "@/components/domain/corporate/RestaurantVisualLayout.astro";
+import MedicalClinicLayout from "@/components/domain/corporate/MedicalClinicLayout.astro";
 
 // Content/News Components
-import ThreeColumnReviewLayout from "@/components/themes/contentNews/ThreeColumnReviewLayout.astro";
-import StructuredRecipeLayout from "@/components/themes/contentNews/StructuredRecipeLayout.astro";
-import TravelVisualStoryLayout from "@/components/themes/contentNews/TravelVisualStoryLayout.astro";
-import GossipDenseGridLayout from "@/components/themes/contentNews/GossipDenseGridLayout.astro";
-import AcademicMinimalLayout from "@/components/themes/contentNews/AcademicMinimalLayout.astro";
+import ThreeColumnReviewLayout from "@/components/domain/contentNews/ThreeColumnReviewLayout.astro";
+import StructuredRecipeLayout from "@/components/domain/contentNews/StructuredRecipeLayout.astro";
+import TravelVisualStoryLayout from "@/components/domain/contentNews/TravelVisualStoryLayout.astro";
+import GossipDenseGridLayout from "@/components/domain/contentNews/GossipDenseGridLayout.astro";
+import AcademicMinimalLayout from "@/components/domain/contentNews/AcademicMinimalLayout.astro";
 
 // Software/SaaS Components
-import FreemiumSinglePageLayout from "@/components/themes/software/FreemiumSinglePageLayout.astro";
-import EnterpriseSalesLayout from "@/components/themes/software/EnterpriseSalesLayout.astro";
-import MobileAppVerticalLayout from "@/components/themes/software/MobileAppVerticalLayout.astro";
-import ProjectManagementKanbanLayout from "@/components/themes/software/ProjectManagementKanbanLayout.astro";
-import FintechDataLayout from "@/components/themes/software/FintechDataLayout.astro";
+import FreemiumSinglePageLayout from "@/components/domain/software/FreemiumSinglePageLayout.astro";
+import EnterpriseSalesLayout from "@/components/domain/software/EnterpriseSalesLayout.astro";
+import MobileAppVerticalLayout from "@/components/domain/software/MobileAppVerticalLayout.astro";
+import ProjectManagementKanbanLayout from "@/components/domain/software/ProjectManagementKanbanLayout.astro";
+import FintechDataLayout from "@/components/domain/software/FintechDataLayout.astro";
 
 const ComponentMap = {
     // Portfolio
@@ -90,79 +73,27 @@ const ComponentMap = {
     FintechDataLayout,
 };
 
-export function getStaticPaths() {
-    return [
-        // English - Portfolio
-        ...portfolioThemesEN.map((theme) => ({
-            params: { lang: "en", category: "portfolio", theme: theme.id },
-            props: { theme, themes: portfolioThemesEN },
-        })),
-        // Traditional Chinese - Portfolio
-        ...portfolioThemesTW.map((theme) => ({
-            params: { lang: "zh-tw", category: "portfolio", theme: theme.id },
-            props: { theme, themes: portfolioThemesTW },
-        })),
-        // English - E-Commerce
-        ...ecommerceThemesEN.map((theme) => ({
-            params: { lang: "en", category: "ecommerce", theme: theme.id },
-            props: { theme, themes: ecommerceThemesEN },
-        })),
-        // Traditional Chinese - E-Commerce
-        ...ecommerceThemesTW.map((theme) => ({
-            params: { lang: "zh-tw", category: "ecommerce", theme: theme.id },
-            props: { theme, themes: ecommerceThemesTW },
-        })),
-        // English - Corporate
-        ...corporateThemesEN.map((theme) => ({
-            params: { lang: "en", category: "corporate", theme: theme.id },
-            props: { theme, themes: corporateThemesEN },
-        })),
-        // Traditional Chinese - Corporate
-        ...corporateThemesTW.map((theme) => ({
-            params: { lang: "zh-tw", category: "corporate", theme: theme.id },
-            props: { theme, themes: corporateThemesTW },
-        })),
-        // English - Content/News
-        ...contentNewsThemesEN.map((theme) => ({
-            params: { lang: "en", category: "content-news", theme: theme.id },
-            props: { theme, themes: contentNewsThemesEN },
-        })),
-        // Traditional Chinese - Content/News
-        ...contentNewsThemesTW.map((theme) => ({
-            params: {
-                lang: "zh-tw",
-                category: "content-news",
-                theme: theme.id,
-            },
-            props: { theme, themes: contentNewsThemesTW },
-        })),
-        // English - Software
-        ...softwareThemesEN.map((theme) => ({
-            params: { lang: "en", category: "software", theme: theme.id },
-            props: { theme, themes: softwareThemesEN },
-        })),
-        // Traditional Chinese - Software
-        ...softwareThemesTW.map((theme) => ({
-            params: { lang: "zh-tw", category: "software", theme: theme.id },
-            props: { theme, themes: softwareThemesTW },
-        })),
-    ];
+const { lang, category, theme } = Astro.params;
+
+// Fetch themes from Content Collections
+// IDs are formatted as `${category}-${lang}` (e.g., 'portfolio-en')
+const entryId = `${category}-${lang}`;
+const entry = await getEntry("themes", entryId);
+
+if (!entry) {
+    return Astro.redirect("/404");
 }
 
-const { lang, category } = Astro.params;
-const { theme: activeTheme, themes } = Astro.props;
+const themes = entry.data;
+const activeTheme = themes.find((t) => t.id === theme);
 
-// Link generation helper
-function getThemeLink(lang: string, category: string, themeId: string) {
-    // Manually construct because getRelativeLocaleUrl might produce encoded paths differently
-    return `/${lang}/explore/${category}/${themeId}`;
+if (!lang || !category || !activeTheme) {
+    return Astro.redirect("/404");
 }
 ---
 
-<MainLayout title={`Explorer - ${category}`} lang={lang}>
-    <Header />
-
-    <main class="pt-20 min-h-screen bg-slate-50 dark:bg-slate-900">
+<PageLayout title={`Explorer - ${category}`} lang={lang}>
+    <div class="pt-20 min-h-screen bg-slate-50 dark:bg-slate-900">
         <div class="max-w-7xl mx-auto px-4 py-8">
             <h1
                 class="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary-600 to-purple-600 mb-4 capitalize"
@@ -193,7 +124,5 @@ function getThemeLink(lang: string, category: string, themeId: string) {
                 }
             </div>
         </div>
-    </main>
-
-    <Footer />
-</MainLayout>
+    </div>
+</PageLayout>

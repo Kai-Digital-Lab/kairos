@@ -1,0 +1,82 @@
+[
+    {
+        "id": "TechFinanceReview",
+        "name": "Tech / Finance Review",
+        "layoutComponent": "ThreeColumnReviewLayout",
+        "styleClasses": "bg-white text-gray-900 font-sans antialiased border-t-4 border-emerald-700",
+        "contentFocus": {
+            "title": "Analysis & Reports",
+            "hasSidebar": true,
+            "primaryCTA": "Subscribe for Reports",
+            "metadataPriority": [
+                "Charts",
+                "Quotes"
+            ]
+        },
+        "description": "Two or three-column layout with a sidebar for hot articles and advertising, emphasizing charts and quote blocks for data presentation."
+    },
+    {
+        "id": "RecipeDIYTutorial",
+        "name": "Recipe / DIY Tutorial",
+        "layoutComponent": "StructuredRecipeLayout",
+        "styleClasses": "bg-yellow-50 text-gray-800 font-serif antialiased border-t-4 border-orange-400",
+        "contentFocus": {
+            "title": "Ingredients & Step-by-Step Guide",
+            "printableLayout": true,
+            "primaryCTA": "Print Recipe",
+            "metadataPriority": [
+                "Ingredients",
+                "Steps"
+            ]
+        },
+        "description": "Structured page emphasizing clearly separated step blocks and printable layouts. The sidebar may contain essential ingredient lists."
+    },
+    {
+        "id": "TravelAdventure",
+        "name": "Travel / Adventure",
+        "layoutComponent": "TravelVisualStoryLayout",
+        "styleClasses": "bg-blue-900 text-white font-serif antialiased border-t-4 border-cyan-400",
+        "contentFocus": {
+            "title": "Destinations & Guides",
+            "showMapEmbeds": true,
+            "primaryCTA": "View Gallery",
+            "metadataPriority": [
+                "Location",
+                "Gallery"
+            ]
+        },
+        "description": "Visual storytelling layout with heavy use of immersive, full-size imagery, including embedded maps or photo galleries."
+    },
+    {
+        "id": "EntertainmentGossip",
+        "name": "Entertainment / Gossip",
+        "layoutComponent": "GossipDenseGridLayout",
+        "styleClasses": "bg-pink-50 text-gray-900 font-sans antialiased border-t-4 border-pink-600",
+        "contentFocus": {
+            "title": "Breaking News & Buzz",
+            "denseGrid": true,
+            "primaryCTA": "Read More",
+            "metadataPriority": [
+                "Headlines",
+                "Images"
+            ]
+        },
+        "description": "High information density design, often using a Waterfall or Grid layout with small images and dramatic headlines. Shallow navigation categories."
+    },
+    {
+        "id": "AcademicJournal",
+        "name": "Professional Academic Journal",
+        "layoutComponent": "AcademicMinimalLayout",
+        "styleClasses": "bg-white text-gray-900 font-serif antialiased border-t-4 border-slate-900",
+        "contentFocus": {
+            "title": "Abstracts & Downloads",
+            "centerContent": true,
+            "primaryCTA": "Download PDF",
+            "metadataPriority": [
+                "Abstract",
+                "Citation"
+            ]
+        },
+        "description": "Extreme minimalism with centered content. Emphasis on downloadable PDF/EPUB links, avoiding complex graphics."
+    }
+]

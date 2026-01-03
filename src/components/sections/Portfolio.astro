@@ -1,0 +1,408 @@
+---
+const lang = Astro.currentLocale || "en";
+
+const translations = {
+    en: {
+        sectionTitle: "Interactive Capability Showcase",
+        sectionSubtitle: 'Experience our "Project Insanity" engine.',
+        categories: {
+            portfolio: {
+                title: "Portfolio Collections",
+                desc: "Creative layouts for personal branding and portfolios.",
+                cta: "Explore Portfolio Themes",
+            },
+            ecommerce: {
+                title: "E-Commerce",
+                desc: "Conversion-optimized storefronts and product pages.",
+                cta: "Explore Store Themes",
+            },
+            corporate: {
+                title: "Corporate & Business",
+                desc: "Professional layouts for agencies, firms, and organizations.",
+                cta: "Explore Corporate Themes",
+            },
+            content: {
+                title: "Content & Editorial",
+                desc: "Immersive layouts for blogs, news, and digital pubs.",
+                cta: "Explore Content Themes",
+            },
+            software: {
+                title: "Software & SaaS",
+                desc: "Product-led growth layouts, pricing tables, and data dashboards.",
+                cta: "Explore Software Themes",
+            },
+        },
+    },
+    "zh-tw": {
+        sectionTitle: "互動能力展示",
+        sectionSubtitle: "體驗我們的「Project Insanity」引擎。",
+        categories: {
+            portfolio: {
+                title: "精選作品集",
+                desc: "個人品牌與作品集的創意佈局。",
+                cta: "探索作品集主題",
+            },
+            ecommerce: {
+                title: "電子商務",
+                desc: "最佳化轉換率的商店與產品頁面。",
+                cta: "探索電商主題",
+            },
+            corporate: {
+                title: "企業與商務",
+                desc: "適合代理商、事務所與組織的專業佈局。",
+                cta: "探索企業主題",
+            },
+            content: {
+                title: "內容與編輯",
+                desc: "適合部落格、新聞與數位出版的沉浸式佈局。",
+                cta: "探索內容主題",
+            },
+            software: {
+                title: "軟體與 SaaS",
+                desc: "產品驅動成長佈局、定價表與數據儀表板。",
+                cta: "探索軟體主題",
+            },
+        },
+    },
+};
+
+const t = translations[lang as keyof typeof translations] || translations.en;
+---
+
+<section
+    id="portfolio"
+    class="py-20 bg-slate-50 dark:bg-slate-900/50 transition-colors duration-300"
+>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <h2
+                class="text-3xl md:text-4xl font-bold font-mono text-slate-900 dark:text-white mb-4"
+            >
+                {t.sectionTitle}
+            </h2>
+            <p
+                class="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto"
+            >
+                {t.sectionSubtitle}
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- Portfolio Category Card -->
+            <a
+                href={`/${lang}/explore/portfolio/VisualDesigner`}
+                class="group block bg-white dark:bg-slate-800 rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 border border-slate-100 dark:border-slate-700 relative"
+            >
+                <div
+                    class="aspect-video w-full bg-gradient-to-br from-pink-500 to-purple-600 relative overflow-hidden"
+                >
+                    <div
+                        class="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors"
+                    >
+                    </div>
+                    <!-- Placeholder for dynamic preview - using simple text/icon for now -->
+                    <div
+                        class="absolute inset-0 flex items-center justify-center text-white opacity-90"
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            class="h-20 w-20 transform group-hover:scale-110 transition-transform duration-500"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="1.5"
+                                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                            ></path>
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="p-8">
+                    <h3
+                        class="text-2xl font-bold text-slate-900 dark:text-white mb-3 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors"
+                    >
+                        {t.categories.portfolio.title}
+                    </h3>
+                    <p
+                        class="text-slate-600 dark:text-slate-400 leading-relaxed mb-6"
+                    >
+                        {t.categories.portfolio.desc}
+                    </p>
+                    <span
+                        class="inline-flex items-center text-primary-600 dark:text-primary-400 font-semibold group-hover:underline"
+                    >
+                        {t.categories.portfolio.cta}
+                        <svg
+                            class="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                        </svg>
+                    </span>
+                </div>
+            </a>
+
+            <!-- E-Commerce Category Card -->
+            <a
+                href={`/${lang}/explore/ecommerce`}
+                class="group block bg-white dark:bg-slate-800 rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 border border-slate-100 dark:border-slate-700 relative"
+            >
+                <div
+                    class="aspect-video w-full bg-gradient-to-br from-emerald-500 to-teal-600 relative overflow-hidden"
+                >
+                    <div
+                        class="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors"
+                    >
+                    </div>
+                    <div
+                        class="absolute inset-0 flex items-center justify-center text-white opacity-90"
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            class="h-20 w-20 transform group-hover:scale-110 transition-transform duration-500"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="1.5"
+                                d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
+                            ></path>
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="p-8">
+                    <h3
+                        class="text-2xl font-bold text-slate-900 dark:text-white mb-3 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors"
+                    >
+                        {t.categories.ecommerce.title}
+                    </h3>
+                    <p
+                        class="text-slate-600 dark:text-slate-400 leading-relaxed mb-6"
+                    >
+                        {t.categories.ecommerce.desc}
+                    </p>
+                    <span
+                        class="inline-flex items-center text-emerald-600 dark:text-emerald-400 font-semibold group-hover:underline"
+                    >
+                        {t.categories.ecommerce.cta}
+                        <svg
+                            class="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                        </svg>
+                    </span>
+                </div>
+            </a>
+
+            <!-- Corporate Category Card -->
+            <a
+                href={`/${lang}/explore/corporate`}
+                class="group block bg-white dark:bg-slate-800 rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 border border-slate-100 dark:border-slate-700 relative"
+            >
+                <div
+                    class="aspect-video w-full bg-gradient-to-br from-blue-600 to-indigo-700 relative overflow-hidden"
+                >
+                    <div
+                        class="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors"
+                    >
+                    </div>
+                    <div
+                        class="absolute inset-0 flex items-center justify-center text-white opacity-90"
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            class="h-20 w-20 transform group-hover:scale-110 transition-transform duration-500"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="1.5"
+                                d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+                            ></path>
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="p-8">
+                    <h3
+                        class="text-2xl font-bold text-slate-900 dark:text-white mb-3 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors"
+                    >
+                        {t.categories.corporate.title}
+                    </h3>
+                    <p
+                        class="text-slate-600 dark:text-slate-400 leading-relaxed mb-6"
+                    >
+                        {t.categories.corporate.desc}
+                    </p>
+                    <span
+                        class="inline-flex items-center text-blue-600 dark:text-blue-400 font-semibold group-hover:underline"
+                    >
+                        {t.categories.corporate.cta}
+                        <svg
+                            class="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                        </svg>
+                    </span>
+                </div>
+            </a>
+
+            <!-- Content/News Category Card -->
+            <a
+                href={`/${lang}/explore/content-news`}
+                class="group block bg-white dark:bg-slate-800 rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 border border-slate-100 dark:border-slate-700 relative"
+            >
+                <div
+                    class="aspect-video w-full bg-gradient-to-br from-rose-500 to-orange-600 relative overflow-hidden"
+                >
+                    <div
+                        class="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors"
+                    >
+                    </div>
+                    <div
+                        class="absolute inset-0 flex items-center justify-center text-white opacity-90"
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            class="h-20 w-20 transform group-hover:scale-110 transition-transform duration-500"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="1.5"
+                                d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"
+                            ></path>
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="p-8">
+                    <h3
+                        class="text-2xl font-bold text-slate-900 dark:text-white mb-3 group-hover:text-rose-600 dark:group-hover:text-rose-400 transition-colors"
+                    >
+                        {t.categories.content.title}
+                    </h3>
+                    <p
+                        class="text-slate-600 dark:text-slate-400 leading-relaxed mb-6"
+                    >
+                        {t.categories.content.desc}
+                    </p>
+                    <span
+                        class="inline-flex items-center text-rose-600 dark:text-rose-400 font-semibold group-hover:underline"
+                    >
+                        {t.categories.content.cta}
+                        <svg
+                            class="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                        </svg>
+                    </span>
+                </div>
+            </a>
+
+            <!-- Software/SaaS Category Card -->
+            <a
+                href={`/${lang}/explore/software`}
+                class="group block bg-white dark:bg-slate-800 rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 border border-slate-100 dark:border-slate-700 relative"
+            >
+                <div
+                    class="aspect-video w-full bg-gradient-to-br from-cyan-500 to-blue-600 relative overflow-hidden"
+                >
+                    <div
+                        class="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors"
+                    >
+                    </div>
+                    <div
+                        class="absolute inset-0 flex items-center justify-center text-white opacity-90"
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            class="h-20 w-20 transform group-hover:scale-110 transition-transform duration-500"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="1.5"
+                                d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+                            ></path>
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="p-8">
+                    <h3
+                        class="text-2xl font-bold text-slate-900 dark:text-white mb-3 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors"
+                    >
+                        {t.categories.software.title}
+                    </h3>
+                    <p
+                        class="text-slate-600 dark:text-slate-400 leading-relaxed mb-6"
+                    >
+                        {t.categories.software.desc}
+                    </p>
+                    <span
+                        class="inline-flex items-center text-cyan-600 dark:text-cyan-400 font-semibold group-hover:underline"
+                    >
+                        {t.categories.software.cta}
+                        <svg
+                            class="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                        </svg>
+                    </span>
+                </div>
+            </a>
+        </div>
+    </div>
+</section>

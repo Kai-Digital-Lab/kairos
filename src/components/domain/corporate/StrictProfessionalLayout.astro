@@ -1,0 +1,155 @@
+---
+import type { ISubThemeDetail } from "@/types/Theme";
+import Button from "@/components/common/Button.astro";
+import Card from "@/components/common/Card.astro";
+
+interface Props {
+    theme: ISubThemeDetail;
+}
+
+const { theme } = Astro.props;
+const { contentFocus } = theme;
+const lang = Astro.currentLocale || "en";
+
+const t = {
+    en: {
+        areas: "Practice Areas",
+        areaList: [
+            "Corporate Law",
+            "Mergers & Acquisitions",
+            "Taxation Strategy",
+            "Intellectual Property",
+            "Litigation",
+        ],
+        contact: "Contact Us",
+        intro: "We provide comprehensive legal counsel to multinational corporations and financial institutions. Our approach is rooted in a deep understanding of regulatory frameworks and a commitment to achieving favorable outcomes.",
+        cases: [
+            {
+                title: "Landmark Acquisition",
+                desc: "Represented a Fortune 500 tech company in a $2B acquisition of an AI startup, navigating complex antitrust regulations.",
+            },
+            {
+                title: "Global Restructuring",
+                desc: "Advised on the tax implications of a cross-border restructuring for a leading logistics provider.",
+            },
+        ],
+        sched: "Schedule a Consultation",
+        confid: "Confidentiality Guaranteed.",
+    },
+    "zh-tw": {
+        areas: "專業領域",
+        areaList: ["公司法", "企業併購", "稅務策略", "智慧財產權", "訴訟"],
+        contact: "聯絡我們",
+        intro: "我們為跨國企業和金融機構提供全面的法律諮詢。我們的方法植基於對監管框架的深刻理解，並致力於達成最有利的結果。",
+        cases: [
+            {
+                title: "重大收購案",
+                desc: "代表財富500強科技公司進行20億美元的AI新創收購，處理複雜的反壟斷法規。",
+            },
+            {
+                title: "全球重組",
+                desc: "針對領先物流供應商的跨國重組稅務影響提供諮詢。",
+            },
+        ],
+        sched: "預約諮詢",
+        confid: "保證保密。",
+    },
+}[lang] || {
+    areas: "",
+    areaList: [],
+    contact: "",
+    intro: "",
+    cases: [],
+    sched: "",
+    confid: "",
+};
+---
+
+<div
+    class="bg-white dark:bg-slate-900 text-slate-900 dark:text-white font-serif p-8 md:p-12 transition-colors duration-300 min-h-screen"
+>
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row gap-12">
+        <!-- Sidebar Navigation (Visual Only) -->
+        {
+            contentFocus.deepNavigation && (
+                <div class="w-full md:w-64 border-r border-slate-200 dark:border-slate-700 pr-8 hidden md:block">
+                    <div class="text-xl font-bold mb-8 text-slate-800 dark:text-slate-100 uppercase tracking-widest">
+                        {t.areas}
+                    </div>
+                    <ul class="space-y-4 text-sm text-slate-600 dark:text-slate-400">
+                        <li class="font-bold text-slate-900 dark:text-white border-l-2 border-slate-900 dark:border-white pl-3">
+                            {t.areaList[0]}
+                        </li>
+                        {t.areaList.slice(1).map((area: string) => (
+                            <li class="pl-3 hover:text-slate-900 dark:hover:text-white cursor-pointer transition-colors">
+                                {area}
+                            </li>
+                        ))}
+                    </ul>
+
+                    <Card
+                        variant="default"
+                        class="mt-12 p-6 !bg-slate-50 dark:!bg-slate-800 rounded"
+                    >
+                        <p class="font-bold mb-2 text-sm">{t.contact}</p>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">
+                            +1 (555) 123-4567
+                        </p>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">
+                            info@firmname.com
+                        </p>
+                    </Card>
+                </div>
+            )
+        }
+
+        <!-- Main Content -->
+        <div class="flex-1">
+            <h2
+                class="text-4xl font-bold mb-6 text-slate-900 dark:text-white border-b-2 border-slate-900 dark:border-white pb-4 inline-block"
+            >
+                {contentFocus.title}
+            </h2>
+
+            <p
+                class="text-lg text-slate-700 dark:text-slate-300 leading-relaxed mb-8"
+            >
+                {t.intro}
+            </p>
+
+            <div class="grid md:grid-cols-2 gap-8 mb-12">
+                {
+                    t.cases.map((c: any, i: number) => (
+                        <Card
+                            variant="bordered"
+                            class="p-6 !bg-slate-50 dark:!bg-slate-800"
+                        >
+                            <h3 class="font-bold text-xl mb-3">{c.title}</h3>
+                            <p class="text-sm text-slate-600 dark:text-slate-400 mb-4">
+                                {c.desc}
+                            </p>
+                            <span class="text-xs font-bold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                                Case Study #{402 - i * 100}
+                            </span>
+                        </Card>
+                    ))
+                }
+            </div>
+
+            <div
+                class="bg-slate-900 dark:bg-slate-800 text-white p-8 rounded flex justify-between items-center"
+            >
+                <div>
+                    <h3 class="font-bold text-xl mb-1">{t.sched}</h3>
+                    <p class="text-slate-400 text-sm">{t.confid}</p>
+                </div>
+                <Button
+                    variant="secondary"
+                    class="bg-white text-slate-900 !rounded-sm hover:!bg-slate-200 border-none"
+                >
+                    {contentFocus.primaryCTA}
+                </Button>
+            </div>
+        </div>
+    </div>
+</div>
