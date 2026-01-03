@@ -1,0 +1,82 @@
+[
+    {
+        "id": "FreemiumSoftware",
+        "name": "Freemium Software",
+        "layoutComponent": "FreemiumSinglePageLayout",
+        "styleClasses": "bg-green-50 dark:bg-green-950 text-gray-900 font-sans antialiased border-t-4 border-green-500",
+        "contentFocus": {
+            "title": "Features & Free Tier Value",
+            "highlightFreeTier": true,
+            "primaryCTA": "Sign Up Free",
+            "metadataPriority": [
+                "Onboarding",
+                "ValueProps"
+            ]
+        },
+        "description": "Long-form single-page layout that emphasizes the onboarding process. The 'Free' tier is highly prominent in the pricing block."
+    },
+    {
+        "id": "HighValueEnterprise",
+        "name": "High-Value Enterprise",
+        "layoutComponent": "EnterpriseSalesLayout",
+        "styleClasses": "bg-gray-100 dark:bg-slate-900 text-gray-900 font-serif antialiased border-t-4 border-slate-700",
+        "contentFocus": {
+            "title": "Solutions for Enterprise",
+            "shortForm": true,
+            "primaryCTA": "Contact Sales",
+            "metadataPriority": [
+                "CaseStudies",
+                "TrustLogos"
+            ]
+        },
+        "description": "Professional, short-form page emphasizing CTAs directed toward Contact Sales. The trust block highlights recognizable major company logos."
+    },
+    {
+        "id": "MobileApplication",
+        "name": "Mobile Application (App)",
+        "layoutComponent": "MobileAppVerticalLayout",
+        "styleClasses": "bg-blue-600 dark:bg-blue-900 text-white font-sans antialiased border-t-4 border-blue-400",
+        "contentFocus": {
+            "title": "App Screenshots & Features",
+            "verticalLayout": true,
+            "primaryCTA": "Download Now",
+            "metadataPriority": [
+                "Mockups",
+                "AppStoreLinks"
+            ]
+        },
+        "description": "Vertical design layout with heavy emphasis on mobile mockup screenshots. Main CTAs link directly to the App Store/Play Store."
+    },
+    {
+        "id": "ProjectManagementTool",
+        "name": "Project Management Tool",
+        "layoutComponent": "ProjectManagementKanbanLayout",
+        "styleClasses": "bg-yellow-50 dark:bg-yellow-950 text-gray-900 font-sans antialiased border-t-4 border-yellow-400",
+        "contentFocus": {
+            "title": "Team Collaboration & Pricing",
+            "showKanban": true,
+            "primaryCTA": "Try for Team",
+            "metadataPriority": [
+                "TeamFeatures",
+                "PricingTiers"
+            ]
+        },
+        "description": "Visual elements include process flow/Kanban boards. Pricing block focuses on team size and feature differentiation."
+    },
+    {
+        "id": "Fintech",
+        "name": "Fintech",
+        "layoutComponent": "FintechDataLayout",
+        "styleClasses": "bg-black dark:bg-black text-white font-sans antialiased border-t-4 border-emerald-500",
+        "contentFocus": {
+            "title": "Security & Financial Data",
+            "showRegulatedTrust": true,
+            "primaryCTA": "Open Account",
+            "metadataPriority": [
+                "Metrics",
+                "RegulatoryTrust"
+            ]
+        },
+        "description": "Data-driven design with emphasis on Charts and Metrics. The trust proof block prominently includes regulatory body logos."
+    }
+]

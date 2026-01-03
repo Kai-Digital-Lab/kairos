@@ -1,0 +1,82 @@
+[
+    {
+        "id": "FreemiumSoftware",
+        "name": "免費增值軟體",
+        "layoutComponent": "FreemiumSinglePageLayout",
+        "styleClasses": "bg-green-50 dark:bg-green-950 text-gray-900 font-sans antialiased border-t-4 border-green-500",
+        "contentFocus": {
+            "title": "功能與免費版價值",
+            "highlightFreeTier": true,
+            "primaryCTA": "免費註冊",
+            "metadataPriority": [
+                "新手引導",
+                "價值主張"
+            ]
+        },
+        "description": "長篇單頁佈局，強調新手引導流程。「免費」層級在定價區塊中非常顯眼。"
+    },
+    {
+        "id": "HighValueEnterprise",
+        "name": "高價值企業方案",
+        "layoutComponent": "EnterpriseSalesLayout",
+        "styleClasses": "bg-gray-100 dark:bg-slate-900 text-gray-900 font-serif antialiased border-t-4 border-slate-700",
+        "contentFocus": {
+            "title": "企業級解決方案",
+            "shortForm": true,
+            "primaryCTA": "聯繫業務",
+            "metadataPriority": [
+                "成功案例",
+                "信任標章"
+            ]
+        },
+        "description": "專業、短篇幅頁面，強調導向「聯繫業務」的 CTA。信任區塊突出知名大公司的 Logo。"
+    },
+    {
+        "id": "MobileApplication",
+        "name": "行動應用程式 (App)",
+        "layoutComponent": "MobileAppVerticalLayout",
+        "styleClasses": "bg-blue-600 dark:bg-blue-900 text-white font-sans antialiased border-t-4 border-blue-400",
+        "contentFocus": {
+            "title": "App 截圖與功能",
+            "verticalLayout": true,
+            "primaryCTA": "立即下載",
+            "metadataPriority": [
+                "應用樣機",
+                "商店連結"
+            ]
+        },
+        "description": "垂直設計佈局，重點展示手機 App 截圖。主要 CTA 直接連結至 App Store/Play Store。"
+    },
+    {
+        "id": "ProjectManagementTool",
+        "name": "專案管理工具",
+        "layoutComponent": "ProjectManagementKanbanLayout",
+        "styleClasses": "bg-yellow-50 dark:bg-yellow-950 text-gray-900 font-sans antialiased border-t-4 border-yellow-400",
+        "contentFocus": {
+            "title": "團隊協作與定價",
+            "showKanban": true,
+            "primaryCTA": "團隊試用",
+            "metadataPriority": [
+                "協作功能",
+                "價格層級"
+            ]
+        },
+        "description": "視覺元素包含流程/看板。定價區塊專注於團隊規模與功能差異。"
+    },
+    {
+        "id": "Fintech",
+        "name": "金融科技",
+        "layoutComponent": "FintechDataLayout",
+        "styleClasses": "bg-black dark:bg-black text-white font-sans antialiased border-t-4 border-emerald-500",
+        "contentFocus": {
+            "title": "安全與金融數據",
+            "showRegulatedTrust": true,
+            "primaryCTA": "開立帳戶",
+            "metadataPriority": [
+                "財務指標",
+                "合規信任"
+            ]
+        },
+        "description": "數據驅動設計，強調圖表與指標。信任證明區塊顯著包含監管機構標誌。"
+    }
+]

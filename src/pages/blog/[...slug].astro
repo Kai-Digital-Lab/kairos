@@ -1,0 +1,138 @@
+---
+import { getCollection, getEntry, render } from "astro:content";
+import PageLayout from "@/layouts/PageLayout.astro";
+
+// Generate static paths for all blog posts
+export async function getStaticPaths() {
+    const posts = await getCollection("blog");
+    return posts.map((post) => ({
+        params: { slug: post.slug },
+        props: { post },
+    }));
+}
+
+// Get the post from props (SSG) or fetch usage (Fallback)
+const { slug } = Astro.params;
+const propsPost = Astro.props.post;
+
+let post;
+
+if (propsPost) {
+    post = propsPost;
+} else if (slug) {
+    post = await getEntry("blog", slug);
+}
+
+if (!post) {
+    return Astro.redirect("/404");
+}
+
+const { Content } = await render(post);
+
+// SEO Logic
+const isDraft = post.data.isDraft;
+const robots = isDraft ? "noindex, nofollow" : "index, follow";
+const canonicalURL = post.data.canonicalURL || Astro.url.href;
+---
+
+<PageLayout
+    title={post.data.title}
+    description={post.data.description}
+    robots={robots}
+    canonicalURL={canonicalURL}
+>
+    <!-- Progress Indicator (Minimalist) -->
+    <div
+        class="fixed top-0 left-0 w-full h-1 bg-slate-100 dark:bg-slate-800 z-50"
+    >
+        <div
+            class="h-full bg-primary-600 w-0 transition-all duration-150 ease-out"
+            id="scroll-progress"
+        >
+        </div>
+    </div>
+
+    <article class="py-20 bg-white dark:bg-slate-900 min-h-screen">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Header -->
+            <header class="mb-12 text-center">
+                {
+                    isDraft && (
+                        <span class="inline-block px-3 py-1 mb-4 text-xs font-bold tracking-wider text-amber-500 uppercase bg-amber-100 dark:bg-amber-900/30 rounded-full border border-amber-200 dark:border-amber-700">
+                            Draft Preview
+                        </span>
+                    )
+                }
+                <div
+                    class="flex items-center justify-center gap-2 mb-6 text-sm text-slate-500 dark:text-slate-400 font-mono"
+                >
+                    <time datetime={post.data.pubDate.toISOString()}>
+                        {
+                            post.data.pubDate.toLocaleDateString("en-US", {
+                                year: "numeric",
+                                month: "long",
+                                day: "numeric",
+                            })
+                        }
+                    </time>
+                    <span>•</span>
+                    <span>{post.data.author}</span>
+                </div>
+
+                <h1
+                    class="text-3xl md:text-5xl font-bold text-slate-900 dark:text-white mb-6 leading-tight"
+                >
+                    {post.data.title}
+                </h1>
+
+                <p
+                    class="text-xl text-slate-600 dark:text-slate-300 leading-relaxed max-w-2xl mx-auto"
+                >
+                    {post.data.description}
+                </p>
+
+                <!-- Tags -->
+                {
+                    post.data.tags && (
+                        <div class="flex flex-wrap justify-center gap-2 mt-8">
+                            {post.data.tags.map((tag) => (
+                                <span class="px-3 py-1 text-sm text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 rounded-md border border-slate-200 dark:border-slate-700">
+                                    #{tag}
+                                </span>
+                            ))}
+                        </div>
+                    )
+                }
+            </header>
+
+            <!-- Divider -->
+            <hr class="border-slate-200 dark:border-slate-800 mb-12" />
+
+            <!-- Content -->
+            <div
+                class="prose prose-slate dark:prose-invert prose-lg max-w-none
+                prose-headings:font-bold prose-headings:text-slate-900 dark:prose-headings:text-white
+                prose-a:text-primary-600 dark:prose-a:text-primary-400 prose-a:no-underline hover:prose-a:underline
+                prose-code:text-pink-600 dark:prose-code:text-pink-400 prose-code:bg-slate-100 dark:prose-code:bg-slate-800 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded-md prose-code:before:content-none prose-code:after:content-none
+                prose-pre:bg-slate-900 dark:prose-pre:bg-slate-950 prose-pre:border prose-pre:border-slate-800
+                prose-blockquote:border-l-primary-500 prose-blockquote:bg-slate-50 dark:prose-blockquote:bg-slate-900/50 prose-blockquote:py-2 prose-blockquote:px-4 prose-blockquote:rounded-r-lg"
+            >
+                <Content />
+            </div>
+        </div>
+    </article>
+
+    <script>
+        // Simple scroll progress
+        window.addEventListener("scroll", () => {
+            const winScroll =
+                document.body.scrollTop || document.documentElement.scrollTop;
+            const height =
+                document.documentElement.scrollHeight -
+                document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            const bar = document.getElementById("scroll-progress");
+            if (bar) bar.style.width = scrolled + "%";
+        });
+    </script>
+</PageLayout>
