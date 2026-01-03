@@ -1,0 +1,117 @@
+---
+import type { ISubThemeDetail } from "@/types/Theme";
+import Button from "@/components/common/Button.astro";
+import Card from "@/components/common/Card.astro";
+
+interface Props {
+    theme: ISubThemeDetail;
+}
+
+const { theme } = Astro.props;
+const { contentFocus } = theme;
+const lang = Astro.currentLocale || "en";
+
+const t = {
+    en: {
+        season: "Spring / Summer 2025",
+        heroTitle: "Ethereal Motion",
+        quote: '"Fashion is not something that exists in dresses only. Fashion is in the sky, in the street, fashion has to do with ideas, the way we live, what is happening."',
+        item1: "Silk Scarf",
+        item2: "Leather Boots",
+        cta: "Shop Collection",
+    },
+    "zh-tw": {
+        season: "2025 春 / 夏",
+        heroTitle: "空靈動態",
+        quote: "「時尚不僅存在於服裝中。時尚在天空中，在街道上，時尚與觀念、生活方式以及發生的一切息息相關。」",
+        item1: "絲綢圍巾",
+        item2: "經典皮靴",
+        cta: "選購系列",
+    },
+}[lang] || {
+    season: "",
+    heroTitle: "",
+    quote: "",
+    item1: "",
+    item2: "",
+    cta: "",
+};
+---
+
+<div
+    class="bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100 transition-colors duration-300 font-serif"
+>
+    <!-- Main Grid Container -->
+    <div class="grid md:grid-cols-2 min-h-[600px]">
+        <!-- Left: Hero Image -->
+        <div class="relative h-96 md:h-auto overflow-hidden group">
+            <img
+                src="https://picsum.photos/800/1200?random=fashion"
+                alt="Fashion Editorial"
+                class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 ease-in-out"
+            />
+            <div class="absolute bottom-8 left-8">
+                <p class="text-white text-xs tracking-[0.3em] uppercase mb-2">
+                    {t.season}
+                </p>
+                <h2 class="text-white text-4xl font-serif italic">
+                    {t.heroTitle}
+                </h2>
+            </div>
+        </div>
+
+        <!-- Right: Content & Grid -->
+        <div class="p-12 flex flex-col justify-center">
+            <div class="mb-12 text-center md:text-left">
+                <h3 class="font-serif text-3xl mb-4 italic">
+                    {contentFocus.title}
+                </h3>
+                <p
+                    class="text-stone-500 dark:text-stone-400 leading-relaxed font-serif italic max-w-md"
+                >
+                    {t.quote}
+                </p>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4 mb-12">
+                <Card
+                    variant="default"
+                    class="!bg-stone-50 dark:!bg-stone-800 p-4 text-center !rounded-none shadow-none"
+                >
+                    <img
+                        src="https://picsum.photos/300/400?random=bag"
+                        alt="Item"
+                        class="w-full h-48 object-cover mb-4"
+                    />
+                    <p class="font-serif text-sm">{t.item1}</p>
+                    <p class="text-xs text-stone-500 dark:text-stone-400">
+                        $120.00
+                    </p>
+                </Card>
+                <Card
+                    variant="default"
+                    class="!bg-stone-50 dark:!bg-stone-800 p-4 text-center !rounded-none shadow-none"
+                >
+                    <img
+                        src="https://picsum.photos/300/400?random=shoes"
+                        alt="Item"
+                        class="w-full h-48 object-cover mb-4"
+                    />
+                    <p class="font-serif text-sm">{t.item2}</p>
+                    <p class="text-xs text-stone-500 dark:text-stone-400">
+                        $450.00
+                    </p>
+                </Card>
+            </div>
+
+            <div class="text-center md:text-left">
+                <Button
+                    variant="primary"
+                    class="!rounded-none !bg-stone-900 text-white px-10 py-4 uppercase tracking-widest hover:!bg-stone-700 dark:!bg-stone-100 dark:!text-stone-900 dark:hover:!bg-stone-300"
+                >
+                    {contentFocus.primaryCTA}
+                </Button>
+            </div>
+        </div>
+    </div>
+</div>

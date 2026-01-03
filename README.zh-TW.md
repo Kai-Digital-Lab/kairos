@@ -10,7 +10,7 @@
 
 **「Kairos」(古希臘語: καιρός)**：代表「關鍵時刻」或「決勝契機」。不同於循序漸進的時間（Chronos），它象徵著精準掌握轉瞬即逝的機會。
 
-> **最後更新：** 2025 年 12 月 29 日
+> **最後更新：** 2026 年 01 月 02 日
 
 ## 🚀 專案願景
 
@@ -26,6 +26,8 @@
 
 * **樣式系統：** Tailwind CSS v4 - 具備 Vite 原生整合的新一代 CSS 引擎。
 
+* **資料層：** Astro Content Collections - 基於 Zod Schema 的型別安全內容管理系統。
+
 * **狀態管理：** Nano Stores - 框架無關、極輕量化 (<1kb) 的狀態管理工具。
 
 * **互動邏輯：原生 Web Components** - 以 Custom Elements 取代沈重的框架運行環境 (Runtime)。
@@ -34,20 +36,20 @@
 
 ## 📐 架構哲學
 
-作為一名 **資深技術專案經理**，我認為程式碼應該像專案藍圖一樣井然有序：
+作為一名 **資深技術專案經理**，我認為程式碼應該像專案藍圖一樣井然有序。本專案採用 **"Gold Standard" Astro Architecture**：
 
-* 1. **整潔架構 (Clean Architecture)：** 基於功能的模組化拆分與原子設計 (Atomic Design) 模式。
+* 1. **領域驅動元件設計 (Domain-Driven)：** 明確區分 `common` (通用元件)、`sections` (區塊元件) 與 `domain` (商業邏輯元件)。
 
-* 2. **零依賴互動 (Zero-Dependency)：** 使用原生 `HTMLElement` 與 `<dialog>` 消除框架負擔。
+* 2. **型別安全資料流 (Type-Safe Data)：** 透過 `src/content` 與嚴格的 Zod Schema 管理所有動態內容，確保建置時的完整性。
 
-* 3. **嚴格工程紀律 (Engineering Discipline)：** 全 TypeScript 嚴格模式編寫，並透過規範化提交 (Conventional Commits) 進行紀錄。
+* 3. **清晰的佈局組合 (Clean Layouts)：** 將 SEO/HTML 結構 (`BaseLayout`) 與 UI 框架 (`PageLayout`) 分離的分層佈局系統。
 
 ## 🗺️ 開發進度
 
-* [x] **階段 1：基礎建設** - 核心佈局、FOUC 預防機制與 CI/CD 設定。
-* [x] **階段 2：靜態內容** - 將 Landing Page 區塊 (Hero, Portfolio 等) 遷移至 Astro Components。
-* [x] **階段 3：動態功能** - 主題瀏覽器 (精選專案、電商購物、企業形象、內容新聞、軟體服務) 與 懸浮 Dock。
-* [ ] **階段 4：優化與交付** - 最終效能稽核與 Lighthouse 滿分認證。
+* [x] **階段 1：基礎建設** - 核心架構、Content Collections 遷移與 Schema 定義。
+* [x] **階段 2：元件架構** - 原子設計遷移 (通用 vs 領域元件拆分)。
+* [x] **階段 3：動態功能** - 整合「Project Insanity」引擎與 Content Collections 的主題瀏覽器。
+* [x] **階段 4：優化與交付** - 佈局重構與程式碼債務清理。
 
 ## 👨‍💻 關於作者
 

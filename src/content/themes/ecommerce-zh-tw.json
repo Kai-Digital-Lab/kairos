@@ -1,0 +1,82 @@
+[
+    {
+        "id": "FashionLuxury",
+        "name": "時尚 / 精品",
+        "layoutComponent": "EditorialMagazineLayout",
+        "styleClasses": "bg-white text-gray-900 font-serif antialiased border-t-4 border-stone-800",
+        "contentFocus": {
+            "title": "系列與型錄",
+            "galleryType": "EditorialGrid",
+            "primaryCTA": "選購系列",
+            "metadataPriority": [
+                "模特兒展示",
+                "極簡細節"
+            ]
+        },
+        "description": "編輯（雜誌）風格佈局，強調大幅高品質模特兒攝影與極簡產品資訊。"
+    },
+    {
+        "id": "TechElectronics",
+        "name": "科技 / 電子產品",
+        "layoutComponent": "TechElectronicsLayout",
+        "styleClasses": "bg-gray-100 text-gray-800 font-mono antialiased border-t-4 border-cyan-500",
+        "contentFocus": {
+            "title": "規格與效能數據",
+            "displayCharts": true,
+            "primaryCTA": "比較型號",
+            "metadataPriority": [
+                "技術規格",
+                "數據表格"
+            ]
+        },
+        "description": "資訊密集型設計，優先展示圖表、數據和詳細規格表以供比較。"
+    },
+    {
+        "id": "SubscriptionBox",
+        "name": "訂閱制服務",
+        "layoutComponent": "SubscriptionLandingLayout",
+        "styleClasses": "bg-yellow-50 text-gray-900 font-sans antialiased border-t-4 border-yellow-500",
+        "contentFocus": {
+            "title": "價值主張與方案",
+            "showPlanComparison": true,
+            "primaryCTA": "開始免費試用",
+            "metadataPriority": [
+                "價值主張",
+                "方案權益"
+            ]
+        },
+        "description": "著陸頁結構，專注於傳達價值，具有顯眼的方案比較表和清晰的引導流程。"
+    },
+    {
+        "id": "FoodGrocery",
+        "name": "食品 / 雜貨",
+        "layoutComponent": "FoodGroceryLayout",
+        "styleClasses": "bg-green-50 text-gray-800 font-sans antialiased border-t-4 border-green-600",
+        "contentFocus": {
+            "title": "每日 / 季節特選",
+            "showSpecials": true,
+            "primaryCTA": "加入購物車",
+            "metadataPriority": [
+                "季節性",
+                "產地"
+            ]
+        },
+        "description": "卡片式佈局，強調每日和季節性特價商品。導航以食品類別為主。"
+    },
+    {
+        "id": "DigitalProducts",
+        "name": "數位產品 / 課程",
+        "layoutComponent": "DigitalProductLayout",
+        "styleClasses": "bg-indigo-50 text-gray-900 font-sans antialiased border-t-4 border-indigo-600",
+        "contentFocus": {
+            "title": "課程內容與評價",
+            "showPlayer": true,
+            "primaryCTA": "立即註冊",
+            "metadataPriority": [
+                "單元列表",
+                "學員評價"
+            ]
+        },
+        "description": "內容目錄結構，產品頁面以媒體播放器、單元列表和豐富的評論區塊為中心。"
+    }
+]

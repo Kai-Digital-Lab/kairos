@@ -1,0 +1,157 @@
+---
+import type { ISubThemeDetail } from "@/types/Theme";
+import Button from "@/components/common/Button.astro";
+import Card from "@/components/common/Card.astro";
+
+interface Props {
+    theme: ISubThemeDetail;
+}
+
+const { theme } = Astro.props;
+const { contentFocus } = theme;
+const lang = Astro.currentLocale || "en";
+
+const content = {
+    en: {
+        projects: [
+            {
+                title: "Algorithmic Trading Bot",
+                stack: "Python, Docker, AWS",
+                desc: "High-frequency trading system with < 5ms latency.",
+            },
+            {
+                title: "Distributed File System",
+                stack: "Go, gRPC, Raft",
+                desc: "Fault-tolerant storage solution handling PB-scale data.",
+            },
+            {
+                title: "Real-time Analytics Engine",
+                stack: "Rust, Kafka, ClickHouse",
+                desc: "Processing 1M+ events per second.",
+            },
+        ],
+        archTitle: "Architecture Overview",
+        archDesc:
+            "Microservices architecture utilizing event-driven patterns for maximum scalability and decoupling.",
+        archList: [
+            "CI/CD Pipeline: GitHub Actions",
+            "Infrastructure: Terraform",
+            "Monitoring: Prometheus + Grafana",
+        ],
+        logicComment: "logic",
+    },
+    "zh-tw": {
+        projects: [
+            {
+                title: "演算法交易機器人",
+                stack: "Python, Docker, AWS",
+                desc: "延遲低於 5ms 的高頻交易系統。",
+            },
+            {
+                title: "分散式檔案系統",
+                stack: "Go, gRPC, Raft",
+                desc: "處理 PB 級數據的容錯儲存解決方案。",
+            },
+            {
+                title: "即時分析引擎",
+                stack: "Rust, Kafka, ClickHouse",
+                desc: "每秒處理超過 100 萬個事件。",
+            },
+        ],
+        archTitle: "架構總覽",
+        archDesc: "採用事件驅動模式的微服務架構，實現最大擴展性與解耦。",
+        archList: [
+            "CI/CD 流程: GitHub Actions",
+            "基礎設施: Terraform",
+            "監控: Prometheus + Grafana",
+        ],
+        logicComment: "邏輯",
+    },
+}[lang] || {
+    projects: [],
+    archTitle: "",
+    archDesc: "",
+    archList: [],
+    logicComment: "",
+};
+
+const t = content;
+---
+
+<div
+    class="max-w-6xl mx-auto py-12 px-4 bg-white dark:bg-slate-900 transition-colors duration-300"
+>
+    <div class="border-b-2 border-slate-200 dark:border-slate-700 pb-6 mb-10">
+        <h2
+            class="text-3xl font-mono font-bold text-slate-800 dark:text-slate-100"
+        >
+            <span class="text-blue-600 dark:text-blue-400">&gt;</span>
+            {contentFocus.title}
+        </h2>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-12">
+        <div class="space-y-8">
+            {
+                t.projects.map((p, i) => (
+                    <Card
+                        variant="bordered"
+                        class="p-6 rounded hover:!border-blue-400 dark:hover:!border-blue-400 bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700"
+                    >
+                        <h3 class="text-xl font-bold text-slate-800 dark:text-slate-100 mb-2">
+                            {p.title}
+                        </h3>
+                        <p class="text-slate-600 dark:text-slate-400 mb-4">
+                            {p.desc}
+                        </p>
+                        <div class="flex gap-3 mb-4">
+                            {contentFocus.metadataPriority.map((meta) => (
+                                <span class="text-xs font-mono bg-slate-100 dark:bg-slate-700 text-blue-600 dark:text-blue-300 px-2 py-1 rounded">
+                                    {meta === "Stack" || meta === "技術堆疊"
+                                        ? p.stack
+                                        : lang === "zh-tw"
+                                          ? "已優化"
+                                          : "Optimized"}
+                                </span>
+                            ))}
+                        </div>
+                        {contentFocus.displayCodeBlocks && (
+                            <div class="bg-slate-900 p-3 rounded text-xs text-green-400 font-mono overflow-x-auto">
+                                <code>
+                                    {`function optimize(x) {\n  return x * 2; // ${p.title} ${t.logicComment}\n}`}
+                                </code>
+                            </div>
+                        )}
+                    </Card>
+                ))
+            }
+        </div>
+
+        <div class="space-y-6">
+            <Card
+                variant="bordered"
+                class="!bg-blue-50 dark:!bg-blue-900/20 border-l-4 !border-blue-600 p-6 border-y-0 border-r-0 rounded-none rounded-r"
+            >
+                <h3 class="font-bold text-blue-900 dark:text-blue-100 mb-2">
+                    {t.archTitle}
+                </h3>
+                <p class="text-blue-800 dark:text-blue-200 text-sm mb-4">
+                    {t.archDesc}
+                </p>
+                <ul
+                    class="list-disc list-inside text-sm text-blue-800 dark:text-blue-200 space-y-1 font-mono"
+                >
+                    {t.archList.map((item, i) => <li>{item}</li>)}
+                </ul>
+            </Card>
+            <div class="mt-8">
+                <Button
+                    variant="outline"
+                    class="w-full !border-blue-600 !text-blue-600 hover:!bg-blue-50 dark:!text-blue-400 dark:hover:!bg-slate-800 font-mono rounded"
+                >
+                    {contentFocus.primaryCTA}
+                </Button>
+            </div>
+        </div>
+    </div>
+</div>

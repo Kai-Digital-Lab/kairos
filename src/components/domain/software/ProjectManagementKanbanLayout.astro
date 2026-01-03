@@ -1,0 +1,215 @@
+---
+import type { ISubThemeDetail } from "@/types/Theme";
+import Button from "@/components/common/Button.astro";
+import Badge from "@/components/common/Badge.astro";
+import Card from "@/components/common/Card.astro";
+
+interface Props {
+    theme: ISubThemeDetail;
+}
+
+const { theme } = Astro.props;
+const { contentFocus } = theme;
+const lang = Astro.currentLocale || "en";
+
+const t = {
+    en: {
+        desc: "Streamline your workflow with visual project management.",
+        login: "Log In",
+        todo: "To Do",
+        prog: "In Progress",
+        done: "Done",
+        task1: "Refactor Authentication Middleware",
+        task2: "Update Documentation",
+        task3: "Design System Audit",
+        task4: "Q3 Planning",
+        task5: "Onboard New Hires",
+        add: "+ Add Card",
+        scale: "Scales with your team",
+        small: "Small Team",
+        biz: "Business",
+        perUser: "/user",
+    },
+    "zh-tw": {
+        desc: "透過視覺化專案管理簡化工作流程。",
+        login: "登入",
+        todo: "待辦",
+        prog: "進行中",
+        done: "完成",
+        task1: "重構認證中介軟體",
+        task2: "更新文件",
+        task3: "設計系統審核",
+        task4: "Q3 規劃",
+        task5: "新員工入職",
+        add: "+ 新增卡片",
+        scale: "隨團隊擴展",
+        small: "小型團隊",
+        biz: "企業",
+        perUser: "/使用者",
+    },
+}[lang] || {
+    desc: "",
+    login: "",
+    todo: "",
+    prog: "",
+    done: "",
+    task1: "",
+    task2: "",
+    task3: "",
+    task4: "",
+    task5: "",
+    add: "",
+    scale: "",
+    small: "",
+    biz: "",
+    perUser: "",
+};
+---
+
+<div
+    class="bg-yellow-50 dark:bg-slate-900 text-gray-900 dark:text-white font-sans p-4 md:p-8 min-h-[800px] transition-colors duration-300"
+>
+    <div class="max-w-7xl mx-auto">
+        <div
+            class="flex flex-col md:flex-row justify-between items-center mb-12"
+        >
+            <div>
+                <h2 class="text-3xl font-bold mb-2">{contentFocus.title}</h2>
+                <p class="text-gray-600 dark:text-gray-400">{t.desc}</p>
+            </div>
+            <div class="mt-4 md:mt-0 flex gap-2">
+                <Button variant="secondary">
+                    {t.login}
+                </Button>
+                <Button variant="primary">
+                    {contentFocus.primaryCTA}
+                </Button>
+            </div>
+        </div>
+
+        {
+            contentFocus.showKanban && (
+                <div class="flex flex-col md:flex-row gap-6 overflow-x-auto pb-8">
+                    {/* Column 1 */}
+                    <div class="bg-gray-100 dark:bg-slate-800 p-4 rounded-xl min-w-[300px] shadow-sm">
+                        <div class="flex justify-between items-center mb-4 text-gray-600 dark:text-gray-400 font-bold text-sm uppercase">
+                            <span>{t.todo}</span>
+                            <span>{t.todo}</span>
+                            <Badge variant="neutral" size="sm">
+                                3
+                            </Badge>
+                        </div>
+                        <div class="space-y-3">
+                            <Card
+                                variant="hover"
+                                class="p-4 cursor-grab active:cursor-grabbing"
+                            >
+                                <div class="flex gap-2 mb-2">
+                                    <Badge variant="error" size="sm">
+                                        HIGH
+                                    </Badge>
+                                    <Badge variant="info" size="sm">
+                                        DEV
+                                    </Badge>
+                                </div>
+                                <p class="font-medium text-sm text-gray-900 dark:text-white">
+                                    {t.task1}
+                                </p>
+                            </Card>
+                            <Card
+                                variant="hover"
+                                class="p-4 cursor-grab active:cursor-grabbing"
+                            >
+                                <p class="font-medium text-sm text-gray-900 dark:text-white">
+                                    {t.task2}
+                                </p>
+                                <div class="mt-2 flex -space-x-1">
+                                    <div class="w-6 h-6 rounded-full bg-green-200 dark:bg-green-800 border border-white dark:border-slate-700" />
+                                </div>
+                            </Card>
+                        </div>
+                        <div class="mt-3 text-gray-400 dark:text-gray-500 text-sm hover:text-gray-600 dark:hover:text-gray-300 cursor-pointer">
+                            {t.add}
+                        </div>
+                    </div>
+
+                    {/* Column 2 */}
+                    <div class="bg-gray-100 dark:bg-slate-800 p-4 rounded-xl min-w-[300px] shadow-sm">
+                        <div class="flex justify-between items-center mb-4 text-gray-600 dark:text-gray-400 font-bold text-sm uppercase">
+                            <span>{t.prog}</span>
+                            <Badge variant="neutral" size="sm">
+                                1
+                            </Badge>
+                        </div>
+                        <div class="space-y-3">
+                            <Card
+                                variant="hover"
+                                class="p-4 cursor-grab active:cursor-grabbing border-l-4 border-l-yellow-400 dark:border-l-yellow-600"
+                            >
+                                <p class="font-medium text-sm text-gray-900 dark:text-white">
+                                    {t.task3}
+                                </p>
+                                <div class="mt-3 h-1 w-full bg-gray-100 dark:bg-slate-600 rounded overflow-hidden">
+                                    <div class="h-full w-2/3 bg-yellow-400 dark:bg-yellow-600" />
+                                </div>
+                            </Card>
+                        </div>
+                    </div>
+
+                    {/* Column 3 */}
+                    <div class="bg-gray-100 dark:bg-slate-800 p-4 rounded-xl min-w-[300px] shadow-sm">
+                        <div class="flex justify-between items-center mb-4 text-gray-600 dark:text-gray-400 font-bold text-sm uppercase">
+                            <span>{t.done}</span>
+                            <Badge variant="neutral" size="sm">
+                                5
+                            </Badge>
+                        </div>
+                        <div class="space-y-3 opacity-60">
+                            <Card variant="default" class="p-4">
+                                <p class="font-medium text-sm line-through text-gray-900 dark:text-white">
+                                    {t.task4}
+                                </p>
+                            </Card>
+                            <Card variant="default" class="p-4">
+                                <p class="font-medium text-sm line-through text-gray-900 dark:text-white">
+                                    {t.task5}
+                                </p>
+                            </Card>
+                        </div>
+                    </div>
+                </div>
+            )
+        }
+
+        <!-- Team Pricing Snippet -->
+        <Card variant="bordered" class="mt-12 text-center p-8">
+            <h3 class="text-xl font-bold mb-4 text-gray-900 dark:text-white">
+                {t.scale}
+            </h3>
+            <div class="flex justify-center gap-8 text-left max-w-lg mx-auto">
+                <div>
+                    <span class="block text-gray-500 dark:text-gray-400 text-sm"
+                        >{t.small}</span
+                    >
+                    <span
+                        class="block text-2xl font-bold text-gray-900 dark:text-white"
+                        >$10<span class="text-sm font-normal">{t.perUser}</span
+                        ></span
+                    >
+                </div>
+                <div
+                    class="border-l border-gray-200 dark:border-slate-700 pl-8"
+                >
+                    <span class="block text-gray-500 dark:text-gray-400 text-sm"
+                        >{t.biz}</span
+                    >
+                    <span
+                        class="block text-2xl font-bold text-gray-900 dark:text-white"
+                        >$25<span class="text-sm font-normal">{t.perUser}</span
+                        ></span
+                    >
+                </div>
+            </div>
+        </Card>
+    </div>
+</div>
