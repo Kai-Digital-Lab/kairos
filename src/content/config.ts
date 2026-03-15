@@ -48,6 +48,8 @@ const blogCollection = defineCollection({
         title: z.string(),
         description: z.string(),
         pubDate: z.date(),
+        language: z.enum(['en', 'zh-tw']).default('en'),
+        translationKey: z.string().optional(),
         slug: z.string().optional(),
         author: z.string().default('Kevin Hsieh'),
         image: z.string().optional(),

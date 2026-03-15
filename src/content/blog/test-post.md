@@ -2,6 +2,8 @@
 title: "The Future of Digital Portfolios: Why Static Sites Are Dead"
 description: "Exploring the shift from static layouts to dynamic, intent-based architectures like Project Insanity."
 pubDate: 2026-01-02
+language: "en"
+translationKey: "future-of-portfolios"
 author: "Kevin Hsieh"
 tags: ["Architecture", "Astro", "Philosophy"]
 isDraft: true

@@ -4,8 +4,35 @@ import PageLayout from "@/layouts/PageLayout.astro";
 
 export const prerender = true;
 
+export function getStaticPaths() {
+    return [{ params: { lang: "en" } }, { params: { lang: "zh-tw" } }];
+}
+
+const lang = Astro.currentLocale || "en";
+
+const translations = {
+    en: {
+        title: "Blog",
+        description:
+            "Thoughts on technical program management, web architecture, and bridging business with technology.",
+        noPost: "No posts yet. Stay tuned!",
+        draft: "Draft",
+    },
+    "zh-tw": {
+        title: "部落格",
+        description: "關於技術專案管理、網站架構與技術商業整合的思考。",
+        noPost: "尚無文章，敬請期待！",
+        draft: "草稿",
+    },
+};
+
+const t = translations[lang as keyof typeof translations] || translations.en;
+const dateLocale = lang === "zh-tw" ? "zh-TW" : "en-US";
+
 const posts = await getCollection("blog", ({ data }) => {
-    return import.meta.env.PROD ? !data.isDraft : true;
+    const langMatch = data.language === lang;
+    const draftFilter = import.meta.env.PROD ? !data.isDraft : true;
+    return langMatch && draftFilter;
 });
 
 const sortedPosts = posts.sort(
@@ -14,8 +41,8 @@ const sortedPosts = posts.sort(
 ---
 
 <PageLayout
-    title="Blog | K@i DIGITAL LAB"
-    description="Thoughts on technical program management, web architecture, and bridging business with technology."
+    title={`${t.title} | K@i DIGITAL LAB`}
+    description={t.description}
 >
     <section class="py-20 bg-white dark:bg-slate-900 min-h-screen">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -24,13 +51,12 @@ const sortedPosts = posts.sort(
                 <h1
                     class="text-3xl md:text-5xl font-bold text-slate-900 dark:text-white mb-4"
                 >
-                    Blog
+                    {t.title}
                 </h1>
                 <p
                     class="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto"
                 >
-                    Thoughts on technical program management, web architecture,
-                    and bridging business with technology.
+                    {t.description}
                 </p>
             </div>
 
@@ -38,13 +64,13 @@ const sortedPosts = posts.sort(
             {
                 sortedPosts.length === 0 ? (
                     <p class="text-center text-slate-500 dark:text-slate-400">
-                        No posts yet. Stay tuned!
+                        {t.noPost}
                     </p>
                 ) : (
                     <div class="space-y-8">
                         {sortedPosts.map((post) => (
                             <a
-                                href={`/blog/${post.slug}`}
+                                href={`/${lang}/blog/${post.slug}`}
                                 class="group block bg-white dark:bg-slate-800 rounded-2xl p-6 sm:p-8 shadow-sm hover:shadow-lg border border-slate-100 dark:border-slate-700 transition-all duration-300 hover:-translate-y-0.5"
                             >
                                 <div class="flex items-center gap-3 mb-3 text-sm text-slate-500 dark:text-slate-400 font-mono">
@@ -52,7 +78,7 @@ const sortedPosts = posts.sort(
                                         datetime={post.data.pubDate.toISOString()}
                                     >
                                         {post.data.pubDate.toLocaleDateString(
-                                            "en-US",
+                                            dateLocale,
                                             {
                                                 year: "numeric",
                                                 month: "long",
@@ -62,7 +88,7 @@ const sortedPosts = posts.sort(
                                     </time>
                                     {post.data.isDraft && (
                                         <span class="px-2 py-0.5 text-xs font-bold tracking-wider text-amber-500 uppercase bg-amber-100 dark:bg-amber-900/30 rounded-full border border-amber-200 dark:border-amber-700">
-                                            Draft
+                                            {t.draft}
                                         </span>
                                     )}
                                 </div>
