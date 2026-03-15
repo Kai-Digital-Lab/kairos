@@ -54,6 +54,7 @@ const blogCollection = defineCollection({
         tags: z.array(z.string()).default(['Tech']),
         isDraft: z.boolean().default(false),
         canonicalURL: z.string().optional(),
+        mediumUrl: z.string().url().optional(),
     })
 });
 
