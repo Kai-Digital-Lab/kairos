@@ -10,7 +10,7 @@
 
 **"Kairos" (Ancient Greek: καιρός):** represents a critical moment or a supreme opportunity. Unlike chronological time, it signifies a decisive gap in time where a fleeting opportunity must be seized with precision.
 
-> **Last Updated:** January 02, 2026
+> **Last Updated:** March 15, 2026
 
 ## 🚀 Vision
 
@@ -24,7 +24,7 @@ This project adheres to a **Zero-Runtime Overhead** philosophy, leveraging moder
 
 * **Framework:** Astro 5.0+ - Utilizing Server-First architecture and View Transitions for a seamless SPA experience.
 
-* **Styling:** Tailwind CSS v4 - Next-generation CSS engine with Vite integration.
+* **Styling:** Tailwind CSS v3 - Utility-first CSS framework with Vite integration.
 
 * **Data Layer:** Astro Content Collections - Type-safe content management with Zod schemas.
 
@@ -38,11 +38,11 @@ This project adheres to a **Zero-Runtime Overhead** philosophy, leveraging moder
 
 As a **Senior Technical Program Manager**, I believe code should be as organized as a project roadmap. This project follows the **"Gold Standard" Astro Architecture**:
 
-* 1. **Domain-Driven Component Design:** Clear separation between `common` (UI atoms), `sections` (landing blocks), and `domain` (business logic) components.
+1. **Domain-Driven Component Design:** Clear separation between `common` (UI atoms), `sections` (landing blocks), and `domain` (business logic) components.
 
-* 2. **Type-Safe Data Flow:** All dynamic content is managed through strict Zod schemas in `src/content`, ensuring build-time integrity.
+2. **Type-Safe Data Flow:** All dynamic content is managed through strict Zod schemas in `src/content`, ensuring build-time integrity.
 
-* 3. **Clean Layout Composition:** Hierarchical layout system separating SEO/HTML concerns (`BaseLayout`) from UI scaffolding (`PageLayout`).
+3. **Clean Layout Composition:** Hierarchical layout system separating SEO/HTML concerns (`BaseLayout`) from UI scaffolding (`PageLayout`).
 
 ## 🗺️ Roadmap
 
@@ -50,6 +50,11 @@ As a **Senior Technical Program Manager**, I believe code should be as organized
 * [x] **Phase 2: Component Architecture** - Migration to Atomic Design (Common vs Domain components).
 * [x] **Phase 3: Dynamic Features** - Theme Explorer with "Project Insanity" engine and Content Collection integration.
 * [x] **Phase 4: Optimization & Cleanup** - Layout refactoring and removal of legacy debt.
+* [ ] **Phase 5: Blog & Content Pipeline** - Blog SSG, Medium syndication, and SEO refinement.
+
+## 📂 Documentation
+
+* **[Architecture Decision Records](./docs/adr/README.md)** — Key architectural decisions documented in MADR format.
 
 ## 👨‍💻 About the Author
 
