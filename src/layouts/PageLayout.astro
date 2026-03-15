@@ -11,9 +11,10 @@ interface Props {
     robots?: string;
     canonicalURL?: string;
     article?: boolean;
+    toggleUrl?: string;
 }
 
-const { title, description, image, lang, robots, canonicalURL, article } = Astro.props;
+const { title, description, image, lang, robots, canonicalURL, article, toggleUrl } = Astro.props;
 ---
 
 <BaseLayout
@@ -25,7 +26,7 @@ const { title, description, image, lang, robots, canonicalURL, article } = Astro
     canonicalURL={canonicalURL}
     article={article}
 >
-    <Header />
+    <Header toggleUrl={toggleUrl} />
     <main class="min-h-screen">
         <slot />
     </main>

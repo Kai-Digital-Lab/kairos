@@ -6,7 +6,7 @@ language: "en"
 translationKey: "future-of-portfolios"
 author: "Kevin Hsieh"
 tags: ["Architecture", "Astro", "Philosophy"]
-isDraft: true
+isDraft: false
 canonicalURL: "https://kai-digital-lab.com/blog/future-of-portfolios"
 ---
 
