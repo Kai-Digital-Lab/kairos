@@ -42,6 +42,7 @@ const canonicalURL = post.data.canonicalURL || Astro.url.href;
     description={post.data.description}
     robots={robots}
     canonicalURL={canonicalURL}
+    article={true}
 >
     <!-- Progress Indicator (Minimalist) -->
     <div
@@ -125,16 +126,18 @@ const canonicalURL = post.data.canonicalURL || Astro.url.href;
     </article>
 
     <script>
-        // Simple scroll progress
-        window.addEventListener("scroll", () => {
-            const winScroll =
-                document.body.scrollTop || document.documentElement.scrollTop;
-            const height =
-                document.documentElement.scrollHeight -
-                document.documentElement.clientHeight;
-            const scrolled = (winScroll / height) * 100;
-            const bar = document.getElementById("scroll-progress");
-            if (bar) bar.style.width = scrolled + "%";
+        document.addEventListener("astro:page-load", () => {
+            const handler = () => {
+                const winScroll =
+                    document.body.scrollTop || document.documentElement.scrollTop;
+                const height =
+                    document.documentElement.scrollHeight -
+                    document.documentElement.clientHeight;
+                const scrolled = (winScroll / height) * 100;
+                const bar = document.getElementById("scroll-progress");
+                if (bar) bar.style.width = scrolled + "%";
+            };
+            window.addEventListener("scroll", handler);
         });
     </script>
 </PageLayout>

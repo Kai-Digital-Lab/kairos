@@ -4,34 +4,36 @@ interface Props {
     description?: string;
     image?: string;
     article?: boolean;
+    canonicalURL?: string;
+    robots?: string;
 }
 
-// 1. 設定預設值 (Default Values)
+const siteUrl = Astro.site ? Astro.site.href : "https://kairos-559.pages.dev";
+
 const {
     title = "K@i DIGITAL LAB | Senior TPM Portfolio",
     description = "Senior Technical Program Manager & Architecture Consultant. Bridging the gap between business requirements and technical excellence.",
-    image = "/og-image.jpg", // 預設的分享預覽圖 (我們稍後要準備這張圖)
+    image = "/og-image.jpg",
     article = false,
+    canonicalURL = new URL(Astro.url.pathname, siteUrl).href,
+    robots = "index, follow",
 } = Astro.props;
 
-// 2. 處理 URL 邏輯
-const siteUrl = Astro.site ? Astro.site.href : "https://kairos-559.pages.dev"; // Fallback 到您的 Pages 網址
-const canonicalURL = new URL(Astro.url.pathname, siteUrl);
 const socialImageURL = new URL(image, siteUrl);
 ---
 
+<meta name="description" content={description} />
+<meta name="robots" content={robots} />
 <link rel="canonical" href={canonicalURL} />
 
-<meta name="title" content={title} />
-
 <meta property="og:type" content={article ? "article" : "website"} />
-<meta property="og:url" content={Astro.url} />
+<meta property="og:url" content={canonicalURL} />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
 <meta property="og:image" content={socialImageURL} />
 
 <meta property="twitter:card" content="summary_large_image" />
-<meta property="twitter:url" content={Astro.url} />
+<meta property="twitter:url" content={canonicalURL} />
 <meta property="twitter:title" content={title} />
 <meta property="twitter:description" content={description} />
 <meta property="twitter:image" content={socialImageURL} />
