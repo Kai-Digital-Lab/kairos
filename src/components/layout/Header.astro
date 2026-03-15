@@ -10,6 +10,7 @@ const translations = {
         pricing: "Pricing",
         about: "About",
         contact: "Contact",
+        blog: "Blog",
         toggleLabel: "TW",
         toggleTitle: "Switch to Traditional Chinese",
         targetLang: "zh-tw",
@@ -20,6 +21,7 @@ const translations = {
         pricing: "方案價格",
         about: "關於我",
         contact: "聯絡資訊",
+        blog: "部落格",
         toggleLabel: "EN",
         toggleTitle: "Switch to English",
         targetLang: "en",
@@ -93,6 +95,13 @@ if (lang === "en") {
                         </a>
                     ))
                 }
+                <a
+                    href="/blog/"
+                    class="text-sm font-medium hover:text-primary-600 dark:hover:text-primary-400 transition-colors relative group"
+                >
+                    {t.blog}
+                    <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary-600 transition-all group-hover:w-full" />
+                </a>
 
                 <div
                     class="flex items-center ml-4 pl-4 border-l border-slate-200 dark:border-slate-700 gap-2"
@@ -172,6 +181,12 @@ if (lang === "en") {
                     </a>
                 ))
             }
+            <a
+                href="/blog/"
+                class="block px-3 py-3 rounded-md text-base font-medium text-slate-700 dark:text-slate-200 hover:text-primary-600 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+            >
+                {t.blog}
+            </a>
         </div>
     </div>
 </header>
