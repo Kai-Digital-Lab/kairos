@@ -1,6 +1,10 @@
 ---
 import ThemeToggle from "@/components/domain/theme/ThemeToggle.astro";
 
+interface Props {
+    toggleUrl?: string;
+}
+
 const lang = Astro.currentLocale || "en";
 
 const translations = {
@@ -54,11 +58,11 @@ const homeUrl = lang === "en" ? "/en/" : `/${lang}/`;
 const currentPath = Astro.url.pathname;
 let toggleUrl;
 
-if (lang === "en") {
-    // Current is /en/..., target is /zh-tw/...
+if (Astro.props.toggleUrl) {
+    toggleUrl = Astro.props.toggleUrl;
+} else if (lang === "en") {
     toggleUrl = currentPath.replace("/en", "/zh-tw");
 } else {
-    // Current is /zh-tw/..., target is /en/...
     toggleUrl = currentPath.replace("/zh-tw", "/en");
 }
 ---
@@ -95,14 +99,6 @@ if (lang === "en") {
                         </a>
                     ))
                 }
-                <a
-                    href={`/${lang}/blog/`}
-                    class="text-sm font-medium hover:text-primary-600 dark:hover:text-primary-400 transition-colors relative group"
-                >
-                    {t.blog}
-                    <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary-600 transition-all group-hover:w-full" />
-                </a>
-
                 <div
                     class="flex items-center ml-4 pl-4 border-l border-slate-200 dark:border-slate-700 gap-2"
                 >
@@ -181,12 +177,6 @@ if (lang === "en") {
                     </a>
                 ))
             }
-            <a
-                href={`/${lang}/blog/`}
-                class="block px-3 py-3 rounded-md text-base font-medium text-slate-700 dark:text-slate-200 hover:text-primary-600 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
-            >
-                {t.blog}
-            </a>
         </div>
     </div>
 </header>

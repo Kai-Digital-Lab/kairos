@@ -53,6 +53,11 @@ const translations = {
 
 const t =
     translations[lang as keyof typeof translations] || translations.en;
+
+// Toggle URL: link to translated post if exists, otherwise fallback to blog list
+const toggleUrl = translatedPost
+    ? `/${targetLang}/blog/${translatedPost.slug}`
+    : `/${targetLang}/blog/`;
 ---
 
 <PageLayout
@@ -61,6 +66,7 @@ const t =
     robots={robots}
     canonicalURL={canonicalURL}
     article={true}
+    toggleUrl={toggleUrl}
 >
     <!-- Progress Indicator (Minimalist) -->
     <div
