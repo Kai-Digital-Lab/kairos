@@ -10,9 +10,10 @@ interface Props {
     lang?: string;
     robots?: string;
     canonicalURL?: string;
+    article?: boolean;
 }
 
-const { title, description, image, lang, robots, canonicalURL } = Astro.props;
+const { title, description, image, lang, robots, canonicalURL, article } = Astro.props;
 ---
 
 <BaseLayout
@@ -22,6 +23,7 @@ const { title, description, image, lang, robots, canonicalURL } = Astro.props;
     lang={lang}
     robots={robots}
     canonicalURL={canonicalURL}
+    article={article}
 >
     <Header />
     <main class="min-h-screen">

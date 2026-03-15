@@ -10,6 +10,7 @@ interface Props {
     lang?: string;
     robots?: string;
     canonicalURL?: string;
+    article?: boolean;
 }
 
 const {
@@ -17,8 +18,9 @@ const {
     description = "Senior TPM & Modern Web Architecture Portfolio",
     image,
     lang = "en",
-    robots = "index, follow", // Default to indexed
-    canonicalURL = Astro.url.href, // Default to current URL
+    robots = "index, follow",
+    canonicalURL = Astro.url.href,
+    article = false,
 } = Astro.props;
 ---
 
@@ -26,14 +28,11 @@ const {
 <html lang={lang} class="scroll-smooth">
     <head>
         <meta charset="UTF-8" />
-        <meta name="description" content={description} />
-        <meta name="robots" content={robots} />
-        <link rel="canonical" href={canonicalURL} />
         <meta name="viewport" content="width=device-width" />
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
         <meta name="generator" content={Astro.generator} />
         <title>{title}</title>
-        <SEO title={title} description={description} image={image} />
+        <SEO title={title} description={description} image={image} canonicalURL={canonicalURL} robots={robots} article={article} />
 
         <ClientRouter />
 
