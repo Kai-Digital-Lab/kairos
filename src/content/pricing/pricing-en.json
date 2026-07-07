@@ -1,0 +1,47 @@
+[
+    {
+        "id": "landing-page",
+        "title": "Landing Page",
+        "price": { "usd": "$1,500", "twd": "NT$45,000" },
+        "per": "/ starting",
+        "features": [
+            "High-Converting Single Page",
+            "Fully Mobile Responsive",
+            "Contact Form & Lead Gen",
+            "5-7 Day Turnaround"
+        ],
+        "cta": "Start Project",
+        "isPopular": false,
+        "exampleProjectIds": ["kairos-website"]
+    },
+    {
+        "id": "business-website",
+        "title": "Business Website",
+        "price": { "usd": "$4,800", "twd": "NT$120,000" },
+        "per": "/ starting",
+        "features": [
+            "Up to 8 Custom Pages",
+            "Easy-to-use CMS (Manage Content)",
+            "Technical SEO & Analytics",
+            "Handover Training & Docs"
+        ],
+        "cta": "Choose This Plan",
+        "isPopular": true,
+        "exampleProjectIds": ["klab-design-system"]
+    },
+    {
+        "id": "custom-web-app",
+        "title": "Custom Web App",
+        "price": { "usd": "$10k+", "twd": "NT$300,000+" },
+        "per": "/ project",
+        "features": [
+            "React / Next.js Architecture",
+            "Database & Auth Integration",
+            "Custom API Development",
+            "30 Days Post-Launch Support"
+        ],
+        "cta": "Get a Quote",
+        "isPopular": false,
+        "exampleProjectIds": ["aoi-vision-platform", "smart-factory-cloud-migration"]
+    }
+]

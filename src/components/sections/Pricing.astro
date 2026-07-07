@@ -1,39 +1,48 @@
 ---
+import { getEntry } from "astro:content";
+import type { ProjectData } from "@/stores/portfolio.store";
+
 const lang = Astro.currentLocale || "en";
 
+// Plans come from the pricing collection; example chips cross-reference
+// the projects collection (ADR-0008 pattern).
+const pricingEntry = await getEntry("pricing", `pricing-${lang}`);
+const plans = pricingEntry?.data ?? [];
+
+const projectsEntry = await getEntry("projects", `projects-${lang}`);
+const projects: ProjectData[] = projectsEntry?.data ?? [];
+
+// Deep-link each example project to the explorer lens that surfaces it best
+const themeForProject = (p: ProjectData) =>
+    p.designer
+        ? "VisualDesigner"
+        : p.caseStudy
+          ? "UXUIDesigner"
+          : "SoftwareEngineer";
+
+const resolvedPlans = plans.map((plan) => ({
+    ...plan,
+    examples: (plan.exampleProjectIds ?? [])
+        .map((id) => projects.find((p) => p.id === id))
+        .filter((p): p is ProjectData => Boolean(p))
+        .map((p) => ({
+            title: p.title,
+            href: `/${lang}/explore/portfolio/${themeForProject(p)}`,
+        })),
+}));
+
+// SSR initial currency follows the locale; the client swaps to the
+// visitor's persisted preference if one exists.
+const defaultCurrency = lang === "zh-tw" ? "twd" : "usd";
+
+// UI chrome strings only — plan content comes from the pricing collection
 const translations = {
     en: {
         title: "Transparent Investment",
         subtitle:
             "Professional web development packages tailored to your business needs.",
-        mvpTitle: "Landing Page",
-        mvpPrice: "$1,500",
-        mvpPer: "/ starting",
-        growthTitle: "Business Website",
-        growthPrice: "$4,800",
-        growthPer: "/ starting",
-        enterpriseTitle: "Custom Web App",
-        enterprisePrice: "$10k+",
-        enterprisePer: "/ project",
-        features: {
-            onePage: "High-Converting Single Page",
-            responsive: "Fully Mobile Responsive",
-            contact: "Contact Form & Lead Gen",
-            fastDelivery: "5-7 Day Turnaround",
-            multiPage: "Up to 8 Custom Pages",
-            cms: "Easy-to-use CMS (Manage Content)",
-            seo: "Technical SEO & Analytics",
-            training: "Handover Training & Docs",
-            react: "React / Next.js Architecture",
-            database: "Database & Auth Integration",
-            api: "Custom API Development",
-            support: "30 Days Post-Launch Support",
-        },
-        buttons: {
-            start: "Start Project",
-            select: "Most Popular",
-            contact: "Get a Quote",
-        },
+        popularBadge: "Most Popular",
+        examplesLabel: "Real work in this tier",
         footer: {
             secure: "Secure Payment",
             fast: "Fast Delivery",
@@ -42,34 +51,8 @@ const translations = {
     "zh-tw": {
         title: "透明的投資方案",
         subtitle: "專為您的商業需求量身打造的專業網頁開發方案。",
-        mvpTitle: "形象著陸頁",
-        mvpPrice: "$1,500",
-        mvpPer: "/ 起",
-        growthTitle: "商業形象網站",
-        growthPrice: "$4,800",
-        growthPer: "/ 起",
-        enterpriseTitle: "客製化 Web App",
-        enterprisePrice: "$10k+",
-        enterprisePer: "/ 專案",
-        features: {
-            onePage: "高轉換率單頁設計",
-            responsive: "完全響應式 (手機友善)",
-            contact: "聯絡表單與潛在客戶收集",
-            fastDelivery: "5-7 天快速交付",
-            multiPage: "最多 8 個客製化頁面",
-            cms: "易用的後台 (內容管理)",
-            seo: "技術 SEO 與分析設定",
-            training: "移交教育訓練與文件",
-            react: "React / Next.js 架構",
-            database: "資料庫與會員驗證整合",
-            api: "客製化 API 開發",
-            support: "上線後 30 天技術支援",
-        },
-        buttons: {
-            start: "開始專案",
-            select: "最受歡迎",
-            contact: "索取報價",
-        },
+        popularBadge: "最受歡迎",
+        examplesLabel: "此級距的實際案例",
         footer: {
             secure: "安全支付",
             fast: "快速交付",
@@ -77,49 +60,7 @@ const translations = {
     },
 };
 
-const t = translations[lang] || translations.en;
-
-const plans = [
-    {
-        title: t.mvpTitle,
-        price: t.mvpPrice,
-        period: t.mvpPer,
-        features: [
-            t.features.onePage,
-            t.features.responsive,
-            t.features.contact,
-            t.features.fastDelivery,
-        ],
-        buttonText: t.buttons.start,
-        isPopular: false,
-    },
-    {
-        title: t.growthTitle,
-        price: t.growthPrice,
-        period: t.growthPer,
-        features: [
-            t.features.multiPage,
-            t.features.cms,
-            t.features.seo,
-            t.features.training,
-        ],
-        buttonText: t.buttons.select,
-        isPopular: true,
-    },
-    {
-        title: t.enterpriseTitle,
-        price: t.enterprisePrice,
-        period: t.enterprisePer,
-        features: [
-            t.features.react,
-            t.features.database,
-            t.features.api,
-            t.features.support,
-        ],
-        buttonText: t.buttons.contact,
-        isPopular: false,
-    },
-];
+const t = translations[lang as keyof typeof translations] || translations.en;
 ---
 
 <section
@@ -143,10 +84,13 @@ const plans = [
         </div>
     </div>
 
-    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-20">
+    <currency-toggle
+        class="relative z-10 block max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
+        data-default-currency={defaultCurrency}
+    >
+        <div class="text-center mb-12">
             <h2
-                class="text-3xl md:text-5xl font-bold text-slate-900 dark:text-white tracking-tight mb-6 drop-shadow-sm transition-colors"
+                class="text-3xl md:text-4xl font-bold font-mono text-slate-900 dark:text-white tracking-tight mb-6 drop-shadow-sm transition-colors"
             >
                 {t.title}
             </h2>
@@ -157,21 +101,50 @@ const plans = [
             </p>
         </div>
 
+        <!-- Currency Switch -->
+        <div class="flex justify-center mb-12">
+            <div
+                class="inline-flex items-center gap-1 p-1 rounded-full bg-slate-200 dark:bg-slate-800 transition-colors"
+                role="group"
+                aria-label="Currency"
+            >
+                {
+                    (["usd", "twd"] as const).map((currency) => (
+                        <button
+                            data-currency={currency}
+                            aria-pressed={
+                                currency === defaultCurrency
+                                    ? "true"
+                                    : "false"
+                            }
+                            class={`px-4 py-1.5 text-sm font-bold rounded-full transition-colors cursor-pointer ${
+                                currency === defaultCurrency
+                                    ? "bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow"
+                                    : "text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200"
+                            }`}
+                        >
+                            {currency.toUpperCase()}
+                        </button>
+                    ))
+                }
+            </div>
+        </div>
+
         <div
             class="grid md:grid-cols-3 gap-8 lg:gap-10 max-w-6xl mx-auto items-center"
         >
             {
-                plans.map((plan) => (
+                resolvedPlans.map((plan) => (
                     <div
                         class={`relative p-8 rounded-2xl transition-all duration-300 ${
                             plan.isPopular
-                                ? "bg-white dark:bg-slate-900 shadow-2xl scale-105 border-2 border-primary-500 z-10"
+                                ? "bg-white dark:bg-slate-900 shadow-2xl md:scale-105 border-2 border-primary-500 z-10"
                                 : "bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 hover:shadow-xl"
                         }`}
                     >
                         {plan.isPopular && (
                             <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-primary-500 text-white px-4 py-1 rounded-full text-sm font-bold shadow-lg">
-                                Most Popular
+                                {t.popularBadge}
                             </div>
                         )}
 
@@ -181,15 +154,34 @@ const plans = [
                             </h3>
                             <div class="flex items-baseline justify-center gap-1">
                                 <span class="text-4xl font-extrabold text-slate-900 dark:text-white">
-                                    {plan.price}
+                                    <span
+                                        data-price-usd
+                                        class={
+                                            defaultCurrency === "usd"
+                                                ? ""
+                                                : "hidden"
+                                        }
+                                    >
+                                        {plan.price.usd}
+                                    </span>
+                                    <span
+                                        data-price-twd
+                                        class={
+                                            defaultCurrency === "twd"
+                                                ? ""
+                                                : "hidden"
+                                        }
+                                    >
+                                        {plan.price.twd}
+                                    </span>
                                 </span>
                                 <span class="text-slate-500 dark:text-slate-400">
-                                    {plan.period}
+                                    {plan.per}
                                 </span>
                             </div>
                         </div>
 
-                        <ul class="space-y-4 mb-8">
+                        <ul class="space-y-4 mb-6">
                             {plan.features.map((feature) => (
                                 <li class="flex items-start gap-3 text-slate-600 dark:text-slate-300">
                                     <svg
@@ -210,6 +202,24 @@ const plans = [
                             ))}
                         </ul>
 
+                        {plan.examples.length > 0 && (
+                            <div class="mb-8 pt-4 border-t border-slate-100 dark:border-slate-800">
+                                <p class="text-xs uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-2">
+                                    {t.examplesLabel}
+                                </p>
+                                <div class="flex flex-wrap gap-2">
+                                    {plan.examples.map((example) => (
+                                        <a
+                                            href={example.href}
+                                            class="text-xs px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 hover:underline transition-colors"
+                                        >
+                                            {example.title}
+                                        </a>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
                         <a
                             href="#contact"
                             class={`block w-full py-3 px-6 rounded-lg text-center font-bold transition-colors ${
@@ -218,7 +228,7 @@ const plans = [
                                     : "bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-900 dark:text-white"
                             }`}
                         >
-                            {plan.buttonText}
+                            {plan.cta}
                         </a>
                     </div>
                 ))
@@ -263,5 +273,69 @@ const plans = [
                 </span>
             </p>
         </div>
-    </div>
+    </currency-toggle>
 </section>
+
+<script>
+    import { preferredCurrency, type Currency } from "@/stores/pricing.store";
+
+    // 幣別切換 Web Component：偏好存進 persistentAtom（跨頁、重載存活），
+    // 未選擇時採語系預設。訂閱於 disconnectedCallback 退訂。
+    class CurrencyToggle extends HTMLElement {
+        private unsubscribe?: () => void;
+
+        connectedCallback() {
+            const fallback: Currency =
+                this.dataset.defaultCurrency === "twd" ? "twd" : "usd";
+            const buttons =
+                this.querySelectorAll<HTMLButtonElement>("[data-currency]");
+
+            buttons.forEach((btn) => {
+                btn.addEventListener("click", () => {
+                    preferredCurrency.set(btn.dataset.currency as Currency);
+                });
+            });
+
+            // 與伺服器端渲染的按鈕樣式保持一致
+            const ACTIVE = [
+                "bg-white",
+                "dark:bg-slate-900",
+                "text-slate-900",
+                "dark:text-white",
+                "shadow",
+            ];
+            const INACTIVE = [
+                "text-slate-500",
+                "dark:text-slate-400",
+                "hover:text-slate-700",
+                "dark:hover:text-slate-200",
+            ];
+
+            this.unsubscribe = preferredCurrency.subscribe((stored) => {
+                const currency = stored || fallback;
+
+                this.querySelectorAll<HTMLElement>("[data-price-usd]").forEach(
+                    (el) => el.classList.toggle("hidden", currency !== "usd"),
+                );
+                this.querySelectorAll<HTMLElement>("[data-price-twd]").forEach(
+                    (el) => el.classList.toggle("hidden", currency !== "twd"),
+                );
+
+                buttons.forEach((btn) => {
+                    const active = btn.dataset.currency === currency;
+                    btn.setAttribute("aria-pressed", String(active));
+                    btn.classList.remove(...(active ? INACTIVE : ACTIVE));
+                    btn.classList.add(...(active ? ACTIVE : INACTIVE));
+                });
+            });
+        }
+
+        disconnectedCallback() {
+            this.unsubscribe?.();
+        }
+    }
+
+    if (!customElements.get("currency-toggle")) {
+        customElements.define("currency-toggle", CurrencyToggle);
+    }
+</script>

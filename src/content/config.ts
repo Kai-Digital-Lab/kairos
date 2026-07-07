@@ -118,6 +118,28 @@ const projectsCollection = defineCollection({
     })),
 });
 
+// ── Pricing collection ──
+// Locale-split like themes/projects (pricing-en.json / pricing-zh-tw.json).
+// Both currencies stored per plan (display strings, not converted rates);
+// exampleProjectIds cross-reference the projects collection.
+
+const pricingCollection = defineCollection({
+    type: 'data',
+    schema: z.array(z.object({
+        id: z.string(),                 // stable across locales
+        title: z.string(),
+        price: z.object({
+            usd: z.string(),            // e.g. "$1,500"
+            twd: z.string(),            // e.g. "NT$45,000"
+        }),
+        per: z.string(),                // e.g. "/ starting"
+        features: z.array(z.string()),
+        cta: z.string(),
+        isPopular: z.boolean().default(false),
+        exampleProjectIds: z.array(z.string()).optional(),
+    })),
+});
+
 const blogCollection = defineCollection({
     type: 'content',
     schema: z.object({
@@ -140,4 +162,5 @@ export const collections = {
     'themes': themeCollection,
     'blog': blogCollection,
     'projects': projectsCollection,
+    'pricing': pricingCollection,
 };
