@@ -1,10 +1,77 @@
 ---
+import { getEntry } from "astro:content";
+
 const lang = Astro.currentLocale || "en";
 
+// Per-category chrome: accent styling + themes collection entry id.
+// Theme names/ids come from the themes collection; project preview
+// images come from the projects collection — no hardcoded content.
+const categoryMeta = [
+    {
+        key: "portfolio",
+        slug: "portfolio",
+        themesId: "portfolio",
+        gradient: "from-pink-500 to-purple-600",
+        hoverTitle:
+            "group-hover:text-primary-600 dark:group-hover:text-primary-400",
+        linkAccent: "text-primary-600 dark:text-primary-400",
+    },
+    {
+        key: "ecommerce",
+        slug: "ecommerce",
+        themesId: "ecommerce",
+        gradient: "from-emerald-500 to-teal-600",
+        hoverTitle:
+            "group-hover:text-emerald-600 dark:group-hover:text-emerald-400",
+        linkAccent: "text-emerald-600 dark:text-emerald-400",
+    },
+    {
+        key: "corporate",
+        slug: "corporate",
+        themesId: "corporate",
+        gradient: "from-blue-600 to-indigo-700",
+        hoverTitle:
+            "group-hover:text-blue-600 dark:group-hover:text-blue-400",
+        linkAccent: "text-blue-600 dark:text-blue-400",
+    },
+    {
+        key: "content",
+        slug: "content-news",
+        themesId: "content-news",
+        gradient: "from-rose-500 to-orange-600",
+        hoverTitle:
+            "group-hover:text-rose-600 dark:group-hover:text-rose-400",
+        linkAccent: "text-rose-600 dark:text-rose-400",
+    },
+    {
+        key: "software",
+        slug: "software",
+        themesId: "software",
+        gradient: "from-cyan-500 to-blue-600",
+        hoverTitle:
+            "group-hover:text-cyan-600 dark:group-hover:text-cyan-400",
+        linkAccent: "text-cyan-600 dark:text-cyan-400",
+    },
+] as const;
+
+const themeEntries = await Promise.all(
+    categoryMeta.map((c) => getEntry("themes", `${c.themesId}-${lang}`)),
+);
+const cards = categoryMeta.map((meta, i) => ({
+    ...meta,
+    themes: themeEntries[i]?.data ?? [],
+}));
+
+// Real project images feed the portfolio card's mini waterfall preview
+const projectsEntry = await getEntry("projects", `projects-${lang}`);
+const previewProjects = (projectsEntry?.data ?? []).slice(0, 3);
+
+// UI chrome strings only — theme names and preview images come from data
 const translations = {
     en: {
         sectionTitle: "Interactive Capability Showcase",
         sectionSubtitle: 'Experience our "Project Insanity" engine.',
+        themesLabel: "themes",
         categories: {
             portfolio: {
                 title: "Portfolio Collections",
@@ -36,6 +103,7 @@ const translations = {
     "zh-tw": {
         sectionTitle: "互動能力展示",
         sectionSubtitle: "體驗我們的「Project Insanity」引擎。",
+        themesLabel: "種版型",
         categories: {
             portfolio: {
                 title: "精選作品集",
@@ -87,322 +155,248 @@ const t = translations[lang as keyof typeof translations] || translations.en;
             </p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <!-- Portfolio Category Card -->
-            <a
-                href={`/${lang}/explore/portfolio/VisualDesigner`}
-                class="group block bg-white dark:bg-slate-800 rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 border border-slate-100 dark:border-slate-700 relative"
-            >
-                <div
-                    class="aspect-video w-full bg-gradient-to-br from-pink-500 to-purple-600 relative overflow-hidden"
-                >
+        <showcase-rotator class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {
+                cards.map((card) => (
                     <div
-                        class="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors"
+                        data-showcase-card
+                        class="group bg-white dark:bg-slate-800 rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 border border-slate-100 dark:border-slate-700 relative flex flex-col"
                     >
-                    </div>
-                    <!-- Placeholder for dynamic preview - using simple text/icon for now -->
-                    <div
-                        class="absolute inset-0 flex items-center justify-center text-white opacity-90"
-                    >
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            class="h-20 w-20 transform group-hover:scale-110 transition-transform duration-500"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
+                        {/* Mini layout preview on the category gradient */}
+                        <a
+                            href={`/${lang}/explore/${card.slug}`}
+                            class={`aspect-video w-full bg-gradient-to-br ${card.gradient} relative overflow-hidden block`}
                         >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="1.5"
-                                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-                            ></path>
-                        </svg>
-                    </div>
-                </div>
+                            <div class="absolute inset-0 p-5 transform group-hover:scale-[1.03] transition-transform duration-500">
+                                {card.key === "portfolio" && (
+                                    <div class="h-full grid grid-cols-3 gap-2">
+                                        {previewProjects.map(
+                                            (project, index) => (
+                                                <img
+                                                    src={project.heroImage}
+                                                    alt={project.title}
+                                                    loading="lazy"
+                                                    class={`w-full object-cover rounded-lg shadow ${
+                                                        index === 1
+                                                            ? "h-4/5 self-end"
+                                                            : index === 2
+                                                              ? "h-5/6"
+                                                              : "h-full"
+                                                    }`}
+                                                />
+                                            ),
+                                        )}
+                                    </div>
+                                )}
+                                {card.key === "ecommerce" && (
+                                    <div class="h-full flex flex-col gap-2">
+                                        <div class="h-2 w-1/3 bg-white/50 rounded" />
+                                        <div class="grid grid-cols-3 gap-2 flex-1">
+                                            {[1, 2, 3].map(() => (
+                                                <div class="bg-white/20 rounded-lg p-2 flex flex-col gap-1.5">
+                                                    <div class="flex-1 bg-white/30 rounded" />
+                                                    <div class="h-1.5 w-3/4 bg-white/50 rounded" />
+                                                    <div class="h-1.5 w-1/3 bg-white/70 rounded" />
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
+                                {card.key === "corporate" && (
+                                    <div class="h-full flex flex-col gap-2">
+                                        <div class="flex justify-between items-center">
+                                            <div class="h-2 w-12 bg-white/60 rounded" />
+                                            <div class="flex gap-1.5">
+                                                {[1, 2, 3].map(() => (
+                                                    <div class="h-1.5 w-7 bg-white/40 rounded" />
+                                                ))}
+                                            </div>
+                                        </div>
+                                        <div class="flex-1 bg-white/20 rounded-lg flex flex-col items-center justify-center gap-2">
+                                            <div class="h-2.5 w-1/2 bg-white/50 rounded" />
+                                            <div class="h-1.5 w-1/3 bg-white/40 rounded" />
+                                        </div>
+                                        <div class="grid grid-cols-3 gap-2 h-8">
+                                            {[1, 2, 3].map(() => (
+                                                <div class="bg-white/25 rounded-lg" />
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
+                                {card.key === "content" && (
+                                    <div class="h-full flex flex-col gap-2">
+                                        <div class="h-3 w-1/2 bg-white/60 rounded mx-auto" />
+                                        <div class="grid grid-cols-3 gap-3 flex-1">
+                                            <div class="bg-white/25 rounded-lg" />
+                                            {[1, 2].map(() => (
+                                                <div class="flex flex-col gap-1.5 pt-1">
+                                                    {[1, 2, 3, 4, 5].map(() => (
+                                                        <div class="h-1.5 bg-white/40 rounded last:w-2/3" />
+                                                    ))}
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
+                                {card.key === "software" && (
+                                    <div class="h-full flex gap-2">
+                                        <div class="w-1/5 bg-white/20 rounded-lg p-2 flex flex-col gap-1.5">
+                                            {[1, 2, 3, 4].map(() => (
+                                                <div class="h-1.5 bg-white/40 rounded" />
+                                            ))}
+                                        </div>
+                                        <div class="flex-1 flex flex-col gap-2">
+                                            <div class="grid grid-cols-3 gap-2 h-9">
+                                                {[1, 2, 3].map(() => (
+                                                    <div class="bg-white/25 rounded-lg" />
+                                                ))}
+                                            </div>
+                                            <div class="flex-1 bg-white/20 rounded-lg flex items-end gap-1.5 p-2">
+                                                {[
+                                                    "h-1/3",
+                                                    "h-2/3",
+                                                    "h-1/2",
+                                                    "h-full",
+                                                    "h-3/4",
+                                                    "h-2/5",
+                                                ].map((height) => (
+                                                    <div
+                                                        class={`flex-1 ${height} bg-white/50 rounded-t`}
+                                                    />
+                                                ))}
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        </a>
 
-                <div class="p-8">
-                    <h3
-                        class="text-2xl font-bold text-slate-900 dark:text-white mb-3 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors"
-                    >
-                        {t.categories.portfolio.title}
-                    </h3>
-                    <p
-                        class="text-slate-600 dark:text-slate-400 leading-relaxed mb-6"
-                    >
-                        {t.categories.portfolio.desc}
-                    </p>
-                    <span
-                        class="inline-flex items-center text-primary-600 dark:text-primary-400 font-semibold group-hover:underline"
-                    >
-                        {t.categories.portfolio.cta}
-                        <svg
-                            class="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
-                        </svg>
-                    </span>
-                </div>
-            </a>
+                        <div class="p-8 flex flex-col flex-1">
+                            <div class="flex items-baseline justify-between gap-2 mb-3">
+                                <h3
+                                    class={`text-2xl font-bold text-slate-900 dark:text-white transition-colors ${card.hoverTitle}`}
+                                >
+                                    {
+                                        t.categories[
+                                            card.key as keyof typeof t.categories
+                                        ].title
+                                    }
+                                </h3>
+                                <span class="text-xs text-slate-400 dark:text-slate-500 whitespace-nowrap font-mono">
+                                    {card.themes.length} {t.themesLabel}
+                                </span>
+                            </div>
+                            <p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-5">
+                                {
+                                    t.categories[
+                                        card.key as keyof typeof t.categories
+                                    ].desc
+                                }
+                            </p>
 
-            <!-- E-Commerce Category Card -->
-            <a
-                href={`/${lang}/explore/ecommerce`}
-                class="group block bg-white dark:bg-slate-800 rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 border border-slate-100 dark:border-slate-700 relative"
-            >
-                <div
-                    class="aspect-video w-full bg-gradient-to-br from-emerald-500 to-teal-600 relative overflow-hidden"
-                >
-                    <div
-                        class="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors"
-                    >
-                    </div>
-                    <div
-                        class="absolute inset-0 flex items-center justify-center text-white opacity-90"
-                    >
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            class="h-20 w-20 transform group-hover:scale-110 transition-transform duration-500"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="1.5"
-                                d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
-                            ></path>
-                        </svg>
-                    </div>
-                </div>
+                            {/* Theme chips — real theme names, deep links */}
+                            <div class="flex flex-wrap gap-2 mb-6">
+                                {card.themes.map((theme, index) => (
+                                    <a
+                                        href={`/${lang}/explore/${card.slug}/${theme.id}`}
+                                        data-chip
+                                        class={`text-xs px-2.5 py-1 rounded-full transition-colors duration-300 ${
+                                            index === 0
+                                                ? "bg-slate-900 text-white dark:bg-white dark:text-slate-900"
+                                                : "bg-slate-100 text-slate-600 dark:bg-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600"
+                                        }`}
+                                    >
+                                        {theme.name}
+                                    </a>
+                                ))}
+                            </div>
 
-                <div class="p-8">
-                    <h3
-                        class="text-2xl font-bold text-slate-900 dark:text-white mb-3 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors"
-                    >
-                        {t.categories.ecommerce.title}
-                    </h3>
-                    <p
-                        class="text-slate-600 dark:text-slate-400 leading-relaxed mb-6"
-                    >
-                        {t.categories.ecommerce.desc}
-                    </p>
-                    <span
-                        class="inline-flex items-center text-emerald-600 dark:text-emerald-400 font-semibold group-hover:underline"
-                    >
-                        {t.categories.ecommerce.cta}
-                        <svg
-                            class="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
-                        </svg>
-                    </span>
-                </div>
-            </a>
-
-            <!-- Corporate Category Card -->
-            <a
-                href={`/${lang}/explore/corporate`}
-                class="group block bg-white dark:bg-slate-800 rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 border border-slate-100 dark:border-slate-700 relative"
-            >
-                <div
-                    class="aspect-video w-full bg-gradient-to-br from-blue-600 to-indigo-700 relative overflow-hidden"
-                >
-                    <div
-                        class="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors"
-                    >
+                            <a
+                                href={`/${lang}/explore/${card.slug}`}
+                                class={`mt-auto inline-flex items-center font-semibold hover:underline ${card.linkAccent}`}
+                            >
+                                {
+                                    t.categories[
+                                        card.key as keyof typeof t.categories
+                                    ].cta
+                                }
+                                <svg
+                                    class="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M17 8l4 4m0 0l-4 4m4-4H3"
+                                    ></path>
+                                </svg>
+                            </a>
+                        </div>
                     </div>
-                    <div
-                        class="absolute inset-0 flex items-center justify-center text-white opacity-90"
-                    >
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            class="h-20 w-20 transform group-hover:scale-110 transition-transform duration-500"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="1.5"
-                                d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
-                            ></path>
-                        </svg>
-                    </div>
-                </div>
-
-                <div class="p-8">
-                    <h3
-                        class="text-2xl font-bold text-slate-900 dark:text-white mb-3 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors"
-                    >
-                        {t.categories.corporate.title}
-                    </h3>
-                    <p
-                        class="text-slate-600 dark:text-slate-400 leading-relaxed mb-6"
-                    >
-                        {t.categories.corporate.desc}
-                    </p>
-                    <span
-                        class="inline-flex items-center text-blue-600 dark:text-blue-400 font-semibold group-hover:underline"
-                    >
-                        {t.categories.corporate.cta}
-                        <svg
-                            class="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
-                        </svg>
-                    </span>
-                </div>
-            </a>
-
-            <!-- Content/News Category Card -->
-            <a
-                href={`/${lang}/explore/content-news`}
-                class="group block bg-white dark:bg-slate-800 rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 border border-slate-100 dark:border-slate-700 relative"
-            >
-                <div
-                    class="aspect-video w-full bg-gradient-to-br from-rose-500 to-orange-600 relative overflow-hidden"
-                >
-                    <div
-                        class="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors"
-                    >
-                    </div>
-                    <div
-                        class="absolute inset-0 flex items-center justify-center text-white opacity-90"
-                    >
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            class="h-20 w-20 transform group-hover:scale-110 transition-transform duration-500"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="1.5"
-                                d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"
-                            ></path>
-                        </svg>
-                    </div>
-                </div>
-
-                <div class="p-8">
-                    <h3
-                        class="text-2xl font-bold text-slate-900 dark:text-white mb-3 group-hover:text-rose-600 dark:group-hover:text-rose-400 transition-colors"
-                    >
-                        {t.categories.content.title}
-                    </h3>
-                    <p
-                        class="text-slate-600 dark:text-slate-400 leading-relaxed mb-6"
-                    >
-                        {t.categories.content.desc}
-                    </p>
-                    <span
-                        class="inline-flex items-center text-rose-600 dark:text-rose-400 font-semibold group-hover:underline"
-                    >
-                        {t.categories.content.cta}
-                        <svg
-                            class="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
-                        </svg>
-                    </span>
-                </div>
-            </a>
-
-            <!-- Software/SaaS Category Card -->
-            <a
-                href={`/${lang}/explore/software`}
-                class="group block bg-white dark:bg-slate-800 rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 border border-slate-100 dark:border-slate-700 relative"
-            >
-                <div
-                    class="aspect-video w-full bg-gradient-to-br from-cyan-500 to-blue-600 relative overflow-hidden"
-                >
-                    <div
-                        class="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors"
-                    >
-                    </div>
-                    <div
-                        class="absolute inset-0 flex items-center justify-center text-white opacity-90"
-                    >
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            class="h-20 w-20 transform group-hover:scale-110 transition-transform duration-500"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="1.5"
-                                d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
-                            ></path>
-                        </svg>
-                    </div>
-                </div>
-
-                <div class="p-8">
-                    <h3
-                        class="text-2xl font-bold text-slate-900 dark:text-white mb-3 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors"
-                    >
-                        {t.categories.software.title}
-                    </h3>
-                    <p
-                        class="text-slate-600 dark:text-slate-400 leading-relaxed mb-6"
-                    >
-                        {t.categories.software.desc}
-                    </p>
-                    <span
-                        class="inline-flex items-center text-cyan-600 dark:text-cyan-400 font-semibold group-hover:underline"
-                    >
-                        {t.categories.software.cta}
-                        <svg
-                            class="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
-                        </svg>
-                    </span>
-                </div>
-            </a>
-        </div>
+                ))
+            }
+        </showcase-rotator>
     </div>
 </section>
+
+<script>
+    // 主題徽章輪替 Web Component：每張卡每 3 秒輪流高亮下一個主題，
+    // hover 該卡時暫停。計時器於 disconnectedCallback 清除，
+    // View Transitions 換頁後不殘留。
+    class ShowcaseRotator extends HTMLElement {
+        private timer: ReturnType<typeof setInterval> | null = null;
+
+        connectedCallback() {
+            const cards = [
+                ...this.querySelectorAll<HTMLElement>("[data-showcase-card]"),
+            ];
+            const activeIndexes = cards.map(() => 0);
+
+            // 與伺服器端渲染的 chip 樣式保持一致
+            const ACTIVE = [
+                "bg-slate-900",
+                "text-white",
+                "dark:bg-white",
+                "dark:text-slate-900",
+            ];
+            const INACTIVE = [
+                "bg-slate-100",
+                "text-slate-600",
+                "dark:bg-slate-700",
+                "dark:text-slate-300",
+                "hover:bg-slate-200",
+                "dark:hover:bg-slate-600",
+            ];
+
+            this.timer = setInterval(() => {
+                cards.forEach((card, c) => {
+                    if (card.matches(":hover")) return;
+                    const chips =
+                        card.querySelectorAll<HTMLElement>("[data-chip]");
+                    if (chips.length <= 1) return;
+
+                    activeIndexes[c] = (activeIndexes[c] + 1) % chips.length;
+                    chips.forEach((chip, i) => {
+                        const active = i === activeIndexes[c];
+                        chip.classList.remove(
+                            ...(active ? INACTIVE : ACTIVE),
+                        );
+                        chip.classList.add(...(active ? ACTIVE : INACTIVE));
+                    });
+                });
+            }, 3000);
+        }
+
+        disconnectedCallback() {
+            if (this.timer) clearInterval(this.timer);
+            this.timer = null;
+        }
+    }
+
+    if (!customElements.get("showcase-rotator")) {
+        customElements.define("showcase-rotator", ShowcaseRotator);
+    }
+</script>
