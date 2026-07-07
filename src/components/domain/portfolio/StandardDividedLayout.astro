@@ -1,81 +1,44 @@
 ---
 import type { ISubThemeDetail } from "@/types/Theme";
+import type { ProjectData } from "@/stores/portfolio.store";
 import Button from "@/components/common/Button.astro";
 import Card from "@/components/common/Card.astro";
 
 interface Props {
     theme: ISubThemeDetail;
+    projects?: ProjectData[];
 }
 
-const { theme } = Astro.props;
+const { theme, projects = [] } = Astro.props;
 const { contentFocus } = theme;
 const lang = Astro.currentLocale || "en";
 
-const content = {
+// Engineer lens: only projects carrying the engineer facet
+const engineerProjects = projects.filter((p) => p.engineer);
+const repoUrl = engineerProjects.find((p) => p.engineer?.repoUrl)?.engineer
+    ?.repoUrl;
+
+// UI chrome strings only — project content comes from the projects collection
+const t = {
     en: {
-        projects: [
-            {
-                title: "Algorithmic Trading Bot",
-                stack: "Python, Docker, AWS",
-                desc: "High-frequency trading system with < 5ms latency.",
-            },
-            {
-                title: "Distributed File System",
-                stack: "Go, gRPC, Raft",
-                desc: "Fault-tolerant storage solution handling PB-scale data.",
-            },
-            {
-                title: "Real-time Analytics Engine",
-                stack: "Rust, Kafka, ClickHouse",
-                desc: "Processing 1M+ events per second.",
-            },
-        ],
-        archTitle: "Architecture Overview",
-        archDesc:
-            "Microservices architecture utilizing event-driven patterns for maximum scalability and decoupling.",
-        archList: [
-            "CI/CD Pipeline: GitHub Actions",
-            "Infrastructure: Terraform",
-            "Monitoring: Prometheus + Grafana",
-        ],
-        logicComment: "logic",
+        solutionsTitle: "Solution Notes",
+        solutionsDesc:
+            "How each system was architected — trade-offs and the decisions behind them.",
+        repoLabel: "Repository",
+        empty: "No engineering projects to display yet.",
     },
     "zh-tw": {
-        projects: [
-            {
-                title: "演算法交易機器人",
-                stack: "Python, Docker, AWS",
-                desc: "延遲低於 5ms 的高頻交易系統。",
-            },
-            {
-                title: "分散式檔案系統",
-                stack: "Go, gRPC, Raft",
-                desc: "處理 PB 級數據的容錯儲存解決方案。",
-            },
-            {
-                title: "即時分析引擎",
-                stack: "Rust, Kafka, ClickHouse",
-                desc: "每秒處理超過 100 萬個事件。",
-            },
-        ],
-        archTitle: "架構總覽",
-        archDesc: "採用事件驅動模式的微服務架構，實現最大擴展性與解耦。",
-        archList: [
-            "CI/CD 流程: GitHub Actions",
-            "基礎設施: Terraform",
-            "監控: Prometheus + Grafana",
-        ],
-        logicComment: "邏輯",
+        solutionsTitle: "解決方案筆記",
+        solutionsDesc: "每個系統的架構思路——取捨與背後的決策。",
+        repoLabel: "程式碼倉庫",
+        empty: "目前沒有可顯示的工程專案。",
     },
 }[lang] || {
-    projects: [],
-    archTitle: "",
-    archDesc: "",
-    archList: [],
-    logicComment: "",
+    solutionsTitle: "",
+    solutionsDesc: "",
+    repoLabel: "",
+    empty: "",
 };
-
-const t = content;
 ---
 
 <div
@@ -90,68 +53,105 @@ const t = content;
         </h2>
     </div>
 
-    <div class="grid md:grid-cols-2 gap-12">
-        <div class="space-y-8">
-            {
-                t.projects.map((p, i) => (
+    {
+        engineerProjects.length === 0 ? (
+            <p class="text-center text-slate-400 dark:text-slate-500 py-16 font-mono">
+                {t.empty}
+            </p>
+        ) : (
+            <div class="grid md:grid-cols-2 gap-12">
+                <div class="space-y-8">
+                    {engineerProjects.map((p) => (
+                        <Card
+                            variant="bordered"
+                            class="p-6 rounded hover:!border-blue-400 dark:hover:!border-blue-400 bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700"
+                            data-project-id={p.id}
+                        >
+                            <h3 class="text-xl font-bold text-slate-800 dark:text-slate-100 mb-2">
+                                {p.title}
+                            </h3>
+                            <p class="text-slate-600 dark:text-slate-400 mb-4">
+                                {p.summary}
+                            </p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                {p.engineer!.stack.map((tech) => (
+                                    <span class="text-xs font-mono bg-slate-100 dark:bg-slate-700 text-blue-600 dark:text-blue-300 px-2 py-1 rounded">
+                                        {tech}
+                                    </span>
+                                ))}
+                            </div>
+                            {contentFocus.displayCodeBlocks &&
+                                p.engineer!.codeSnippet && (
+                                    <div class="bg-slate-900 p-3 rounded text-xs text-green-400 font-mono overflow-x-auto">
+                                        <pre>
+                                            <code>
+                                                {p.engineer!.codeSnippet}
+                                            </code>
+                                        </pre>
+                                    </div>
+                                )}
+                            {p.engineer!.repoUrl && (
+                                <a
+                                    href={p.engineer!.repoUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="inline-flex items-center gap-1 mt-4 text-sm font-mono text-blue-600 dark:text-blue-400 hover:underline"
+                                >
+                                    <svg
+                                        class="w-4 h-4"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke="currentColor"
+                                    >
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                                        />
+                                    </svg>
+                                    {t.repoLabel}
+                                </a>
+                            )}
+                        </Card>
+                    ))}
+                </div>
+
+                <div class="space-y-6">
                     <Card
                         variant="bordered"
-                        class="p-6 rounded hover:!border-blue-400 dark:hover:!border-blue-400 bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700"
+                        class="!bg-blue-50 dark:!bg-blue-900/20 border-l-4 !border-blue-600 p-6 border-y-0 border-r-0 rounded-none rounded-r"
                     >
-                        <h3 class="text-xl font-bold text-slate-800 dark:text-slate-100 mb-2">
-                            {p.title}
+                        <h3 class="font-bold text-blue-900 dark:text-blue-100 mb-2">
+                            {t.solutionsTitle}
                         </h3>
-                        <p class="text-slate-600 dark:text-slate-400 mb-4">
-                            {p.desc}
+                        <p class="text-blue-800 dark:text-blue-200 text-sm mb-4">
+                            {t.solutionsDesc}
                         </p>
-                        <div class="flex gap-3 mb-4">
-                            {contentFocus.metadataPriority.map((meta) => (
-                                <span class="text-xs font-mono bg-slate-100 dark:bg-slate-700 text-blue-600 dark:text-blue-300 px-2 py-1 rounded">
-                                    {meta === "Stack" || meta === "技術堆疊"
-                                        ? p.stack
-                                        : lang === "zh-tw"
-                                          ? "已優化"
-                                          : "Optimized"}
-                                </span>
+                        <ul class="text-sm text-blue-800 dark:text-blue-200 space-y-4">
+                            {engineerProjects.map((p) => (
+                                <li>
+                                    <span class="font-mono font-bold block mb-1">
+                                        {p.title}
+                                    </span>
+                                    <span class="leading-relaxed">
+                                        {p.engineer!.solution}
+                                    </span>
+                                </li>
                             ))}
-                        </div>
-                        {contentFocus.displayCodeBlocks && (
-                            <div class="bg-slate-900 p-3 rounded text-xs text-green-400 font-mono overflow-x-auto">
-                                <code>
-                                    {`function optimize(x) {\n  return x * 2; // ${p.title} ${t.logicComment}\n}`}
-                                </code>
-                            </div>
-                        )}
+                        </ul>
                     </Card>
-                ))
-            }
-        </div>
-
-        <div class="space-y-6">
-            <Card
-                variant="bordered"
-                class="!bg-blue-50 dark:!bg-blue-900/20 border-l-4 !border-blue-600 p-6 border-y-0 border-r-0 rounded-none rounded-r"
-            >
-                <h3 class="font-bold text-blue-900 dark:text-blue-100 mb-2">
-                    {t.archTitle}
-                </h3>
-                <p class="text-blue-800 dark:text-blue-200 text-sm mb-4">
-                    {t.archDesc}
-                </p>
-                <ul
-                    class="list-disc list-inside text-sm text-blue-800 dark:text-blue-200 space-y-1 font-mono"
-                >
-                    {t.archList.map((item, i) => <li>{item}</li>)}
-                </ul>
-            </Card>
-            <div class="mt-8">
-                <Button
-                    variant="outline"
-                    class="w-full !border-blue-600 !text-blue-600 hover:!bg-blue-50 dark:!text-blue-400 dark:hover:!bg-slate-800 font-mono rounded"
-                >
-                    {contentFocus.primaryCTA}
-                </Button>
+                    <div class="mt-8">
+                        <Button
+                            variant="outline"
+                            href={repoUrl}
+                            class="w-full !border-blue-600 !text-blue-600 hover:!bg-blue-50 dark:!text-blue-400 dark:hover:!bg-slate-800 font-mono rounded"
+                        >
+                            {contentFocus.primaryCTA}
+                        </Button>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
+        )
+    }
 </div>
