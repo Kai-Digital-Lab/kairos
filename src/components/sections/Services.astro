@@ -1,5 +1,13 @@
 ---
+import { getEntry } from "astro:content";
+import type { ProjectData } from "@/stores/portfolio.store";
+
 const lang = Astro.currentLocale || "en";
+
+// Each service links to a real project from the projects collection
+// as proof of work, pointed at the explorer lens that shows it best.
+const projectsEntry = await getEntry("projects", `projects-${lang}`);
+const projects: ProjectData[] = projectsEntry?.data ?? [];
 
 const translations = {
     en: {
@@ -22,6 +30,7 @@ const translations = {
             "Move beyond chaos with a centralized design language. We build comprehensive UI kits and component libraries that bridge the gap between design and development, accelerating future feature rollouts while maintaining perfect consistency.",
         learnMore: "Learn More",
         showLess: "Show Less",
+        exampleLabel: "Real example:",
     },
     "zh-tw": {
         title: "專業領域",
@@ -40,33 +49,65 @@ const translations = {
             "透過集中化的設計語言擺脫混亂。我們建立全面的 UI 套件與元件庫，縮短設計與開發之間的差距，在加速未來功能推出的同時，保持完美的品牌一致性。",
         learnMore: "了解更多",
         showLess: "收起",
+        exampleLabel: "實際案例：",
     },
 };
 
 const t = translations[lang as keyof typeof translations] || translations.en;
 
-const services = [
+// exampleProjectId references the projects collection; exampleTheme picks
+// the explorer lens that presents that project best
+const serviceMeta = [
+    {
+        exampleProjectId: "kairos-website",
+        exampleTheme: "VisualDesigner",
+        iconPath:
+            "M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z",
+    },
+    {
+        exampleProjectId: "aoi-vision-platform",
+        exampleTheme: "SoftwareEngineer",
+        iconPath: "M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4",
+    },
+    {
+        exampleProjectId: "klab-design-system",
+        exampleTheme: "UXUIDesigner",
+        iconPath:
+            "M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z",
+    },
+];
+
+const serviceCopy = [
     {
         title: t.service1Title,
         desc: t.service1Desc,
         details: t.service1Details,
-        iconPath:
-            "M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z",
     },
     {
         title: t.service2Title,
         desc: t.service2Desc,
         details: t.service2Details,
-        iconPath: "M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4",
     },
     {
         title: t.service3Title,
         desc: t.service3Desc,
         details: t.service3Details,
-        iconPath:
-            "M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z",
     },
 ];
+
+const services = serviceMeta.map((meta, index) => {
+    const example = projects.find((p) => p.id === meta.exampleProjectId);
+    return {
+        ...serviceCopy[index],
+        iconPath: meta.iconPath,
+        example: example
+            ? {
+                  title: example.title,
+                  href: `/${lang}/explore/portfolio/${meta.exampleTheme}`,
+              }
+            : null,
+    };
+});
 ---
 
 <section
@@ -141,6 +182,20 @@ const services = [
                                 {s.details}
                             </div>
                         </details>
+
+                        {s.example && (
+                            <div class="mt-6 pt-4 border-t border-slate-100 dark:border-slate-700 text-sm">
+                                <span class="text-slate-400 dark:text-slate-500 text-xs uppercase tracking-wider">
+                                    {t.exampleLabel}
+                                </span>
+                                <a
+                                    href={s.example.href}
+                                    class="ml-1 text-primary-600 dark:text-primary-400 font-medium hover:underline"
+                                >
+                                    {s.example.title}
+                                </a>
+                            </div>
+                        )}
                     </div>
                 ))
             }

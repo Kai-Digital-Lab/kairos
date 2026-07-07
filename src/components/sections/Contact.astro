@@ -30,7 +30,7 @@ const translations = {
     },
 };
 
-const t = translations[lang] || translations.en;
+const t = translations[lang as keyof typeof translations] || translations.en;
 ---
 
 <section
