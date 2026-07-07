@@ -1,0 +1,154 @@
+[
+    {
+        "id": "kairos-website",
+        "title": "Kairos — K-LAB 官方網站",
+        "summary": "以 Astro 5 打造、部署於 Cloudflare Pages 的零執行期官網，內含 25 種主題版型。",
+        "fullDescription": "Kai Digital Lab 官方網站，貫徹零執行期（Zero-Runtime）哲學：不載入 React 或 Vue，互動全數交給原生 Web Components 與 Nano Stores。網站本身就是活的展示品——主題探索器將同一份內容透過 5 大類、25 種產業版型呈現，全站英文／繁體中文完整對應，並支援深色模式。",
+        "heroImage": "https://picsum.photos/seed/kairos-website/1200/800",
+        "tags": ["Astro", "TypeScript", "Tailwind CSS", "Cloudflare"],
+        "year": 2026,
+        "link": "https://github.com/Kai-Digital-Lab/kairos",
+        "designer": {
+            "concept": "Kairos——關鍵時刻。視覺系統把每個專案都框成值得把握的瞬間：大量留白、紫藍漸層的強調色，以及能切換人格卻不失識別度的版型。",
+            "guidelines": "UI 文字使用 Inter；8pt 間距系統；slate 中性色搭配 primary-600 強調色；所有元件同時提供亮／暗兩種變體；圖示為 inline SVG，以 currentColor 描邊。"
+        },
+        "engineer": {
+            "stack": ["Astro 5", "TypeScript", "Tailwind CSS", "Nano Stores", "Cloudflare Pages"],
+            "solution": "以伺服器渲染的 Astro 搭配選擇性 SSG，取代原本框架沉重的 SPA 原型。互動島採原生 Custom Elements 串接 Nano Stores，全站送到客戶端的 JS 壓縮後維持在 25 KB 以下。",
+            "repoUrl": "https://github.com/Kai-Digital-Lab/kairos",
+            "codeSnippet": "import { atom } from 'nanostores';\n\nexport const activeProject = atom<ProjectData | null>(null);\n\n// 任何版型都能開啟共用的 Modal：\nactiveProject.set(project);"
+        }
+    },
+    {
+        "id": "smart-factory-cloud-migration",
+        "title": "智慧工廠雲端遷移計畫",
+        "summary": "歷時 18 個月，將 PCB 製造商的 MES 與品質系統從地端 VM 遷移至 AWS，產線零停擺。",
+        "fullDescription": "為桃園一家 PCB 製造商主導 40 多個生產工作負載的遷移——涵蓋 MES、SPC 品質儀表板與現場整合服務。計畫配合工廠歲修窗口分五波執行，落地於以 Terraform 管理的 AWS Landing Zone：容器化服務跑在 EKS 上，並以 Site-to-Site VPN 回連現場 PLC。整個計畫累計切換停機時間不到四小時，產線從未停擺。",
+        "heroImage": "https://picsum.photos/seed/factory-cloud/1200/800",
+        "tags": ["雲端架構", "AWS", "專案管理"],
+        "year": 2024,
+        "engineer": {
+            "stack": ["AWS EKS", "Terraform", "RDS for SQL Server", "Site-to-Site VPN", "CloudWatch"],
+            "solution": "採 Strangler Pattern 漸進遷移：每個 MES 模組容器化後，在穩定的 API Gateway 之後完成切換，現場端的連線端點完全不必更動。Landing Zone 以 Terraform 模組固化，第一波之後每一波的環境建置速度都快了 60%。"
+        },
+        "consultant": {
+            "testimonial": {
+                "quote": "這是我們見過執行最嚴謹的遷移計畫——每一波都準時落在歲修窗口內，Kevin 的每週風險檢視讓我們從未被突發狀況打到。",
+                "author": "陳育誠",
+                "role": "製造資訊處長"
+            },
+            "serviceProcess": [
+                "探索與工作負載盤點",
+                "Landing Zone 設計（網路、IAM、成本護欄）",
+                "配合歲修窗口的波次規劃",
+                "逐波容器化與遷移",
+                "Hypercare 與成本最佳化"
+            ]
+        }
+    },
+    {
+        "id": "aoi-vision-platform",
+        "title": "AOI 智慧視覺檢測平台",
+        "summary": "在 SMT 產線導入邊緣 AI 複判，誤殺率降低三分之二，影像全程不出廠。",
+        "fullDescription": "一場 AOI 老線翻新：既有規則式 AOI 誤報率過高，每片板子都得靠人工複檢。我們在原有相機訊號上疊加 CNN 複判服務，部署於產線旁的邊緣 GPU，原始影像不離開廠內網路；雲端控制平面則負責模型版本管理、機隊監控與飄移告警。",
+        "heroImage": "https://picsum.photos/seed/aoi-vision/1200/800",
+        "tags": ["邊緣 AI", "電腦視覺", "智慧製造"],
+        "year": 2025,
+        "engineer": {
+            "stack": ["Python", "PyTorch", "ONNX Runtime", "NVIDIA Jetson", "Azure IoT Edge", "Grafana"],
+            "solution": "兩段式推論：既有 AOI 保留高召回率的規則，CNN 只複判被標記的影格，因此完全不影響產線節拍。模型於雲端訓練、量化為 ONNX 後，透過 IoT Edge 部署到 Jetson 裝置，偵測到飄移時自動回滾。"
+        },
+        "caseStudy": {
+            "problem": "作業員必須人工複檢所有被 AOI 標記的板子——每班約 3,000 片、誤殺率高達 38%，形成複檢瓶頸，且各班判定標準不一。",
+            "process": [
+                "於兩條試點產線進行影子模式資料蒐集",
+                "與資深品保作業員舉辦缺陷分類工作坊",
+                "依產品族群訓練模型並調校閾值",
+                "AI 與作業員判定並行比對四週",
+                "逐線導入，以各線準確率作為放行門檻"
+            ],
+            "wireframes": [
+                { "label": "畫面 01", "title": "產線總覽儀表板" },
+                { "label": "畫面 02", "title": "缺陷複判佇列" },
+                { "label": "畫面 03", "title": "模型飄移監控" }
+            ]
+        },
+        "consultant": {
+            "testimonial": {
+                "quote": "第一季誤殺率就從 38% 降到 11%，團隊終於重新信任 AOI 產線了。",
+                "author": "林惠敏",
+                "role": "品保經理"
+            }
+        }
+    },
+    {
+        "id": "klab-design-system",
+        "title": "K-LAB 設計系統",
+        "summary": "以原子化設計代幣與共用元件統一 25 種主題版型，同時保留每個主題的個性。",
+        "fullDescription": "隨著 Kairos 主題探索器擴張到 25 種版型，視覺開始漂移：五種略有差異的按鈕、不一致的間距、各自為政的深色模式修補。設計系統引入共用原子元件（Button、Card、Badge）與夠薄的代幣層，讓每個主題保有自己的聲音——企業版型與八卦雜誌版型用的是同一個 Card 原型，只是注入不同的代幣。",
+        "heroImage": "https://picsum.photos/seed/klab-design/1200/800",
+        "tags": ["設計系統", "Tailwind CSS", "原子化設計"],
+        "year": 2025,
+        "designer": {
+            "concept": "一副骨架，多種皮膚。原子元件定義結構與行為；主題透過代幣與 Tailwind 覆寫注入個性——絕不 fork 元件。",
+            "guidelines": "用變體取代一次性 class；每個原子元件都接受 class prop 供主題覆寫；深色模式是一級變體而非事後補丁；間距對齊 8pt 系統。"
+        },
+        "caseStudy": {
+            "problem": "25 種版型累積出五種按鈕樣式、三種卡片邊框處理，以及數十處手調的深色模式補丁——每新增一個主題，漂移就更嚴重。",
+            "process": [
+                "盤點 25 種版型的視覺稽核",
+                "抽取設計代幣：色彩、間距、圓角、陰影層級",
+                "設計原子元件 API 與明確的覆寫合約",
+                "按主題分類逐批遷移",
+                "以 Lint 規則防止回歸"
+            ],
+            "wireframes": [
+                { "label": "圖表 01", "title": "元件盤點矩陣" },
+                { "label": "圖表 02", "title": "代幣架構圖" }
+            ]
+        }
+    },
+    {
+        "id": "formosa-light",
+        "title": "福爾摩沙之光",
+        "summary": "追逐台灣山線光影的風景攝影系列——從合歡山日出到九份的燈籠暮色。",
+        "fullDescription": "為期一年的個人創作，記錄光如何在台灣移動：合歡山雲海之上的日出、阿里山茶園斜照的午後、九份燈籠接管天色的藍調時刻。刻意放慢節奏——一次旅程只拍一個地點，等光，而不是追構圖。",
+        "heroImage": "https://picsum.photos/seed/formosa-light/1600/900",
+        "tags": ["攝影", "風景", "台灣"],
+        "year": 2023,
+        "designer": {
+            "concept": "光在前，主體在後。每一張照片都由一道正在做短暫非凡之事的光源所定錨。"
+        },
+        "photographer": {
+            "exif": {
+                "camera": "Sony α7 IV",
+                "lens": "FE 24–70mm F2.8 GM II",
+                "iso": "100",
+                "shutter": "1/125s",
+                "aperture": "f/8"
+            },
+            "seriesName": "福爾摩沙之光",
+            "location": "合歡山 · 阿里山 · 九份"
+        }
+    },
+    {
+        "id": "neon-taipei",
+        "title": "霓虹台北",
+        "summary": "雨後台北的夜間街拍——霓虹、倒影，與深夜麵攤。",
+        "fullDescription": "在一個潮濕的夏天、無數次下班後的散步中完成：西門町招牌倒映在濕漉的柏油路上、饒河街最後一批客人、忠孝東路計程車的光軌。整個系列刻意手持、高 ISO——顆粒感本來就屬於這座城市。",
+        "heroImage": "https://picsum.photos/seed/neon-taipei/1600/900",
+        "tags": ["攝影", "街拍", "夜景"],
+        "year": 2024,
+        "photographer": {
+            "exif": {
+                "camera": "Fujifilm X100V",
+                "lens": "23mm F2（定焦）",
+                "iso": "3200",
+                "shutter": "1/60s",
+                "aperture": "f/2"
+            },
+            "seriesName": "霓虹台北",
+            "location": "西門町 · 饒河街 · 忠孝東路"
+        }
+    }
+]

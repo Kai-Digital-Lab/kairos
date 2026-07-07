@@ -1,69 +1,63 @@
 ---
 import type { ISubThemeDetail } from "@/types/Theme";
+import type { ProjectData } from "@/stores/portfolio.store";
 import Button from "@/components/common/Button.astro";
 import Card from "@/components/common/Card.astro";
 
 interface Props {
     theme: ISubThemeDetail;
+    projects?: ProjectData[];
 }
 
-const { theme } = Astro.props;
+const { theme, projects = [] } = Astro.props;
 const { contentFocus } = theme;
 const lang = Astro.currentLocale || "en";
 
+// Consultant lens: testimonials + the first documented service process
+const testimonials = projects
+    .filter((p) => p.consultant?.testimonial)
+    .map((p) => ({ project: p, testimonial: p.consultant!.testimonial! }));
+const processProject = projects.find(
+    (p) => p.consultant?.serviceProcess?.length,
+);
+const serviceProcess = processProject?.consultant?.serviceProcess ?? [];
+
+// UI chrome strings only — project content comes from the projects collection
 const t = {
     en: {
         subtitle:
             '"Strategic guidance that transforms operational chaos into sustainable growth."',
         trusted: "Trusted by Industry Leaders",
-        testimonials: [
-            {
-                quote: '"The ROI we achieved within 3 months was unprecedented. Highly recommended."',
-                name: "Sarah Jenkins",
-                role: "CEO, FinTech Start",
-            },
-            {
-                quote: '"A master of strategy. The roadmap provided was clear, actionable, and effective."',
-                name: "Michael Chen",
-                role: "Director, Global Mfg",
-            },
-        ],
+        quoteOpen: "“",
+        quoteClose: "”",
         processTitle: "Our Strategic Process",
-        phases: ["Discovery", "Analysis", "Execution"],
-        phaseDesc:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        phaseLabel: "Phase",
+        fromProject: "From the engagement:",
+        dotLabel: "Testimonial",
         finalTitle: "Ready to elevate your business?",
         finalBtn: "Schedule Consultation",
     },
     "zh-tw": {
         subtitle: "「將營運混亂轉化為持續增長的策略指引。」",
         trusted: "受業界領袖信賴",
-        testimonials: [
-            {
-                quote: "「我們在三個月內達到的投資報酬率是前所未有的。強烈推薦。」",
-                name: "Sarah Jenkins",
-                role: "CEO, 金融科技新創",
-            },
-            {
-                quote: "「策略大師。提供的路線圖清晰、可行且有效。」",
-                name: "Michael Chen",
-                role: "總監, 全球製造業",
-            },
-        ],
+        quoteOpen: "「",
+        quoteClose: "」",
         processTitle: "我們的策略流程",
-        phases: ["探索", "分析", "執行"],
-        phaseDesc:
-            "我們深入了解您的業務核心，找出痛點，並制定可執行的解決方案，確保每一步都朝向目標邁進。",
+        phaseLabel: "階段",
+        fromProject: "出自專案：",
+        dotLabel: "見證",
         finalTitle: "準備好提升您的業務了嗎？",
         finalBtn: "預約諮詢",
     },
 }[lang] || {
     subtitle: "",
     trusted: "",
-    testimonials: [],
+    quoteOpen: "",
+    quoteClose: "",
     processTitle: "",
-    phases: [],
-    phaseDesc: "",
+    phaseLabel: "",
+    fromProject: "",
+    dotLabel: "",
     finalTitle: "",
     finalBtn: "",
 };
@@ -108,62 +102,89 @@ const t = {
         </div>
     </div>
 
-    {/* Testimonials */}
+    {/* Testimonials — rotator (auto-advance + dots + arrow keys) */}
     {
-        contentFocus.showTestimonials && (
-            <div class="grid md:grid-cols-2 gap-8 mb-20">
-                {t.testimonials.map((test, i) => (
-                    <Card
-                        variant="default"
-                        class="p-8 !shadow-xl !rounded-none !rounded-tl-3xl !rounded-br-3xl border border-stone-100 dark:border-slate-700"
-                    >
+        contentFocus.showTestimonials && testimonials.length > 0 && (
+            <testimonial-rotator
+                class="block mb-20 max-w-2xl mx-auto outline-none"
+                tabindex="0"
+            >
+                <div class="grid">
+                    {testimonials.map(({ project, testimonial }, index) => (
+                        <Card
+                            variant="default"
+                            class={`p-8 !shadow-xl !rounded-none !rounded-tl-3xl !rounded-br-3xl border border-stone-100 dark:border-slate-700 [grid-area:1/1] transition-opacity duration-700 ${index === 0 ? "opacity-100" : "opacity-0 pointer-events-none"}`}
+                            data-project-id={project.id}
+                            data-slide={index}
+                        >
                         <p class="text-stone-700 dark:text-stone-300 mb-4 font-serif text-lg">
-                            {test.quote}
+                            {t.quoteOpen}
+                            {testimonial.quote}
+                            {t.quoteClose}
                         </p>
                         <div class="flex items-center gap-3">
                             <div class="w-10 h-10 bg-stone-200 dark:bg-stone-600 rounded-full" />
                             <div>
                                 <p class="font-bold text-stone-900 dark:text-stone-100 text-sm">
-                                    {test.name}
+                                    {testimonial.author}
                                 </p>
-                                <p class="text-stone-500 dark:text-stone-400 text-xs">
-                                    {test.role}
-                                </p>
+                                {testimonial.role && (
+                                    <p class="text-stone-500 dark:text-stone-400 text-xs">
+                                        {testimonial.role}
+                                    </p>
+                                )}
+                                    <p class="text-stone-400 dark:text-stone-500 text-xs mt-1">
+                                        {t.fromProject}
+                                        {project.title}
+                                    </p>
+                                </div>
                             </div>
-                        </div>
-                    </Card>
-                ))}
-            </div>
+                        </Card>
+                    ))}
+                </div>
+                {testimonials.length > 1 && (
+                    <div class="flex justify-center gap-3 mt-6">
+                        {testimonials.map((_, index) => (
+                            <button
+                                data-dot={index}
+                                aria-label={`${t.dotLabel} ${index + 1}`}
+                                aria-pressed={index === 0 ? "true" : "false"}
+                                class={`w-2.5 h-2.5 rounded-full transition-colors cursor-pointer ${index === 0 ? "bg-amber-700" : "bg-stone-300 dark:bg-stone-600 hover:bg-amber-500"}`}
+                            />
+                        ))}
+                    </div>
+                )}
+            </testimonial-rotator>
         )
     }
 
     {/* Process Section */}
-    <div class="mb-20">
-        <h3
-            class="text-2xl font-bold mb-8 text-center font-serif text-stone-900 dark:text-stone-100"
-        >
-            {t.processTitle}
-        </h3>
-        <div class="space-y-6">
-            {
-                [1, 2, 3].map((step) => (
-                    <div class="flex gap-6 items-start">
-                        <div class="w-12 h-12 flex-shrink-0 bg-amber-100 dark:bg-amber-900/50 text-amber-800 dark:text-amber-200 rounded-full flex items-center justify-center font-bold text-xl">
-                            {step}
+    {
+        serviceProcess.length > 0 && (
+            <div class="mb-20">
+                <h3 class="text-2xl font-bold mb-8 text-center font-serif text-stone-900 dark:text-stone-100">
+                    {t.processTitle}
+                </h3>
+                <div class="space-y-6">
+                    {serviceProcess.map((step, index) => (
+                        <div class="flex gap-6 items-start">
+                            <div class="w-12 h-12 flex-shrink-0 bg-amber-100 dark:bg-amber-900/50 text-amber-800 dark:text-amber-200 rounded-full flex items-center justify-center font-bold text-xl">
+                                {index + 1}
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg mb-2 text-stone-900 dark:text-stone-100">
+                                    {t.phaseLabel} {index + 1}
+                                </h4>
+                                <p class="text-stone-600 dark:text-stone-400">
+                                    {step}
+                                </p>
+                            </div>
                         </div>
-                        <div>
-                            <h4 class="font-bold text-lg mb-2 text-stone-900 dark:text-stone-100">
-                                Phase {step}: {t.phases[step - 1]}
-                            </h4>
-                            <p class="text-stone-600 dark:text-stone-400">
-                                {t.phaseDesc}
-                            </p>
-                        </div>
-                    </div>
-                ))
-            }
-        </div>
-    </div>
+                    ))}
+                </div>
+            </div>
+        )
+    }
 
     {/* Final CTA */}
     <div
@@ -178,3 +199,83 @@ const t = {
         </Button>
     </div>
 </div>
+
+<script>
+    // 見證輪播 Web Component：每 6 秒自動輪播、圓點切換、
+    // hover 暫停、聚焦時支援 ←/→。計時器於 disconnectedCallback
+    // 清除，View Transitions 換頁後不殘留。
+    class TestimonialRotator extends HTMLElement {
+        private activeIndex = 0;
+        private timer: ReturnType<typeof setInterval> | null = null;
+        private slides: HTMLElement[] = [];
+        private dots: HTMLButtonElement[] = [];
+
+        connectedCallback() {
+            this.slides = [...this.querySelectorAll<HTMLElement>("[data-slide]")];
+            this.dots = [...this.querySelectorAll<HTMLButtonElement>("[data-dot]")];
+            if (this.slides.length <= 1) return;
+
+            this.dots.forEach((dot, index) => {
+                dot.addEventListener("click", () => {
+                    this.show(index);
+                    this.restart();
+                });
+            });
+
+            this.addEventListener("keydown", (e) => {
+                if (e.key === "ArrowRight") {
+                    e.preventDefault();
+                    this.show(this.activeIndex + 1);
+                    this.restart();
+                } else if (e.key === "ArrowLeft") {
+                    e.preventDefault();
+                    this.show(this.activeIndex - 1);
+                    this.restart();
+                }
+            });
+
+            this.addEventListener("mouseenter", () => this.stop());
+            this.addEventListener("mouseleave", () => this.restart());
+            this.restart();
+        }
+
+        disconnectedCallback() {
+            this.stop();
+        }
+
+        private show(index: number) {
+            const total = this.slides.length;
+            this.activeIndex = (index + total) % total;
+
+            this.slides.forEach((slide, i) => {
+                const active = i === this.activeIndex;
+                slide.classList.toggle("opacity-100", active);
+                slide.classList.toggle("opacity-0", !active);
+                slide.classList.toggle("pointer-events-none", !active);
+            });
+            this.dots.forEach((dot, i) => {
+                const active = i === this.activeIndex;
+                dot.setAttribute("aria-pressed", String(active));
+                dot.classList.toggle("bg-amber-700", active);
+                dot.classList.toggle("bg-stone-300", !active);
+                dot.classList.toggle("dark:bg-stone-600", !active);
+            });
+        }
+
+        private stop() {
+            if (this.timer) clearInterval(this.timer);
+            this.timer = null;
+        }
+
+        private restart() {
+            this.stop();
+            this.timer = setInterval(() => {
+                this.show(this.activeIndex + 1);
+            }, 6000);
+        }
+    }
+
+    if (!customElements.get("testimonial-rotator")) {
+        customElements.define("testimonial-rotator", TestimonialRotator);
+    }
+</script>

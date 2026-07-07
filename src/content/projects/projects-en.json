@@ -1,0 +1,154 @@
+[
+    {
+        "id": "kairos-website",
+        "title": "Kairos — K-LAB Official Website",
+        "summary": "Zero-runtime marketing site with 25 theme layouts, built on Astro 5 and deployed to Cloudflare Pages.",
+        "fullDescription": "The official site of Kai Digital Lab, engineered around a zero-runtime philosophy: no React or Vue payloads, with interactivity handled by native Web Components and Nano Stores. The site doubles as a living showcase — a theme explorer renders the same content through 25 industry-specific layouts across 5 categories, with full English / Traditional Chinese parity and dark mode throughout.",
+        "heroImage": "https://picsum.photos/seed/kairos-website/1200/800",
+        "tags": ["Astro", "TypeScript", "Tailwind CSS", "Cloudflare"],
+        "year": 2026,
+        "link": "https://github.com/Kai-Digital-Lab/kairos",
+        "designer": {
+            "concept": "Kairos — the opportune moment. The visual system frames every project as a moment worth seizing: generous whitespace, a violet-to-blue gradient accent, and layouts that switch persona without losing identity.",
+            "guidelines": "Inter for UI text; 8-pt spacing scale; slate neutrals with primary-600 accents; every component ships light and dark variants; icons are inline SVGs stroked with currentColor."
+        },
+        "engineer": {
+            "stack": ["Astro 5", "TypeScript", "Tailwind CSS", "Nano Stores", "Cloudflare Pages"],
+            "solution": "Replaced a framework-heavy SPA prototype with server-rendered Astro and selective SSG. Interactive islands are native Custom Elements wired to Nano Stores, keeping client-side JS under 25 KB gzipped across the whole site.",
+            "repoUrl": "https://github.com/Kai-Digital-Lab/kairos",
+            "codeSnippet": "import { atom } from 'nanostores';\n\nexport const activeProject = atom<ProjectData | null>(null);\n\n// Any layout can open the shared modal:\nactiveProject.set(project);"
+        }
+    },
+    {
+        "id": "smart-factory-cloud-migration",
+        "title": "Smart Factory Cloud Migration Program",
+        "summary": "An 18-month program moving a PCB manufacturer's MES and quality systems from on-prem VMs to AWS with zero line-down time.",
+        "fullDescription": "Led the migration of 40+ production workloads — MES, SPC quality dashboards, and shop-floor integration services — for a Taoyuan PCB manufacturer. The program ran in five migration waves aligned to factory maintenance windows, landing on a Terraform-managed AWS landing zone with EKS for containerized services and Site-to-Site VPN back to shop-floor PLCs. Cumulative cutover downtime stayed under four hours across the entire program; production never stopped.",
+        "heroImage": "https://picsum.photos/seed/factory-cloud/1200/800",
+        "tags": ["Cloud Architecture", "AWS", "Program Management"],
+        "year": 2024,
+        "engineer": {
+            "stack": ["AWS EKS", "Terraform", "RDS for SQL Server", "Site-to-Site VPN", "CloudWatch"],
+            "solution": "Strangler-pattern migration: each MES module was containerized and cut over behind a stable API gateway, so shop-floor clients never changed endpoints. Terraform modules encode the landing zone, making every wave after the first 60% faster to provision."
+        },
+        "consultant": {
+            "testimonial": {
+                "quote": "Kevin ran the tightest migration program we've seen — every wave landed inside its maintenance window, and his weekly risk reviews meant nothing ever caught us by surprise.",
+                "author": "Y.C. Chen",
+                "role": "Director of Manufacturing IT"
+            },
+            "serviceProcess": [
+                "Discovery & workload assessment",
+                "Landing zone design (network, IAM, cost guardrails)",
+                "Wave planning aligned to maintenance windows",
+                "Containerize & migrate, wave by wave",
+                "Hypercare & cost optimization"
+            ]
+        }
+    },
+    {
+        "id": "aoi-vision-platform",
+        "title": "AOI Vision Inspection Platform",
+        "summary": "Edge-AI defect re-judgment that cut false rejects on SMT lines by two-thirds while keeping every image on-prem.",
+        "fullDescription": "A rework of legacy automated optical inspection (AOI): rule-based machines flagged so many false positives that every board needed manual re-inspection. We layered a CNN-based re-judgment service onto the existing camera feeds, deployed on edge GPUs beside the line so raw images never leave the factory network, with a cloud control plane for model versioning, fleet monitoring, and drift alerts.",
+        "heroImage": "https://picsum.photos/seed/aoi-vision/1200/800",
+        "tags": ["Edge AI", "Computer Vision", "Manufacturing"],
+        "year": 2025,
+        "engineer": {
+            "stack": ["Python", "PyTorch", "ONNX Runtime", "NVIDIA Jetson", "Azure IoT Edge", "Grafana"],
+            "solution": "Two-stage inference: the legacy AOI keeps its high-recall rules, and the CNN re-judges only flagged frames, so line takt time is untouched. Models are trained in the cloud, quantized to ONNX, and rolled out to Jetson devices via IoT Edge deployments with automatic rollback on drift."
+        },
+        "caseStudy": {
+            "problem": "Operators manually re-inspected every AOI-flagged board — about 3,000 boards per shift with a 38% false-reject rate — creating a re-inspection bottleneck and inconsistent judgments across shifts.",
+            "process": [
+                "Shadow-mode data collection on two pilot lines",
+                "Defect taxonomy workshops with senior QA operators",
+                "Model training and threshold tuning per product family",
+                "Four-week side-by-side trial: AI vs. operator judgments",
+                "Line-by-line rollout gated on per-line accuracy"
+            ],
+            "wireframes": [
+                { "label": "Screen 01", "title": "Line Overview Dashboard" },
+                { "label": "Screen 02", "title": "Defect Re-judgment Queue" },
+                { "label": "Screen 03", "title": "Model Drift Monitor" }
+            ]
+        },
+        "consultant": {
+            "testimonial": {
+                "quote": "False rejects dropped from 38% to 11% in the first quarter. The team finally trusts the AOI line again.",
+                "author": "H.M. Lin",
+                "role": "Quality Assurance Manager"
+            }
+        }
+    },
+    {
+        "id": "klab-design-system",
+        "title": "K-LAB Design System",
+        "summary": "Atomic design tokens and shared components that unified 25 theme layouts without flattening their personalities.",
+        "fullDescription": "As the Kairos theme explorer grew to 25 layouts, visual drift crept in: five slightly different buttons, inconsistent spacing, ad-hoc dark-mode fixes. The design system introduced shared atoms (Button, Card, Badge) with a token layer thin enough that each theme keeps its own voice — a corporate layout and a gossip-magazine layout use the same Card primitive with different tokens.",
+        "heroImage": "https://picsum.photos/seed/klab-design/1200/800",
+        "tags": ["Design System", "Tailwind CSS", "Atomic Design"],
+        "year": 2025,
+        "designer": {
+            "concept": "One skeleton, many skins. Atoms define structure and behavior; themes inject personality through tokens and Tailwind overrides — never by forking components.",
+            "guidelines": "Variants over one-off classes; every atom accepts a class prop for theme overrides; dark mode is a first-class variant, not an afterthought; spacing snaps to the 8-pt scale."
+        },
+        "caseStudy": {
+            "problem": "25 layouts had accumulated five button styles, three card-border treatments, and dozens of hand-tuned dark-mode patches — every new theme made the drift worse.",
+            "process": [
+                "Visual audit across all 25 layouts",
+                "Token extraction: color, spacing, radius, elevation",
+                "Atom API design with an explicit override contract",
+                "Incremental migration, one theme category at a time",
+                "Lint rules to prevent regression"
+            ],
+            "wireframes": [
+                { "label": "Map 01", "title": "Component Inventory Matrix" },
+                { "label": "Map 02", "title": "Token Architecture" }
+            ]
+        }
+    },
+    {
+        "id": "formosa-light",
+        "title": "Formosa Light",
+        "summary": "A landscape series chasing Taiwan's mountain light, from Hehuanshan dawn to Jiufen's lantern dusk.",
+        "fullDescription": "A year-long personal series on how light moves across Taiwan: sea-of-clouds sunrises above Hehuanshan, tea fields catching late sun in Alishan, and the blue hour when Jiufen's lanterns take over from the sky. Shot deliberately slow — one location per trip, waiting for the light instead of chasing compositions.",
+        "heroImage": "https://picsum.photos/seed/formosa-light/1600/900",
+        "tags": ["Photography", "Landscape", "Taiwan"],
+        "year": 2023,
+        "designer": {
+            "concept": "Light first, subject second. Every frame is anchored by a single light source doing something briefly extraordinary."
+        },
+        "photographer": {
+            "exif": {
+                "camera": "Sony α7 IV",
+                "lens": "FE 24–70mm F2.8 GM II",
+                "iso": "100",
+                "shutter": "1/125s",
+                "aperture": "f/8"
+            },
+            "seriesName": "Formosa Light",
+            "location": "Hehuanshan · Alishan · Jiufen, Taiwan"
+        }
+    },
+    {
+        "id": "neon-taipei",
+        "title": "Neon Taipei",
+        "summary": "Night street photography of Taipei after the rain — neon, reflections, and late-night noodle stalls.",
+        "fullDescription": "Shot over one humid summer of after-work walks: Ximending signage doubled in wet asphalt, the last customers at Raohe Street stalls, taxi light-trails down Zhongxiao East Road. The series stays handheld and high-ISO on purpose — the grain belongs to the city.",
+        "heroImage": "https://picsum.photos/seed/neon-taipei/1600/900",
+        "tags": ["Photography", "Street", "Night"],
+        "year": 2024,
+        "photographer": {
+            "exif": {
+                "camera": "Fujifilm X100V",
+                "lens": "23mm F2 (fixed)",
+                "iso": "3200",
+                "shutter": "1/60s",
+                "aperture": "f/2"
+            },
+            "seriesName": "Neon Taipei",
+            "location": "Ximending · Raohe St. · Zhongxiao E. Rd., Taipei"
+        }
+    }
+]

@@ -42,6 +42,82 @@ const themeCollection = defineCollection({
     }))
 });
 
+// ── Projects collection ──
+// Mirrors the themes pattern: type 'data', split by locale file
+// (projects-en.json / projects-zh-tw.json), stable shared `id`.
+// Shared core fields + optional per-lens facets, same philosophy
+// as contentFocus above.
+
+const exifSchema = z.object({
+    camera: z.string(),
+    lens: z.string().optional(),
+    iso: z.string().optional(),
+    shutter: z.string().optional(),
+    aperture: z.string().optional(),
+});
+
+const wireframeSchema = z.object({
+    label: z.string(),   // e.g. "Wireframe 01"
+    title: z.string(),   // e.g. "Authentication Flow"
+    image: z.string().optional(),
+});
+
+const testimonialSchema = z.object({
+    quote: z.string(),
+    author: z.string(),
+    role: z.string().optional(),
+});
+
+const projectsCollection = defineCollection({
+    type: 'data',
+    schema: z.array(z.object({
+        // ── Core (every project has these) ──
+        id: z.string(),                 // stable across locales
+        title: z.string(),
+        summary: z.string(),            // one-line, used in grids/cards
+        fullDescription: z.string(),    // shown in ProjectModal
+        heroImage: z.string(),          // URL or gradient CSS class
+        tags: z.array(z.string()),
+        year: z.number().optional(),
+        link: z.string().optional(),
+
+        // ── Optional facets (surfaced per theme lens) ──
+        // Designer (WaterfallGrid): Concept, Guidelines
+        designer: z.object({
+            concept: z.string(),
+            guidelines: z.string().optional(),
+        }).optional(),
+
+        // Engineer (StandardDivided): Stack, Solution, repo
+        engineer: z.object({
+            stack: z.array(z.string()),
+            solution: z.string(),
+            repoUrl: z.string().optional(),
+            codeSnippet: z.string().optional(),  // fenced code as string
+        }).optional(),
+
+        // Photographer (FullBleedCarousel): Exif, Series, Location
+        photographer: z.object({
+            exif: exifSchema.optional(),
+            seriesName: z.string().optional(),
+            location: z.string().optional(),
+        }).optional(),
+
+        // UX/UI (StructuredCaseStudy): Problem, Process, Wireframes
+        caseStudy: z.object({
+            problem: z.string(),
+            process: z.array(z.string()),
+            wireframes: z.array(wireframeSchema).optional(),
+        }).optional(),
+
+        // Consultant (LongPageLanding): Testimonials, ServiceProcess
+        consultant: z.object({
+            testimonial: testimonialSchema.optional(),
+            serviceProcess: z.array(z.string()).optional(),
+        }).optional(),
+    })),
+});
+
 const blogCollection = defineCollection({
     type: 'content',
     schema: z.object({
@@ -63,4 +139,5 @@ const blogCollection = defineCollection({
 export const collections = {
     'themes': themeCollection,
     'blog': blogCollection,
+    'projects': projectsCollection,
 };

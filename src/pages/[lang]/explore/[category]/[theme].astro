@@ -1,7 +1,8 @@
 ---
 import PageLayout from "@/layouts/PageLayout.astro";
 import ThemeDock from "@/components/domain/theme/ThemeDock.astro";
-import { getEntry, getCollection } from "astro:content";
+import { getEntry } from "astro:content";
+import type { ProjectData } from "@/stores/portfolio.store";
 
 // Portfolio Components
 
@@ -90,6 +91,14 @@ const activeTheme = themes.find((t) => t.id === theme);
 if (!lang || !category || !activeTheme) {
     return Astro.redirect("/404");
 }
+
+// Portfolio layouts render from the shared projects collection (ADR-0008).
+// Locale-split entries mirror the themes pattern: projects-en / projects-zh-tw.
+let projects: ProjectData[] = [];
+if (category === "portfolio") {
+    const projectsEntry = await getEntry("projects", `projects-${lang}`);
+    projects = projectsEntry?.data ?? [];
+}
 ---
 
 <PageLayout title={`Explorer - ${category}`} lang={lang}>
@@ -119,7 +128,7 @@ if (!lang || !category || !activeTheme) {
                             ComponentMap[
                                 activeTheme.layoutComponent as keyof typeof ComponentMap
                             ] || WaterfallGridLayout;
-                        return <Layout theme={activeTheme} />;
+                        return <Layout theme={activeTheme} projects={projects} />;
                     })()
                 }
             </div>

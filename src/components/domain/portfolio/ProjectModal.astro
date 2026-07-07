@@ -85,8 +85,11 @@
 
     // 定義 Web Component
     class ProjectModal extends HTMLElement {
-        constructor() {
-            super();
+        private unsubscribe?: () => void;
+
+        // View Transitions 會重建 DOM：在 connected/disconnected 中
+        // 訂閱與退訂，避免舊實例的訂閱殘留
+        connectedCallback() {
             const dialog = this.querySelector("dialog");
             const closeBtn = this.querySelector("#close-btn");
             const cancelBtn = this.querySelector("#cancel-btn");
@@ -101,15 +104,28 @@
             if (!dialog) return;
 
             // 1. 訂閱 Store：當資料改變時，更新 DOM 並開啟/關閉 Modal
-            activeProject.subscribe((project) => {
+            this.unsubscribe = activeProject.subscribe((project) => {
                 if (project) {
                     // 填入資料 (DOM Manipulation)
                     elements.title!.textContent = project.title;
                     elements.desc!.textContent = project.fullDescription; // 使用詳細說明
-                    elements.link!.href = project.link;
 
-                    // 處理圖片 (這裡用 Class 替換，您也可以改成 src)
-                    elements.image!.className = `h-48 w-full relative ${project.image}`;
+                    // link 為選填：沒有連結時隱藏按鈕
+                    if (project.link) {
+                        elements.link!.href = project.link;
+                        elements.link!.classList.remove("hidden");
+                    } else {
+                        elements.link!.classList.add("hidden");
+                    }
+
+                    // 處理圖片：heroImage 可能是 URL 或漸層 CSS class
+                    if (/^(https?:)?\/\//.test(project.heroImage)) {
+                        elements.image!.className = "h-48 w-full relative bg-cover bg-center";
+                        (elements.image as HTMLElement).style.backgroundImage = `url(${project.heroImage})`;
+                    } else {
+                        (elements.image as HTMLElement).style.backgroundImage = "";
+                        elements.image!.className = `h-48 w-full relative ${project.heroImage}`;
+                    }
                     elements.image!.appendChild(closeBtn!); // 把按鈕放回去
 
                     // 處理 Tags (清空後重建)
@@ -142,9 +158,15 @@
             // 監聽原生 close 事件 (例如按 ESC)
             dialog.addEventListener("close", close);
         }
+
+        disconnectedCallback() {
+            this.unsubscribe?.();
+        }
     }
 
-    customElements.define("project-modal", ProjectModal);
+    if (!customElements.get("project-modal")) {
+        customElements.define("project-modal", ProjectModal);
+    }
 </script>
 
 <style>

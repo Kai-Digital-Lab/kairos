@@ -13,6 +13,7 @@ This directory contains the Architecture Decision Records (ADR) for Project Kair
 | [0005](0005-content-collections-for-dynamic-theme-routing.md) | Content Collections for Dynamic Theme Routing | Accepted | Phase 3 |
 | [0006](0006-shared-atomic-components-refactor.md) | Shared Atomic Components Refactor | Accepted | Phase 4 |
 | [0007](0007-hybrid-ssr-ssg-rendering-strategy.md) | Hybrid SSR + Selective SSG Rendering Strategy | Accepted | Phase 4 |
+| [0008](0008-projects-content-collection.md) | Shared Projects Content Collection with Optional Facets | Accepted | Phase 5 |
 
 ## Creating a New ADR
 
