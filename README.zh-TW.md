@@ -10,7 +10,7 @@
 
 **「Kairos」(古希臘語: καιρός)**：代表「關鍵時刻」或「決勝契機」。不同於循序漸進的時間（Chronos），它象徵著精準掌握轉瞬即逝的機會。
 
-> **最後更新：** 2026 年 03 月 15 日
+> **最後更新：** 2026 年 07 月 07 日
 
 ## 🚀 專案願景
 
@@ -26,7 +26,7 @@
 
 * **樣式系統：** Tailwind CSS v3 - 具備 Vite 原生整合的 Utility-first CSS 框架。
 
-* **資料層：** Astro Content Collections - 基於 Zod Schema 的型別安全內容管理系統。
+* **資料層：** Astro Content Collections - 基於 Zod Schema 的型別安全內容管理系統。四個 collections（`themes`、`blog`、`projects`、`pricing`），採語系分檔並支援跨 collection 引用。
 
 * **狀態管理：** Nano Stores - 框架無關、極輕量化 (<1kb) 的狀態管理工具。
 
@@ -50,7 +50,8 @@
 * [x] **階段 2：元件架構** - 原子設計遷移 (通用 vs 領域元件拆分)。
 * [x] **階段 3：動態功能** - 整合「Project Insanity」引擎與 Content Collections 的主題瀏覽器。
 * [x] **階段 4：優化與交付** - 佈局重構與程式碼債務清理。
-* [ ] **階段 5：部落格與內容管線** - Blog SSG 預渲染、Medium 整合與 SEO 優化。
+* [x] **階段 5：部落格與內容管線** - Blog SSG 預渲染、Medium 整合與 SEO 優化。
+* [ ] **階段 6：真實資料重構** - 以 Content Collections 驅動所有版型。主題瀏覽器（作品集 5 版型）與首頁各區塊已完成；其餘 4 大分類（電商、企業、內容、軟體）進行中。
 
 ## 📂 文件
 
@@ -62,7 +63,7 @@
 
 我擅長領導跨部門團隊交付具備高度商業影響力的數位產品。K-LAB 是我探索 Web 前沿技術的個人實驗室。
 
-### 📫 聯繫我： LinkedIn | Medium
+### 📫 聯繫我： [LinkedIn](https://www.linkedin.com/in/kevinhsieh-pmp/) | Medium
 
 ## 📄 授權規範
 

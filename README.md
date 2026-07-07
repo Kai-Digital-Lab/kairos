@@ -10,7 +10,7 @@
 
 **"Kairos" (Ancient Greek: καιρός):** represents a critical moment or a supreme opportunity. Unlike chronological time, it signifies a decisive gap in time where a fleeting opportunity must be seized with precision.
 
-> **Last Updated:** March 15, 2026
+> **Last Updated:** July 7, 2026
 
 ## 🚀 Vision
 
@@ -26,7 +26,7 @@ This project adheres to a **Zero-Runtime Overhead** philosophy, leveraging moder
 
 * **Styling:** Tailwind CSS v3 - Utility-first CSS framework with Vite integration.
 
-* **Data Layer:** Astro Content Collections - Type-safe content management with Zod schemas.
+* **Data Layer:** Astro Content Collections - Type-safe content management with Zod schemas. Four collections (`themes`, `blog`, `projects`, `pricing`) with locale-split data files and cross-collection references.
 
 * **State Management:** Nano Stores - Framework-agnostic, lightweight (<1kb) state manager.
 
@@ -50,7 +50,8 @@ As a **Senior Technical Program Manager**, I believe code should be as organized
 * [x] **Phase 2: Component Architecture** - Migration to Atomic Design (Common vs Domain components).
 * [x] **Phase 3: Dynamic Features** - Theme Explorer with "Project Insanity" engine and Content Collection integration.
 * [x] **Phase 4: Optimization & Cleanup** - Layout refactoring and removal of legacy debt.
-* [ ] **Phase 5: Blog & Content Pipeline** - Blog SSG, Medium syndication, and SEO refinement.
+* [x] **Phase 5: Blog & Content Pipeline** - Blog SSG, Medium syndication, and SEO refinement.
+* [ ] **Phase 6: Real-Data Refactor** - Content collections powering every layout. Portfolio explorer (5 layouts) and homepage sections are done; the remaining 4 theme categories (e-commerce, corporate, content/news, software) are pending.
 
 ## 📂 Documentation
 
@@ -62,7 +63,7 @@ As a **Senior Technical Program Manager**, I believe code should be as organized
 
 I specialize in leading complex cross-functional teams to deliver high-impact digital products. K-LAB is my personal laboratory for exploring the frontier of Web technologies.
 
-### 📫 Connect with me: LinkedIn | Medium
+### 📫 Connect with me: [LinkedIn](https://www.linkedin.com/in/kevinhsieh-pmp/) | Medium
 
 ## 📄 License
 

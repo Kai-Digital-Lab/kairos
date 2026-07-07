@@ -28,10 +28,10 @@ src/
 │   ├── domain/       # Business logic components by category
 │   ├── layout/       # Header, Footer, SEO
 │   └── sections/     # Landing page sections (Hero, About, Services...)
-├── content/          # Content Collections (blog, themes)
+├── content/          # Content Collections (blog, themes, projects, pricing)
 ├── layouts/          # BaseLayout → PageLayout hierarchy
 ├── pages/            # Routes ([lang]/index, blog, 404)
-├── stores/           # Nano Stores (theme, layout, portfolio)
+├── stores/           # Nano Stores (theme, layout, portfolio, pricing)
 ├── styles/           # Global CSS (Tailwind directives)
 └── types/            # TypeScript interfaces
 ```
@@ -111,7 +111,7 @@ document.addEventListener("astro:page-load", () => {
 });
 ```
 
-- Use `persistentAtom` for values that survive page reload (e.g., theme preference)
+- Use `persistentAtom` for values that survive page reload (e.g., theme preference, currency preference)
 - Always listen inside `astro:page-load` to support View Transitions
 
 ## Styling Guidelines
@@ -124,8 +124,12 @@ document.addEventListener("astro:page-load", () => {
 
 ## Content Collections
 
+Data collections are locale-split (`*-en.json` / `*-zh-tw.json`) with stable shared `id`s across locales.
+
 - `blog`: Markdown content with Zod-validated frontmatter (title, description, pubDate, tags, etc.)
 - `themes`: JSON data defining layout themes with content focus metadata
+- `projects`: shared portfolio dataset — core fields + optional per-lens facets (`designer` / `engineer` / `photographer` / `caseStudy` / `consultant`), see ADR-0008. Consumed by the 5 portfolio explorer layouts, the homepage showcase, and as example-work links in Pricing/Services.
+- `pricing`: plans with dual-currency display prices (`price.usd` / `price.twd`) and `exampleProjectIds` cross-referencing `projects`
 
 ## Git Conventions
 
