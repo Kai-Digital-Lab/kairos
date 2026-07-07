@@ -61,17 +61,23 @@ const serviceMeta = [
     {
         exampleProjectId: "kairos-website",
         exampleTheme: "VisualDesigner",
+        iconColor:
+            "bg-pink-100 dark:bg-pink-900/30 text-pink-600 dark:text-pink-400",
         iconPath:
             "M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z",
     },
     {
         exampleProjectId: "aoi-vision-platform",
         exampleTheme: "SoftwareEngineer",
+        iconColor:
+            "bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400",
         iconPath: "M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4",
     },
     {
         exampleProjectId: "klab-design-system",
         exampleTheme: "UXUIDesigner",
+        iconColor:
+            "bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400",
         iconPath:
             "M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z",
     },
@@ -100,6 +106,7 @@ const services = serviceMeta.map((meta, index) => {
     return {
         ...serviceCopy[index],
         iconPath: meta.iconPath,
+        iconColor: meta.iconColor,
         example: example
             ? {
                   title: example.title,
@@ -132,7 +139,9 @@ const services = serviceMeta.map((meta, index) => {
             {
                 services.map((s) => (
                     <div class="bg-slate-50 dark:bg-slate-800 rounded-xl p-8 border border-slate-100 dark:border-slate-700 hover:shadow-lg transition-all duration-300 group">
-                        <div class="w-12 h-12 bg-primary-100 dark:bg-primary-900/30 rounded-lg flex items-center justify-center text-primary-600 dark:text-primary-400 mb-6 group-hover:scale-110 transition-transform duration-300">
+                        <div
+                            class={`w-12 h-12 rounded-lg flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 ${s.iconColor}`}
+                        >
                             <svg
                                 class="w-6 h-6"
                                 fill="none"

@@ -139,7 +139,7 @@ const t = translations[lang as keyof typeof translations] || translations.en;
 
 <section
     id="portfolio"
-    class="py-20 bg-slate-50 dark:bg-slate-900/50 transition-colors duration-300"
+    class="py-20 bg-slate-50 dark:bg-slate-950 transition-colors duration-300"
 >
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
@@ -160,12 +160,20 @@ const t = translations[lang as keyof typeof translations] || translations.en;
                 cards.map((card) => (
                     <div
                         data-showcase-card
-                        class="group bg-white dark:bg-slate-800 rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 border border-slate-100 dark:border-slate-700 relative flex flex-col"
+                        class={`group bg-white dark:bg-slate-800 rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 border border-slate-100 dark:border-slate-700 relative flex flex-col ${
+                            card.key === "software"
+                                ? "md:col-span-2 md:flex-row"
+                                : ""
+                        }`}
                     >
                         {/* Mini layout preview on the category gradient */}
                         <a
                             href={`/${lang}/explore/${card.slug}`}
-                            class={`aspect-video w-full bg-gradient-to-br ${card.gradient} relative overflow-hidden block`}
+                            class={`aspect-video w-full bg-gradient-to-br ${card.gradient} relative overflow-hidden block ${
+                                card.key === "software"
+                                    ? "md:w-1/2 md:aspect-auto"
+                                    : ""
+                            }`}
                         >
                             <div class="absolute inset-0 p-5 transform group-hover:scale-[1.03] transition-transform duration-500">
                                 {card.key === "portfolio" && (
@@ -190,13 +198,13 @@ const t = translations[lang as keyof typeof translations] || translations.en;
                                 )}
                                 {card.key === "ecommerce" && (
                                     <div class="h-full flex flex-col gap-2">
-                                        <div class="h-2 w-1/3 bg-white/50 rounded" />
+                                        <div class="h-2 w-1/3 bg-white/60 rounded" />
                                         <div class="grid grid-cols-3 gap-2 flex-1">
                                             {[1, 2, 3].map(() => (
-                                                <div class="bg-white/20 rounded-lg p-2 flex flex-col gap-1.5">
-                                                    <div class="flex-1 bg-white/30 rounded" />
-                                                    <div class="h-1.5 w-3/4 bg-white/50 rounded" />
-                                                    <div class="h-1.5 w-1/3 bg-white/70 rounded" />
+                                                <div class="bg-white/30 rounded-lg p-2 flex flex-col gap-1.5">
+                                                    <div class="flex-1 bg-white/40 rounded" />
+                                                    <div class="h-1.5 w-3/4 bg-white/60 rounded" />
+                                                    <div class="h-1.5 w-1/3 bg-white/80 rounded" />
                                                 </div>
                                             ))}
                                         </div>
@@ -205,33 +213,33 @@ const t = translations[lang as keyof typeof translations] || translations.en;
                                 {card.key === "corporate" && (
                                     <div class="h-full flex flex-col gap-2">
                                         <div class="flex justify-between items-center">
-                                            <div class="h-2 w-12 bg-white/60 rounded" />
+                                            <div class="h-2 w-12 bg-white/70 rounded" />
                                             <div class="flex gap-1.5">
                                                 {[1, 2, 3].map(() => (
-                                                    <div class="h-1.5 w-7 bg-white/40 rounded" />
+                                                    <div class="h-1.5 w-7 bg-white/50 rounded" />
                                                 ))}
                                             </div>
                                         </div>
-                                        <div class="flex-1 bg-white/20 rounded-lg flex flex-col items-center justify-center gap-2">
-                                            <div class="h-2.5 w-1/2 bg-white/50 rounded" />
-                                            <div class="h-1.5 w-1/3 bg-white/40 rounded" />
+                                        <div class="flex-1 bg-white/30 rounded-lg flex flex-col items-center justify-center gap-2">
+                                            <div class="h-2.5 w-1/2 bg-white/60 rounded" />
+                                            <div class="h-1.5 w-1/3 bg-white/50 rounded" />
                                         </div>
                                         <div class="grid grid-cols-3 gap-2 h-8">
                                             {[1, 2, 3].map(() => (
-                                                <div class="bg-white/25 rounded-lg" />
+                                                <div class="bg-white/35 rounded-lg" />
                                             ))}
                                         </div>
                                     </div>
                                 )}
                                 {card.key === "content" && (
                                     <div class="h-full flex flex-col gap-2">
-                                        <div class="h-3 w-1/2 bg-white/60 rounded mx-auto" />
+                                        <div class="h-3 w-1/2 bg-white/70 rounded mx-auto" />
                                         <div class="grid grid-cols-3 gap-3 flex-1">
-                                            <div class="bg-white/25 rounded-lg" />
+                                            <div class="bg-white/35 rounded-lg" />
                                             {[1, 2].map(() => (
                                                 <div class="flex flex-col gap-1.5 pt-1">
                                                     {[1, 2, 3, 4, 5].map(() => (
-                                                        <div class="h-1.5 bg-white/40 rounded last:w-2/3" />
+                                                        <div class="h-1.5 bg-white/50 rounded last:w-2/3" />
                                                     ))}
                                                 </div>
                                             ))}
@@ -240,18 +248,18 @@ const t = translations[lang as keyof typeof translations] || translations.en;
                                 )}
                                 {card.key === "software" && (
                                     <div class="h-full flex gap-2">
-                                        <div class="w-1/5 bg-white/20 rounded-lg p-2 flex flex-col gap-1.5">
+                                        <div class="w-1/5 bg-white/30 rounded-lg p-2 flex flex-col gap-1.5">
                                             {[1, 2, 3, 4].map(() => (
-                                                <div class="h-1.5 bg-white/40 rounded" />
+                                                <div class="h-1.5 bg-white/50 rounded" />
                                             ))}
                                         </div>
                                         <div class="flex-1 flex flex-col gap-2">
                                             <div class="grid grid-cols-3 gap-2 h-9">
                                                 {[1, 2, 3].map(() => (
-                                                    <div class="bg-white/25 rounded-lg" />
+                                                    <div class="bg-white/35 rounded-lg" />
                                                 ))}
                                             </div>
-                                            <div class="flex-1 bg-white/20 rounded-lg flex items-end gap-1.5 p-2">
+                                            <div class="flex-1 bg-white/30 rounded-lg flex items-end gap-1.5 p-2">
                                                 {[
                                                     "h-1/3",
                                                     "h-2/3",
@@ -261,7 +269,7 @@ const t = translations[lang as keyof typeof translations] || translations.en;
                                                     "h-2/5",
                                                 ].map((height) => (
                                                     <div
-                                                        class={`flex-1 ${height} bg-white/50 rounded-t`}
+                                                        class={`flex-1 ${height} bg-white/60 rounded-t`}
                                                     />
                                                 ))}
                                             </div>

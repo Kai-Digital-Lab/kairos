@@ -3,6 +3,7 @@ const lang = Astro.currentLocale || "en";
 
 const translations = {
     en: {
+        statusPill: "Open to Senior TPM & consulting opportunities",
         titleLine1: "Global Vision,",
         titleLine2: "Local Excellence",
         subtitle:
@@ -11,6 +12,7 @@ const translations = {
         ctaSecondary: "About Me",
     },
     "zh-tw": {
+        statusPill: "開放資深 TPM 職缺與顧問合作洽談",
         titleLine1: "全球視野，",
         titleLine2: "深耕在地",
         subtitle: "資深技術專案經理，連結商業策略與工程執行的關鍵橋樑。",
@@ -58,6 +60,20 @@ const t = translations[lang as keyof typeof translations] || translations.en;
     <div
         class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center"
     >
+        <a
+            href="#contact"
+            class="inline-flex items-center gap-2 px-4 py-1.5 mb-8 rounded-full bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm border border-slate-200 dark:border-slate-700 text-sm font-medium text-slate-700 dark:text-slate-200 hover:border-emerald-400 dark:hover:border-emerald-500 transition-colors"
+        >
+            <span class="relative flex h-2 w-2">
+                <span
+                    class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span
+                    class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"
+                ></span>
+            </span>
+            {t.statusPill}
+        </a>
+
         <h1
             class="text-5xl md:text-7xl font-extrabold tracking-tight text-slate-900 dark:text-white mb-6 drop-shadow-sm"
         >
@@ -81,7 +97,7 @@ const t = translations[lang as keyof typeof translations] || translations.en;
         >
             <a
                 href="#portfolio"
-                class="inline-flex items-center justify-center px-8 py-3 text-base font-medium text-white bg-primary-600 hover:bg-primary-700 rounded-lg shadow-lg shadow-primary-500/20 transition-all duration-300 hover:-translate-y-1"
+                class="inline-flex items-center justify-center px-8 py-3 text-base font-semibold text-white bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 rounded-lg shadow-lg shadow-purple-500/25 transition-all duration-300 hover:-translate-y-1"
             >
                 {t.ctaPrimary}
             </a>
