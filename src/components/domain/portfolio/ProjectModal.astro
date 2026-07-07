@@ -106,10 +106,23 @@
                     // 填入資料 (DOM Manipulation)
                     elements.title!.textContent = project.title;
                     elements.desc!.textContent = project.fullDescription; // 使用詳細說明
-                    elements.link!.href = project.link;
 
-                    // 處理圖片 (這裡用 Class 替換，您也可以改成 src)
-                    elements.image!.className = `h-48 w-full relative ${project.image}`;
+                    // link 為選填：沒有連結時隱藏按鈕
+                    if (project.link) {
+                        elements.link!.href = project.link;
+                        elements.link!.classList.remove("hidden");
+                    } else {
+                        elements.link!.classList.add("hidden");
+                    }
+
+                    // 處理圖片：heroImage 可能是 URL 或漸層 CSS class
+                    if (/^(https?:)?\/\//.test(project.heroImage)) {
+                        elements.image!.className = "h-48 w-full relative bg-cover bg-center";
+                        (elements.image as HTMLElement).style.backgroundImage = `url(${project.heroImage})`;
+                    } else {
+                        (elements.image as HTMLElement).style.backgroundImage = "";
+                        elements.image!.className = `h-48 w-full relative ${project.heroImage}`;
+                    }
                     elements.image!.appendChild(closeBtn!); // 把按鈕放回去
 
                     // 處理 Tags (清空後重建)
