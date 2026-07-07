@@ -1,0 +1,47 @@
+[
+    {
+        "id": "landing-page",
+        "title": "形象著陸頁",
+        "price": { "usd": "$1,500", "twd": "NT$45,000" },
+        "per": "/ 起",
+        "features": [
+            "高轉換率單頁設計",
+            "完全響應式 (手機友善)",
+            "聯絡表單與潛在客戶收集",
+            "5-7 天快速交付"
+        ],
+        "cta": "開始專案",
+        "isPopular": false,
+        "exampleProjectIds": ["kairos-website"]
+    },
+    {
+        "id": "business-website",
+        "title": "商業形象網站",
+        "price": { "usd": "$4,800", "twd": "NT$120,000" },
+        "per": "/ 起",
+        "features": [
+            "最多 8 個客製化頁面",
+            "易用的後台 (內容管理)",
+            "技術 SEO 與分析設定",
+            "移交教育訓練與文件"
+        ],
+        "cta": "選擇此方案",
+        "isPopular": true,
+        "exampleProjectIds": ["klab-design-system"]
+    },
+    {
+        "id": "custom-web-app",
+        "title": "客製化 Web App",
+        "price": { "usd": "$10k+", "twd": "NT$300,000+" },
+        "per": "/ 專案",
+        "features": [
+            "React / Next.js 架構",
+            "資料庫與會員驗證整合",
+            "客製化 API 開發",
+            "上線後 30 天技術支援"
+        ],
+        "cta": "索取報價",
+        "isPopular": false,
+        "exampleProjectIds": ["aoi-vision-platform", "smart-factory-cloud-migration"]
+    }
+]
