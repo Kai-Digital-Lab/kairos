@@ -45,8 +45,8 @@ const t = {
 }[lang] || { series: "", location: "", empty: "" };
 ---
 
-<div
-    class="relative w-full h-[80vh] bg-black text-white overflow-hidden group carousel-container"
+<fullbleed-carousel
+    class="relative block w-full h-[80vh] bg-black text-white overflow-hidden group"
 >
     {
         slides.length === 0 ? (
@@ -124,7 +124,13 @@ const t = {
     {/* Controls */}
     {
         slides.length > 1 && (
-            <div class="absolute right-8 bottom-8 flex gap-4 z-20">
+            <div class="absolute right-8 bottom-8 flex items-center gap-4 z-20">
+                <span
+                    data-counter
+                    class="text-xs tracking-widest text-gray-400 font-mono"
+                >
+                    1 / {slides.length}
+                </span>
                 <Button
                     id="prev-slide"
                     variant="outline"
@@ -142,44 +148,64 @@ const t = {
             </div>
         )
     }
-</div>
+</fullbleed-carousel>
 
 <script>
-    // Simple Vanilla JS Carousel Logic (Phase 4 upgrades this to a
-    // keyboard-capable Web Component)
-    function initCarousel() {
-        const container = document.querySelector(".carousel-container");
-        if (!container) return;
+    // 全幅輪播 Web Component：prev/next 按鈕 + ←/→ 鍵盤操作。
+    // 鍵盤監聽掛在 document 上，於 disconnectedCallback 移除，
+    // 確保 View Transitions 換頁後不殘留。
+    class FullbleedCarousel extends HTMLElement {
+        private activeIndex = 0;
+        private slides: NodeListOf<HTMLElement> | null = null;
+        private counter: HTMLElement | null = null;
+        private keyHandler = (e: KeyboardEvent) => {
+            if (e.key === "ArrowRight") {
+                e.preventDefault();
+                this.step(1);
+            } else if (e.key === "ArrowLeft") {
+                e.preventDefault();
+                this.step(-1);
+            }
+        };
 
-        const slides = container.querySelectorAll(".slide");
-        const prevBtn = container.querySelector("#prev-slide");
-        const nextBtn = container.querySelector("#next-slide");
-        let activeIndex = 0;
-        const totalSlides = slides.length;
+        connectedCallback() {
+            this.slides = this.querySelectorAll(".slide");
+            this.counter = this.querySelector("[data-counter]");
 
-        function updateSlides() {
-            slides.forEach((slide, index) => {
-                if (index === activeIndex) {
-                    slide.classList.remove("opacity-0");
-                    slide.classList.add("opacity-100");
-                } else {
-                    slide.classList.remove("opacity-100");
-                    slide.classList.add("opacity-0");
-                }
-            });
+            this.querySelector("#next-slide")?.addEventListener("click", () =>
+                this.step(1),
+            );
+            this.querySelector("#prev-slide")?.addEventListener("click", () =>
+                this.step(-1),
+            );
+
+            if (this.slides.length > 1) {
+                document.addEventListener("keydown", this.keyHandler);
+            }
         }
 
-        nextBtn?.addEventListener("click", () => {
-            activeIndex = (activeIndex + 1) % totalSlides;
-            updateSlides();
-        });
+        disconnectedCallback() {
+            document.removeEventListener("keydown", this.keyHandler);
+        }
 
-        prevBtn?.addEventListener("click", () => {
-            activeIndex = (activeIndex - 1 + totalSlides) % totalSlides;
-            updateSlides();
-        });
+        private step(delta: number) {
+            if (!this.slides || this.slides.length === 0) return;
+            const total = this.slides.length;
+            this.activeIndex = (this.activeIndex + delta + total) % total;
+
+            this.slides.forEach((slide, index) => {
+                const active = index === this.activeIndex;
+                slide.classList.toggle("opacity-100", active);
+                slide.classList.toggle("opacity-0", !active);
+            });
+
+            if (this.counter) {
+                this.counter.textContent = `${this.activeIndex + 1} / ${total}`;
+            }
+        }
     }
 
-    // Init on load and after view transitions
-    document.addEventListener("astro:page-load", initCarousel);
+    if (!customElements.get("fullbleed-carousel")) {
+        customElements.define("fullbleed-carousel", FullbleedCarousel);
+    }
 </script>

@@ -29,6 +29,8 @@ const t = {
         process: "Design Process",
         wireframes: "Low-Fidelity Iterations",
         viewDetail: "View Details",
+        prevStep: "Previous wireframe",
+        nextStep: "Next wireframe",
         more: "More case studies:",
         empty: "No case studies to display yet.",
     },
@@ -40,6 +42,8 @@ const t = {
         process: "設計流程",
         wireframes: "低保真迭代",
         viewDetail: "查看詳情",
+        prevStep: "上一張線框圖",
+        nextStep: "下一張線框圖",
         more: "更多案例研究：",
         empty: "目前沒有可顯示的案例研究。",
     },
@@ -51,6 +55,8 @@ const t = {
     process: "",
     wireframes: "",
     viewDetail: "",
+    prevStep: "",
+    nextStep: "",
     more: "",
     empty: "",
 };
@@ -165,7 +171,7 @@ const t = {
 
                 {/* Wireframes */}
                 {contentFocus.displayWireframes && wireframes.length > 0 && (
-                    <div class="mt-16">
+                    <wireframe-stepper class="block mt-16">
                         <h3 class="text-center font-bold text-2xl mb-8 text-gray-900 dark:text-white">
                             {t.wireframes}
                         </h3>
@@ -173,7 +179,8 @@ const t = {
                             {wireframes.map((wf, index) => (
                                 <Card
                                     variant="bordered"
-                                    class="aspect-[9/16] !bg-white dark:!bg-slate-900 border-2 !border-dashed !border-gray-300 dark:!border-slate-700 p-4 flex flex-col gap-3 relative group hover:!border-indigo-400 dark:hover:!border-indigo-500 cursor-pointer overflow-hidden max-w-xs mx-auto md:max-w-none w-full shadow-none"
+                                    data-wireframe={index}
+                                    class={`aspect-[9/16] !bg-white dark:!bg-slate-900 border-2 !border-dashed p-4 flex flex-col gap-3 relative group hover:!border-indigo-400 dark:hover:!border-indigo-500 cursor-pointer overflow-hidden max-w-xs mx-auto md:max-w-none w-full shadow-none transition-all duration-300 ${index === 0 ? "!border-indigo-500 dark:!border-indigo-500" : "!border-gray-300 dark:!border-slate-700 opacity-50"}`}
                                 >
                                     {/* Decorative skeleton, variation cycles by position */}
                                     {index % 3 === 0 && (
@@ -274,7 +281,31 @@ const t = {
                                 </Card>
                             ))}
                         </div>
-                    </div>
+                        {wireframes.length > 1 && (
+                            <div class="flex items-center justify-center gap-4 mt-8">
+                                <button
+                                    data-step="prev"
+                                    aria-label={t.prevStep}
+                                    class="w-10 h-10 rounded-full border-2 border-gray-300 dark:border-slate-600 text-gray-600 dark:text-gray-300 hover:border-indigo-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors cursor-pointer flex items-center justify-center"
+                                >
+                                    ←
+                                </button>
+                                <span
+                                    data-wf-counter
+                                    class="text-sm text-gray-500 dark:text-gray-400 font-medium tabular-nums"
+                                >
+                                    1 / {wireframes.length}
+                                </span>
+                                <button
+                                    data-step="next"
+                                    aria-label={t.nextStep}
+                                    class="w-10 h-10 rounded-full border-2 border-gray-300 dark:border-slate-600 text-gray-600 dark:text-gray-300 hover:border-indigo-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors cursor-pointer flex items-center justify-center"
+                                >
+                                    →
+                                </button>
+                            </div>
+                        )}
+                    </wireframe-stepper>
                 )}
 
                 {/* Other case studies */}
@@ -295,3 +326,56 @@ const t = {
         )
     }
 </div>
+
+<script>
+    // Wireframe stepper Web Component：prev/next 逐張聚焦，
+    // 點擊卡片直接選取。View Transitions 會重建元素，
+    // connectedCallback 自然重新綁定。
+    class WireframeStepper extends HTMLElement {
+        private activeIndex = 0;
+        private cards: HTMLElement[] = [];
+        private counter: HTMLElement | null = null;
+
+        connectedCallback() {
+            this.cards = [
+                ...this.querySelectorAll<HTMLElement>("[data-wireframe]"),
+            ];
+            this.counter = this.querySelector("[data-wf-counter]");
+            if (this.cards.length <= 1) return;
+
+            this.querySelector('[data-step="prev"]')?.addEventListener(
+                "click",
+                () => this.show(this.activeIndex - 1),
+            );
+            this.querySelector('[data-step="next"]')?.addEventListener(
+                "click",
+                () => this.show(this.activeIndex + 1),
+            );
+            this.cards.forEach((card, index) => {
+                card.addEventListener("click", () => this.show(index));
+            });
+        }
+
+        private show(index: number) {
+            const total = this.cards.length;
+            this.activeIndex = (index + total) % total;
+
+            this.cards.forEach((card, i) => {
+                const active = i === this.activeIndex;
+                card.classList.toggle("!border-indigo-500", active);
+                card.classList.toggle("dark:!border-indigo-500", active);
+                card.classList.toggle("!border-gray-300", !active);
+                card.classList.toggle("dark:!border-slate-700", !active);
+                card.classList.toggle("opacity-50", !active);
+            });
+
+            if (this.counter) {
+                this.counter.textContent = `${this.activeIndex + 1} / ${total}`;
+            }
+        }
+    }
+
+    if (!customElements.get("wireframe-stepper")) {
+        customElements.define("wireframe-stepper", WireframeStepper);
+    }
+</script>

@@ -3,6 +3,7 @@ import type { ISubThemeDetail } from "@/types/Theme";
 import type { ProjectData } from "@/stores/portfolio.store";
 import Button from "@/components/common/Button.astro";
 import Card from "@/components/common/Card.astro";
+import ProjectModal from "@/components/domain/portfolio/ProjectModal.astro";
 
 interface Props {
     theme: ISubThemeDetail;
@@ -34,7 +35,16 @@ const t = {
 }[lang] || { subtitle: "", concept: "", guidelines: "", empty: "" }; // Fallback
 ---
 
-<div class="p-8 bg-white dark:bg-slate-900 transition-colors duration-300">
+<waterfall-grid
+    class="block p-8 bg-white dark:bg-slate-900 transition-colors duration-300"
+>
+    {/* 專案資料（供點擊開啟 Modal 使用），< 轉義避免提早關閉 script */}
+    <script
+        type="application/json"
+        is:inline
+        data-projects
+        set:html={JSON.stringify(projects).replace(/</g, "\\u003c")}
+    />
     <div class="mb-12 text-center">
         <h2
             class="text-5xl font-bold tracking-tight mb-4 text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-violet-500"
@@ -96,4 +106,39 @@ const t = {
             {contentFocus.primaryCTA}
         </Button>
     </div>
-</div>
+</waterfall-grid>
+
+<ProjectModal />
+
+<script>
+    import {
+        activeProject,
+        type ProjectData,
+    } from "@/stores/portfolio.store";
+
+    // 點擊卡片 → 從內嵌 JSON 找到對應專案 → 寫入 store 開啟 Modal。
+    // View Transitions 會重建元素，connectedCallback 自然重新綁定。
+    class WaterfallGrid extends HTMLElement {
+        connectedCallback() {
+            const dataEl = this.querySelector("script[data-projects]");
+            const projects: ProjectData[] = dataEl?.textContent
+                ? JSON.parse(dataEl.textContent)
+                : [];
+
+            this.addEventListener("click", (e) => {
+                const card = (e.target as HTMLElement).closest(
+                    "[data-project-id]",
+                );
+                if (!card) return;
+                const project = projects.find(
+                    (p) => p.id === card.getAttribute("data-project-id"),
+                );
+                if (project) activeProject.set(project);
+            });
+        }
+    }
+
+    if (!customElements.get("waterfall-grid")) {
+        customElements.define("waterfall-grid", WaterfallGrid);
+    }
+</script>

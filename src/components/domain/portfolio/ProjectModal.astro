@@ -85,8 +85,11 @@
 
     // 定義 Web Component
     class ProjectModal extends HTMLElement {
-        constructor() {
-            super();
+        private unsubscribe?: () => void;
+
+        // View Transitions 會重建 DOM：在 connected/disconnected 中
+        // 訂閱與退訂，避免舊實例的訂閱殘留
+        connectedCallback() {
             const dialog = this.querySelector("dialog");
             const closeBtn = this.querySelector("#close-btn");
             const cancelBtn = this.querySelector("#cancel-btn");
@@ -101,7 +104,7 @@
             if (!dialog) return;
 
             // 1. 訂閱 Store：當資料改變時，更新 DOM 並開啟/關閉 Modal
-            activeProject.subscribe((project) => {
+            this.unsubscribe = activeProject.subscribe((project) => {
                 if (project) {
                     // 填入資料 (DOM Manipulation)
                     elements.title!.textContent = project.title;
@@ -155,9 +158,15 @@
             // 監聽原生 close 事件 (例如按 ESC)
             dialog.addEventListener("close", close);
         }
+
+        disconnectedCallback() {
+            this.unsubscribe?.();
+        }
     }
 
-    customElements.define("project-modal", ProjectModal);
+    if (!customElements.get("project-modal")) {
+        customElements.define("project-modal", ProjectModal);
+    }
 </script>
 
 <style>

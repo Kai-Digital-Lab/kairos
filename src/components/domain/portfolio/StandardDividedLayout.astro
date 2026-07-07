@@ -18,9 +18,15 @@ const engineerProjects = projects.filter((p) => p.engineer);
 const repoUrl = engineerProjects.find((p) => p.engineer?.repoUrl)?.engineer
     ?.repoUrl;
 
+// Union of stacks drives the client-side filter tabs
+const allTech = [
+    ...new Set(engineerProjects.flatMap((p) => p.engineer!.stack)),
+];
+
 // UI chrome strings only — project content comes from the projects collection
 const t = {
     en: {
+        filterAll: "All",
         solutionsTitle: "Solution Notes",
         solutionsDesc:
             "How each system was architected — trade-offs and the decisions behind them.",
@@ -28,12 +34,14 @@ const t = {
         empty: "No engineering projects to display yet.",
     },
     "zh-tw": {
+        filterAll: "全部",
         solutionsTitle: "解決方案筆記",
         solutionsDesc: "每個系統的架構思路——取捨與背後的決策。",
         repoLabel: "程式碼倉庫",
         empty: "目前沒有可顯示的工程專案。",
     },
 }[lang] || {
+    filterAll: "",
     solutionsTitle: "",
     solutionsDesc: "",
     repoLabel: "",
@@ -41,8 +49,8 @@ const t = {
 };
 ---
 
-<div
-    class="max-w-6xl mx-auto py-12 px-4 bg-white dark:bg-slate-900 transition-colors duration-300"
+<stack-filter
+    class="block max-w-6xl mx-auto py-12 px-4 bg-white dark:bg-slate-900 transition-colors duration-300"
 >
     <div class="border-b-2 border-slate-200 dark:border-slate-700 pb-6 mb-10">
         <h2
@@ -51,6 +59,28 @@ const t = {
             <span class="text-blue-600 dark:text-blue-400">&gt;</span>
             {contentFocus.title}
         </h2>
+        {
+            engineerProjects.length > 0 && (
+                <div class="flex flex-wrap gap-2 mt-6" role="group">
+                    <button
+                        data-tech="*"
+                        aria-pressed="true"
+                        class="px-3 py-1 text-xs font-mono rounded border transition-colors cursor-pointer bg-blue-600 text-white border-blue-600"
+                    >
+                        {t.filterAll}
+                    </button>
+                    {allTech.map((tech) => (
+                        <button
+                            data-tech={tech}
+                            aria-pressed="false"
+                            class="px-3 py-1 text-xs font-mono rounded border transition-colors cursor-pointer bg-transparent text-slate-600 dark:text-slate-300 border-slate-300 dark:border-slate-600 hover:border-blue-400"
+                        >
+                            {tech}
+                        </button>
+                    ))}
+                </div>
+            )
+        }
     </div>
 
     {
@@ -66,6 +96,7 @@ const t = {
                             variant="bordered"
                             class="p-6 rounded hover:!border-blue-400 dark:hover:!border-blue-400 bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700"
                             data-project-id={p.id}
+                            data-stack={p.engineer!.stack.join("|")}
                         >
                             <h3 class="text-xl font-bold text-slate-800 dark:text-slate-100 mb-2">
                                 {p.title}
@@ -130,7 +161,7 @@ const t = {
                         </p>
                         <ul class="text-sm text-blue-800 dark:text-blue-200 space-y-4">
                             {engineerProjects.map((p) => (
-                                <li>
+                                <li data-stack={p.engineer!.stack.join("|")}>
                                     <span class="font-mono font-bold block mb-1">
                                         {p.title}
                                     </span>
@@ -154,4 +185,51 @@ const t = {
             </div>
         )
     }
-</div>
+</stack-filter>
+
+<script>
+    // 依技術棧篩選專案卡片與解決方案筆記。
+    // View Transitions 會重建元素，connectedCallback 自然重新綁定。
+    class StackFilter extends HTMLElement {
+        connectedCallback() {
+            const buttons =
+                this.querySelectorAll<HTMLButtonElement>("[data-tech]");
+            const items = this.querySelectorAll<HTMLElement>("[data-stack]");
+
+            const ACTIVE = ["bg-blue-600", "text-white", "border-blue-600"];
+            const INACTIVE = [
+                "bg-transparent",
+                "text-slate-600",
+                "dark:text-slate-300",
+                "border-slate-300",
+                "dark:border-slate-600",
+                "hover:border-blue-400",
+            ];
+
+            buttons.forEach((btn) => {
+                btn.addEventListener("click", () => {
+                    const tech = btn.dataset.tech;
+
+                    buttons.forEach((b) => {
+                        const isActive = b === btn;
+                        b.setAttribute("aria-pressed", String(isActive));
+                        b.classList.remove(...(isActive ? INACTIVE : ACTIVE));
+                        b.classList.add(...(isActive ? ACTIVE : INACTIVE));
+                    });
+
+                    items.forEach((item) => {
+                        const stack = (item.dataset.stack || "").split("|");
+                        item.classList.toggle(
+                            "hidden",
+                            tech !== "*" && !stack.includes(tech!),
+                        );
+                    });
+                });
+            });
+        }
+    }
+
+    if (!customElements.get("stack-filter")) {
+        customElements.define("stack-filter", StackFilter);
+    }
+</script>

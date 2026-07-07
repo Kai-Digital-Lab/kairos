@@ -33,6 +33,7 @@ const t = {
         processTitle: "Our Strategic Process",
         phaseLabel: "Phase",
         fromProject: "From the engagement:",
+        dotLabel: "Testimonial",
         finalTitle: "Ready to elevate your business?",
         finalBtn: "Schedule Consultation",
     },
@@ -44,6 +45,7 @@ const t = {
         processTitle: "我們的策略流程",
         phaseLabel: "階段",
         fromProject: "出自專案：",
+        dotLabel: "見證",
         finalTitle: "準備好提升您的業務了嗎？",
         finalBtn: "預約諮詢",
     },
@@ -55,6 +57,7 @@ const t = {
     processTitle: "",
     phaseLabel: "",
     fromProject: "",
+    dotLabel: "",
     finalTitle: "",
     finalBtn: "",
 };
@@ -99,16 +102,21 @@ const t = {
         </div>
     </div>
 
-    {/* Testimonials */}
+    {/* Testimonials — rotator (auto-advance + dots + arrow keys) */}
     {
         contentFocus.showTestimonials && testimonials.length > 0 && (
-            <div class="grid md:grid-cols-2 gap-8 mb-20">
-                {testimonials.map(({ project, testimonial }) => (
-                    <Card
-                        variant="default"
-                        class="p-8 !shadow-xl !rounded-none !rounded-tl-3xl !rounded-br-3xl border border-stone-100 dark:border-slate-700"
-                        data-project-id={project.id}
-                    >
+            <testimonial-rotator
+                class="block mb-20 max-w-2xl mx-auto outline-none"
+                tabindex="0"
+            >
+                <div class="grid">
+                    {testimonials.map(({ project, testimonial }, index) => (
+                        <Card
+                            variant="default"
+                            class={`p-8 !shadow-xl !rounded-none !rounded-tl-3xl !rounded-br-3xl border border-stone-100 dark:border-slate-700 [grid-area:1/1] transition-opacity duration-700 ${index === 0 ? "opacity-100" : "opacity-0 pointer-events-none"}`}
+                            data-project-id={project.id}
+                            data-slide={index}
+                        >
                         <p class="text-stone-700 dark:text-stone-300 mb-4 font-serif text-lg">
                             {t.quoteOpen}
                             {testimonial.quote}
@@ -125,15 +133,28 @@ const t = {
                                         {testimonial.role}
                                     </p>
                                 )}
-                                <p class="text-stone-400 dark:text-stone-500 text-xs mt-1">
-                                    {t.fromProject}
-                                    {project.title}
-                                </p>
+                                    <p class="text-stone-400 dark:text-stone-500 text-xs mt-1">
+                                        {t.fromProject}
+                                        {project.title}
+                                    </p>
+                                </div>
                             </div>
-                        </div>
-                    </Card>
-                ))}
-            </div>
+                        </Card>
+                    ))}
+                </div>
+                {testimonials.length > 1 && (
+                    <div class="flex justify-center gap-3 mt-6">
+                        {testimonials.map((_, index) => (
+                            <button
+                                data-dot={index}
+                                aria-label={`${t.dotLabel} ${index + 1}`}
+                                aria-pressed={index === 0 ? "true" : "false"}
+                                class={`w-2.5 h-2.5 rounded-full transition-colors cursor-pointer ${index === 0 ? "bg-amber-700" : "bg-stone-300 dark:bg-stone-600 hover:bg-amber-500"}`}
+                            />
+                        ))}
+                    </div>
+                )}
+            </testimonial-rotator>
         )
     }
 
@@ -178,3 +199,83 @@ const t = {
         </Button>
     </div>
 </div>
+
+<script>
+    // 見證輪播 Web Component：每 6 秒自動輪播、圓點切換、
+    // hover 暫停、聚焦時支援 ←/→。計時器於 disconnectedCallback
+    // 清除，View Transitions 換頁後不殘留。
+    class TestimonialRotator extends HTMLElement {
+        private activeIndex = 0;
+        private timer: ReturnType<typeof setInterval> | null = null;
+        private slides: HTMLElement[] = [];
+        private dots: HTMLButtonElement[] = [];
+
+        connectedCallback() {
+            this.slides = [...this.querySelectorAll<HTMLElement>("[data-slide]")];
+            this.dots = [...this.querySelectorAll<HTMLButtonElement>("[data-dot]")];
+            if (this.slides.length <= 1) return;
+
+            this.dots.forEach((dot, index) => {
+                dot.addEventListener("click", () => {
+                    this.show(index);
+                    this.restart();
+                });
+            });
+
+            this.addEventListener("keydown", (e) => {
+                if (e.key === "ArrowRight") {
+                    e.preventDefault();
+                    this.show(this.activeIndex + 1);
+                    this.restart();
+                } else if (e.key === "ArrowLeft") {
+                    e.preventDefault();
+                    this.show(this.activeIndex - 1);
+                    this.restart();
+                }
+            });
+
+            this.addEventListener("mouseenter", () => this.stop());
+            this.addEventListener("mouseleave", () => this.restart());
+            this.restart();
+        }
+
+        disconnectedCallback() {
+            this.stop();
+        }
+
+        private show(index: number) {
+            const total = this.slides.length;
+            this.activeIndex = (index + total) % total;
+
+            this.slides.forEach((slide, i) => {
+                const active = i === this.activeIndex;
+                slide.classList.toggle("opacity-100", active);
+                slide.classList.toggle("opacity-0", !active);
+                slide.classList.toggle("pointer-events-none", !active);
+            });
+            this.dots.forEach((dot, i) => {
+                const active = i === this.activeIndex;
+                dot.setAttribute("aria-pressed", String(active));
+                dot.classList.toggle("bg-amber-700", active);
+                dot.classList.toggle("bg-stone-300", !active);
+                dot.classList.toggle("dark:bg-stone-600", !active);
+            });
+        }
+
+        private stop() {
+            if (this.timer) clearInterval(this.timer);
+            this.timer = null;
+        }
+
+        private restart() {
+            this.stop();
+            this.timer = setInterval(() => {
+                this.show(this.activeIndex + 1);
+            }, 6000);
+        }
+    }
+
+    if (!customElements.get("testimonial-rotator")) {
+        customElements.define("testimonial-rotator", TestimonialRotator);
+    }
+</script>
