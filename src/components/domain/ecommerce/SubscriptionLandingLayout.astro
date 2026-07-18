@@ -16,10 +16,16 @@ const t = {
     en: {
         tag: "Monthly Goodness",
         desc: "Curated boxes delivered to your doorstep. Choose the plan that fits your lifestyle.",
+        monthly: "Monthly",
+        annual: "Annual",
+        save: "2 months free",
+        perMo: "/mo",
+        perYr: "/yr",
         plans: [
             {
                 name: "Starter Box",
                 price: "$29",
+                priceAnnual: "$290",
                 features: [
                     "✓ 3 Premium Items",
                     "✓ Free Shipping",
@@ -30,6 +36,7 @@ const t = {
             {
                 name: "Curator's Choice",
                 price: "$59",
+                priceAnnual: "$590",
                 features: [
                     "✓ 7 Premium Items",
                     "✓ Priority Shipping",
@@ -41,6 +48,7 @@ const t = {
             {
                 name: "Luxe Collection",
                 price: "$99",
+                priceAnnual: "$990",
                 features: [
                     "✓ 12+ Luxury Items",
                     "✓ Mystery Gifts",
@@ -49,21 +57,27 @@ const t = {
                 btn: "Select Luxe",
             },
         ],
-        perMo: "/mo",
     },
     "zh-tw": {
         tag: "每月精選",
         desc: "精選禮盒直送到府。選擇適合您生活方式的方案。",
+        monthly: "月付",
+        annual: "年付",
+        save: "省 2 個月",
+        perMo: "/月",
+        perYr: "/年",
         plans: [
             {
                 name: "入門禮盒",
                 price: "$29",
+                priceAnnual: "$290",
                 features: ["✓ 3 樣精選商品", "✓ 免運費", "✗ 客製化"],
                 btn: "選擇入門",
             },
             {
                 name: "策展人精選",
                 price: "$59",
+                priceAnnual: "$590",
                 features: ["✓ 7 樣精選商品", "✓ 優先配送", "✓ 完全客製化"],
                 btn: null,
                 tag: "超值首選",
@@ -71,21 +85,25 @@ const t = {
             {
                 name: "奢華系列",
                 price: "$99",
+                priceAnnual: "$990",
                 features: ["✓ 12+ 樣奢華商品", "✓ 神秘禮物", "✓ VIP 支援"],
                 btn: "選擇奢華",
             },
         ],
-        perMo: "/月",
     },
 }[lang] || {
     tag: "",
     desc: "",
-    plans: [
-        { name: "", price: "", features: [], btn: "" },
-        { name: "", price: "", features: [], btn: "", tag: "" },
-        { name: "", price: "", features: [], btn: "" },
-    ],
+    monthly: "",
+    annual: "",
+    save: "",
     perMo: "",
+    perYr: "",
+    plans: [
+        { name: "", price: "", priceAnnual: "", features: [], btn: "" },
+        { name: "", price: "", priceAnnual: "", features: [], btn: "", tag: "" },
+        { name: "", price: "", priceAnnual: "", features: [], btn: "" },
+    ],
 };
 ---
 
@@ -107,7 +125,36 @@ const t = {
 
     {
         contentFocus.showPlanComparison && (
-            <div class="max-w-5xl mx-auto grid md:grid-cols-3 gap-8 items-center">
+            <plan-toggle class="block max-w-5xl mx-auto">
+                {/* Billing period toggle */}
+                <div class="flex items-center justify-center gap-4 mb-10">
+                    <div class="inline-flex rounded-full bg-yellow-100 dark:bg-slate-800 p-1">
+                        <button
+                            type="button"
+                            data-billing="monthly"
+                            aria-pressed="true"
+                            class="px-5 py-2 rounded-full text-sm font-bold transition-colors"
+                        >
+                            {t.monthly}
+                        </button>
+                        <button
+                            type="button"
+                            data-billing="annual"
+                            aria-pressed="false"
+                            class="px-5 py-2 rounded-full text-sm font-bold transition-colors"
+                        >
+                            {t.annual}
+                        </button>
+                    </div>
+                    <span
+                        data-save
+                        class="hidden text-sm font-bold text-yellow-600 dark:text-yellow-400"
+                    >
+                        {t.save}
+                    </span>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-8 items-center">
                 {/* Basic Plan */}
                 <Card
                     variant="bordered"
@@ -117,8 +164,19 @@ const t = {
                         {t.plans[0].name}
                     </h3>
                     <div class="text-3xl font-bold my-4 text-gray-900 dark:text-white">
-                        {t.plans[0].price}
-                        <span class="text-sm font-normal text-gray-500 dark:text-gray-400">
+                        <span
+                            data-price
+                            data-monthly={t.plans[0].price}
+                            data-annual={t.plans[0].priceAnnual}
+                        >
+                            {t.plans[0].price}
+                        </span>
+                        <span
+                            data-period
+                            data-monthly={t.perMo}
+                            data-annual={t.perYr}
+                            class="text-sm font-normal text-gray-500 dark:text-gray-400"
+                        >
                             {t.perMo}
                         </span>
                     </div>
@@ -154,8 +212,19 @@ const t = {
                         {t.plans[1].name}
                     </h3>
                     <div class="text-4xl font-bold my-4 text-gray-900 dark:text-white">
-                        {t.plans[1].price}
-                        <span class="text-sm font-normal text-gray-500 dark:text-gray-400">
+                        <span
+                            data-price
+                            data-monthly={t.plans[1].price}
+                            data-annual={t.plans[1].priceAnnual}
+                        >
+                            {t.plans[1].price}
+                        </span>
+                        <span
+                            data-period
+                            data-monthly={t.perMo}
+                            data-annual={t.perYr}
+                            class="text-sm font-normal text-gray-500 dark:text-gray-400"
+                        >
                             {t.perMo}
                         </span>
                     </div>
@@ -184,8 +253,19 @@ const t = {
                         {t.plans[2].name}
                     </h3>
                     <div class="text-3xl font-bold my-4 text-gray-900 dark:text-white">
-                        {t.plans[2].price}
-                        <span class="text-sm font-normal text-gray-500 dark:text-gray-400">
+                        <span
+                            data-price
+                            data-monthly={t.plans[2].price}
+                            data-annual={t.plans[2].priceAnnual}
+                        >
+                            {t.plans[2].price}
+                        </span>
+                        <span
+                            data-period
+                            data-monthly={t.perMo}
+                            data-annual={t.perYr}
+                            class="text-sm font-normal text-gray-500 dark:text-gray-400"
+                        >
                             {t.perMo}
                         </span>
                     </div>
@@ -203,7 +283,56 @@ const t = {
                         {t.plans[2].btn}
                     </Button>
                 </Card>
-            </div>
+                </div>
+            </plan-toggle>
         )
     }
 </div>
+
+<script>
+    // 訂閱方案計費切換 Web Component:月付 / 年付。
+    // 各方案價格渲染在 data-monthly / data-annual 上,script 只讀 DOM。
+    class PlanToggle extends HTMLElement {
+        connectedCallback() {
+            const buttons =
+                this.querySelectorAll<HTMLButtonElement>("[data-billing]");
+            const prices = this.querySelectorAll<HTMLElement>("[data-price]");
+            const periods = this.querySelectorAll<HTMLElement>("[data-period]");
+            const save = this.querySelector<HTMLElement>("[data-save]");
+
+            const ACTIVE = ["bg-yellow-500", "text-white", "shadow"];
+            const INACTIVE = ["text-gray-600", "dark:text-gray-300"];
+
+            const apply = (mode: "monthly" | "annual") => {
+                buttons.forEach((b) => {
+                    const on = b.dataset.billing === mode;
+                    b.setAttribute("aria-pressed", String(on));
+                    b.classList.remove(...(on ? INACTIVE : ACTIVE));
+                    b.classList.add(...(on ? ACTIVE : INACTIVE));
+                });
+                prices.forEach((p) => {
+                    p.textContent = p.dataset[mode] ?? p.textContent;
+                });
+                periods.forEach((p) => {
+                    p.textContent = p.dataset[mode] ?? p.textContent;
+                });
+                save?.classList.toggle("hidden", mode !== "annual");
+            };
+
+            buttons.forEach((btn) => {
+                btn.addEventListener("click", () =>
+                    apply(
+                        (btn.dataset.billing as "monthly" | "annual") ??
+                            "monthly",
+                    ),
+                );
+            });
+
+            apply("monthly");
+        }
+    }
+
+    if (!customElements.get("plan-toggle")) {
+        customElements.define("plan-toggle", PlanToggle);
+    }
+</script>
