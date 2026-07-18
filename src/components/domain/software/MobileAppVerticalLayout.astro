@@ -16,6 +16,12 @@ const t = {
         desc: "Experience the future of productivity right in your pocket. Sync across devices, work offline, and collaborate in real-time.",
         loved: "Loved by 1M+ users worldwide",
         tasks: "My Tasks",
+        taskItems: [
+            "Review Q3 roadmap",
+            "Reply to design feedback",
+            "Sync with backend team",
+            "Prep demo slides",
+        ],
         upgrade: "Upgrade to Pro",
         fast: "🚀 Fast!",
         simple: "✨ Simple",
@@ -24,6 +30,12 @@ const t = {
         desc: "在口袋中體驗生產力的未來。跨裝置同步，離線工作，即時協作。",
         loved: "全球百萬用戶喜愛",
         tasks: "我的任務",
+        taskItems: [
+            "審閱 Q3 路線圖",
+            "回覆設計回饋",
+            "與後端團隊同步",
+            "準備 Demo 簡報",
+        ],
         upgrade: "升級專業版",
         fast: "🚀 快速！",
         simple: "✨ 簡單",
@@ -32,6 +44,7 @@ const t = {
     desc: "",
     loved: "",
     tasks: "",
+    taskItems: [] as string[],
     upgrade: "",
     fast: "",
     simple: "",
@@ -117,22 +130,46 @@ const t = {
                         >
                         </div>
                     </div>
-                    <div class="space-y-4">
+                    <phone-screen class="block space-y-4">
                         {
-                            [1, 2, 3, 4].map((i) => (
+                            t.taskItems.map((task) => (
                                 <Card
+                                    data-task
+                                    role="button"
+                                    tabindex="0"
+                                    aria-pressed="false"
                                     variant="default"
-                                    class="bg-gray-50 dark:bg-slate-800 p-4 shadow-sm flex items-center gap-3 border-none"
+                                    class="bg-gray-50 dark:bg-slate-800 p-4 shadow-sm flex items-center gap-3 border-none cursor-pointer select-none"
                                 >
-                                    <div class="w-5 h-5 border-2 border-blue-500 rounded-full" />
-                                    <div class="w-full">
-                                        <div class="h-2 w-3/4 bg-gray-200 dark:bg-slate-700 rounded mb-2" />
-                                        <div class="h-2 w-1/2 bg-gray-100 dark:bg-slate-600 rounded" />
+                                    <div
+                                        data-check
+                                        class="w-5 h-5 border-2 border-blue-500 rounded-full flex items-center justify-center flex-shrink-0 transition-colors"
+                                    >
+                                        <svg
+                                            data-check-icon
+                                            class="w-3 h-3 text-white hidden"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            stroke="currentColor"
+                                            stroke-width="3"
+                                        >
+                                            <path
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                d="M5 13l4 4L19 7"
+                                            />
+                                        </svg>
                                     </div>
+                                    <p
+                                        data-label
+                                        class="text-sm font-medium text-gray-800 dark:text-gray-200 transition-all"
+                                    >
+                                        {task}
+                                    </p>
                                 </Card>
                             ))
                         }
-                    </div>
+                    </phone-screen>
                     <div
                         class="mt-8 bg-blue-600 text-white p-4 rounded-xl shadow-lg shadow-blue-200 dark:shadow-none text-center"
                     >
@@ -154,3 +191,42 @@ const t = {
         </div>
     </div>
 </div>
+
+<script>
+    // 手機畫面 Web Component:點擊任務列切換完成狀態(勾選圈 + 刪除線)。
+    // 完成狀態存在 DOM 上(aria-pressed),支援滑鼠與鍵盤(Enter/Space)。
+    class PhoneScreen extends HTMLElement {
+        connectedCallback() {
+            const tasks = this.querySelectorAll<HTMLElement>("[data-task]");
+
+            const toggle = (task: HTMLElement) => {
+                const done = task.getAttribute("aria-pressed") === "true";
+                const next = !done;
+                task.setAttribute("aria-pressed", String(next));
+
+                const circle = task.querySelector<HTMLElement>("[data-check]");
+                const icon = task.querySelector<HTMLElement>("[data-check-icon]");
+                const label = task.querySelector<HTMLElement>("[data-label]");
+
+                circle?.classList.toggle("bg-blue-500", next);
+                icon?.classList.toggle("hidden", !next);
+                label?.classList.toggle("line-through", next);
+                label?.classList.toggle("opacity-40", next);
+            };
+
+            tasks.forEach((task) => {
+                task.addEventListener("click", () => toggle(task));
+                task.addEventListener("keydown", (e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        toggle(task);
+                    }
+                });
+            });
+        }
+    }
+
+    if (!customElements.get("phone-screen")) {
+        customElements.define("phone-screen", PhoneScreen);
+    }
+</script>
