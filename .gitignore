@@ -12,7 +12,6 @@ server/
 .env
 .env.*
 !.env.example
-!.env.production
 
 # --- Logs ---
 npm-debug.log*
@@ -29,6 +28,10 @@ coverage/
 .vscode/
 *.swp
 *.swo
+
+# --- Cloudflare Specific ---
+.wrangler/
+.dev.vars
 
 # --- Operating System Junk ---
 .DS_Store
