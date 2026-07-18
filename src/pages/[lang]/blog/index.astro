@@ -2,6 +2,11 @@
 import { getCollection } from "astro:content";
 import PageLayout from "@/layouts/PageLayout.astro";
 
+// Editorial type tokens — keep the index consistent with the article page.
+import "@fontsource-variable/space-grotesk";
+import "@fontsource/space-mono/latin-400.css";
+import "@fontsource/space-mono/latin-700.css";
+
 export const prerender = true;
 
 export function getStaticPaths() {
@@ -49,7 +54,7 @@ const sortedPosts = posts.sort(
             <!-- Header -->
             <div class="mb-16 text-center">
                 <h1
-                    class="text-3xl md:text-5xl font-bold text-slate-900 dark:text-white mb-4"
+                    class="font-display text-3xl md:text-5xl font-bold text-slate-900 dark:text-white mb-4 tracking-tight"
                 >
                     {t.title}
                 </h1>
@@ -73,7 +78,7 @@ const sortedPosts = posts.sort(
                                 href={`/${lang}/blog/${post.slug}`}
                                 class="group block bg-white dark:bg-slate-800 rounded-2xl p-6 sm:p-8 shadow-sm hover:shadow-lg border border-slate-100 dark:border-slate-700 transition-all duration-300 hover:-translate-y-0.5"
                             >
-                                <div class="flex items-center gap-3 mb-3 text-sm text-slate-500 dark:text-slate-400 font-mono">
+                                <div class="flex items-center gap-3 mb-3 text-sm text-slate-500 dark:text-slate-400 font-accent">
                                     <time
                                         datetime={post.data.pubDate.toISOString()}
                                     >
@@ -93,7 +98,7 @@ const sortedPosts = posts.sort(
                                     )}
                                 </div>
 
-                                <h2 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-2 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
+                                <h2 class="font-display text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-2 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
                                     {post.data.title}
                                 </h2>
 
