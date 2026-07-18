@@ -38,6 +38,34 @@ const t = {
     regDesc: "",
     tags: [],
 };
+
+// Chart series are locale-independent (numeric / currency), so they live
+// outside the translations object. Each bar carries every range's height as a
+// data-* attribute; the <data-chart> Web Component reads the DOM, never this.
+const ranges = [
+    {
+        key: "1d",
+        label: "1D",
+        bars: [30, 50, 45, 70, 60, 90, 85, 100],
+        price: "$42,093.12",
+        change: "▲ 2.4%",
+    },
+    {
+        key: "1w",
+        label: "1W",
+        bars: [45, 55, 50, 65, 60, 80, 75, 90],
+        price: "$41,280.50",
+        change: "▲ 5.1%",
+    },
+    {
+        key: "1m",
+        label: "1M",
+        bars: [40, 48, 60, 55, 72, 68, 85, 100],
+        price: "$39,905.00",
+        change: "▲ 12.7%",
+    },
+];
+const base = ranges[0];
 ---
 
 <div
@@ -77,41 +105,70 @@ const t = {
             </div>
 
             {/* Abstract Data Visual */}
-            <Card
-                variant="default"
-                class="md:w-1/2 relative p-6 shadow-xl dark:shadow-none"
-            >
-                <div class="flex justify-between items-end h-40 gap-2">
-                    {
-                        [30, 50, 45, 70, 60, 90, 85, 100].map((h) => (
+            <data-chart class="block md:w-1/2">
+                <Card
+                    variant="default"
+                    class="relative p-6 shadow-xl dark:shadow-none"
+                >
+                    <div class="absolute top-4 left-4 z-10">
+                        <span
+                            data-price
+                            data-1d={ranges[0].price}
+                            data-1w={ranges[1].price}
+                            data-1m={ranges[2].price}
+                            class="text-2xl font-bold text-gray-900 dark:text-white"
+                        >
+                            {base.price}
+                        </span>
+                        <span
+                            data-change
+                            data-1d={ranges[0].change}
+                            data-1w={ranges[1].change}
+                            data-1m={ranges[2].change}
+                            class="text-sm text-emerald-600 dark:text-emerald-400 ml-2"
+                        >
+                            {base.change}
+                        </span>
+                    </div>
+
+                    {/* Timeframe tabs */}
+                    <div class="flex justify-end gap-1 mb-4">
+                        {ranges.map((r) => (
+                            <button
+                                type="button"
+                                data-range={r.key}
+                                aria-pressed={r.key === base.key
+                                    ? "true"
+                                    : "false"}
+                                class="px-3 py-1 rounded text-xs font-mono font-bold text-gray-500 dark:text-gray-400 transition-colors"
+                            >
+                                {r.label}
+                            </button>
+                        ))}
+                    </div>
+
+                    <div class="flex justify-between items-end h-40 gap-2">
+                        {base.bars.map((_, i) => (
                             <div class="w-full bg-emerald-100 dark:bg-emerald-900/50 rounded-t relative group">
                                 <div
-                                    style={{ height: `${h}%` }}
+                                    data-bar
+                                    data-1d={String(ranges[0].bars[i])}
+                                    data-1w={String(ranges[1].bars[i])}
+                                    data-1m={String(ranges[2].bars[i])}
+                                    style={{ height: `${base.bars[i]}%` }}
                                     class="absolute bottom-0 w-full bg-gradient-to-t from-emerald-500 to-emerald-300 dark:from-emerald-600 dark:to-emerald-400 rounded-t transition-all duration-500 hover:bg-emerald-400 dark:hover:bg-emerald-300"
                                 />
                             </div>
-                        ))
-                    }
-                </div>
-                <div
-                    class="flex justify-between text-xs text-gray-400 dark:text-gray-500 mt-4 font-mono"
-                >
-                    <span>09:00</span>
-                    <span>12:00</span>
-                    <span>15:00</span>
-                    <span>18:00</span>
-                </div>
-                <div class="absolute top-4 left-4">
-                    <span
-                        class="text-2xl font-bold text-gray-900 dark:text-white"
-                        >$42,093.12</span
-                    >
-                    <span
-                        class="text-sm text-emerald-600 dark:text-emerald-400 ml-2"
-                        >▲ 2.4%</span
-                    >
-                </div>
-            </Card>
+                        ))}
+                    </div>
+                    <div class="flex justify-between text-xs text-gray-400 dark:text-gray-500 mt-4 font-mono">
+                        <span>09:00</span>
+                        <span>12:00</span>
+                        <span>15:00</span>
+                        <span>18:00</span>
+                    </div>
+                </Card>
+            </data-chart>
         </div>
 
         {
@@ -150,3 +207,53 @@ const t = {
         }
     </div>
 </div>
+
+<script>
+    // 資料圖表 Web Component:時間軸 tab(1D/1W/1M)切換 bar 高度與價格。
+    // 每根 bar 與價格節點在 DOM 上帶 data-1d/1w/1m,script 只讀 DOM。
+    class DataChart extends HTMLElement {
+        connectedCallback() {
+            const tabs = this.querySelectorAll<HTMLButtonElement>("[data-range]");
+            const bars = this.querySelectorAll<HTMLElement>("[data-bar]");
+            const price = this.querySelector<HTMLElement>("[data-price]");
+            const change = this.querySelector<HTMLElement>("[data-change]");
+
+            const ACTIVE = [
+                "bg-emerald-100",
+                "dark:bg-emerald-900/50",
+                "text-emerald-700",
+                "dark:text-emerald-300",
+            ];
+
+            const apply = (key: string) => {
+                tabs.forEach((tab) => {
+                    const on = tab.dataset.range === key;
+                    tab.setAttribute("aria-pressed", String(on));
+                    on
+                        ? tab.classList.add(...ACTIVE)
+                        : tab.classList.remove(...ACTIVE);
+                });
+                bars.forEach((bar) => {
+                    const h = bar.dataset[key];
+                    if (h) bar.style.height = `${h}%`;
+                });
+                if (price && price.dataset[key])
+                    price.textContent = price.dataset[key]!;
+                if (change && change.dataset[key])
+                    change.textContent = change.dataset[key]!;
+            };
+
+            tabs.forEach((tab) => {
+                tab.addEventListener("click", () =>
+                    apply(tab.dataset.range ?? "1d"),
+                );
+            });
+
+            apply("1d");
+        }
+    }
+
+    if (!customElements.get("data-chart")) {
+        customElements.define("data-chart", DataChart);
+    }
+</script>
