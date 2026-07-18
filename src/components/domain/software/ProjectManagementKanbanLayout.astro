@@ -89,18 +89,22 @@ const t = {
 
         {
             contentFocus.showKanban && (
-                <div class="flex flex-col md:flex-row gap-6 overflow-x-auto pb-8">
+                <kanban-board class="flex flex-col md:flex-row gap-6 overflow-x-auto pb-8">
                     {/* Column 1 */}
-                    <div class="bg-gray-100 dark:bg-slate-800 p-4 rounded-xl min-w-[300px] shadow-sm">
+                    <div
+                        data-column
+                        class="bg-gray-100 dark:bg-slate-800 p-4 rounded-xl min-w-[300px] shadow-sm"
+                    >
                         <div class="flex justify-between items-center mb-4 text-gray-600 dark:text-gray-400 font-bold text-sm uppercase">
                             <span>{t.todo}</span>
-                            <span>{t.todo}</span>
-                            <Badge variant="neutral" size="sm">
-                                3
+                            <Badge variant="neutral" size="sm" data-count>
+                                2
                             </Badge>
                         </div>
-                        <div class="space-y-3">
+                        <div data-dropzone class="space-y-3 min-h-[60px]">
                             <Card
+                                draggable="true"
+                                data-card
                                 variant="hover"
                                 class="p-4 cursor-grab active:cursor-grabbing"
                             >
@@ -117,6 +121,8 @@ const t = {
                                 </p>
                             </Card>
                             <Card
+                                draggable="true"
+                                data-card
                                 variant="hover"
                                 class="p-4 cursor-grab active:cursor-grabbing"
                             >
@@ -134,15 +140,20 @@ const t = {
                     </div>
 
                     {/* Column 2 */}
-                    <div class="bg-gray-100 dark:bg-slate-800 p-4 rounded-xl min-w-[300px] shadow-sm">
+                    <div
+                        data-column
+                        class="bg-gray-100 dark:bg-slate-800 p-4 rounded-xl min-w-[300px] shadow-sm"
+                    >
                         <div class="flex justify-between items-center mb-4 text-gray-600 dark:text-gray-400 font-bold text-sm uppercase">
                             <span>{t.prog}</span>
-                            <Badge variant="neutral" size="sm">
+                            <Badge variant="neutral" size="sm" data-count>
                                 1
                             </Badge>
                         </div>
-                        <div class="space-y-3">
+                        <div data-dropzone class="space-y-3 min-h-[60px]">
                             <Card
+                                draggable="true"
+                                data-card
                                 variant="hover"
                                 class="p-4 cursor-grab active:cursor-grabbing border-l-4 border-l-yellow-400 dark:border-l-yellow-600"
                             >
@@ -157,27 +168,40 @@ const t = {
                     </div>
 
                     {/* Column 3 */}
-                    <div class="bg-gray-100 dark:bg-slate-800 p-4 rounded-xl min-w-[300px] shadow-sm">
+                    <div
+                        data-column
+                        class="bg-gray-100 dark:bg-slate-800 p-4 rounded-xl min-w-[300px] shadow-sm"
+                    >
                         <div class="flex justify-between items-center mb-4 text-gray-600 dark:text-gray-400 font-bold text-sm uppercase">
                             <span>{t.done}</span>
-                            <Badge variant="neutral" size="sm">
-                                5
+                            <Badge variant="neutral" size="sm" data-count>
+                                2
                             </Badge>
                         </div>
-                        <div class="space-y-3 opacity-60">
-                            <Card variant="default" class="p-4">
+                        <div data-dropzone class="space-y-3 min-h-[60px]">
+                            <Card
+                                draggable="true"
+                                data-card
+                                variant="default"
+                                class="p-4 cursor-grab active:cursor-grabbing"
+                            >
                                 <p class="font-medium text-sm line-through text-gray-900 dark:text-white">
                                     {t.task4}
                                 </p>
                             </Card>
-                            <Card variant="default" class="p-4">
+                            <Card
+                                draggable="true"
+                                data-card
+                                variant="default"
+                                class="p-4 cursor-grab active:cursor-grabbing"
+                            >
                                 <p class="font-medium text-sm line-through text-gray-900 dark:text-white">
                                     {t.task5}
                                 </p>
                             </Card>
                         </div>
                     </div>
-                </div>
+                </kanban-board>
             )
         }
 
@@ -213,3 +237,71 @@ const t = {
         </Card>
     </div>
 </div>
+
+<script>
+    // 看板 Web Component：卡片可在欄位之間拖拉,欄位計數即時更新。
+    // 所有監聽都掛在子元素上,connectedCallback 於 View Transitions 換頁後自然重綁。
+    // 計數一律由 DOM 內實際卡片數推導,不在 JS 寫死。
+    class KanbanBoard extends HTMLElement {
+        private dragged: HTMLElement | null = null;
+
+        connectedCallback() {
+            const dropzones =
+                this.querySelectorAll<HTMLElement>("[data-dropzone]");
+            const cards = this.querySelectorAll<HTMLElement>("[data-card]");
+
+            cards.forEach((card) => {
+                card.addEventListener("dragstart", () => {
+                    this.dragged = card;
+                    card.classList.add("opacity-50");
+                });
+                card.addEventListener("dragend", () => {
+                    card.classList.remove("opacity-50");
+                    this.dragged = null;
+                    dropzones.forEach((z) => this.setHighlight(z, false));
+                });
+            });
+
+            dropzones.forEach((zone) => {
+                zone.addEventListener("dragover", (e) => {
+                    e.preventDefault();
+                    this.setHighlight(zone, true);
+                });
+                zone.addEventListener("dragleave", () =>
+                    this.setHighlight(zone, false),
+                );
+                zone.addEventListener("drop", (e) => {
+                    e.preventDefault();
+                    this.setHighlight(zone, false);
+                    if (this.dragged && this.dragged.parentElement !== zone) {
+                        zone.appendChild(this.dragged);
+                        this.updateCounts();
+                    }
+                });
+            });
+
+            this.updateCounts();
+        }
+
+        private setHighlight(zone: HTMLElement, on: boolean) {
+            zone.classList.toggle("ring-2", on);
+            zone.classList.toggle("ring-blue-400", on);
+            zone.classList.toggle("rounded-lg", on);
+        }
+
+        private updateCounts() {
+            this.querySelectorAll<HTMLElement>("[data-column]").forEach(
+                (col) => {
+                    const count =
+                        col.querySelectorAll("[data-card]").length;
+                    const badge = col.querySelector<HTMLElement>("[data-count]");
+                    if (badge) badge.textContent = String(count);
+                },
+            );
+        }
+    }
+
+    if (!customElements.get("kanban-board")) {
+        customElements.define("kanban-board", KanbanBoard);
+    }
+</script>

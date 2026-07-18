@@ -29,10 +29,14 @@ const t = {
         ],
         pricingTitle: "Simple Pricing",
         pricingDesc: "Start for free, upgrade as you grow.",
+        monthly: "Monthly",
+        annual: "Annual",
+        save: "Save 2 months",
         tiers: [
             {
                 name: "Developer",
                 price: "$0",
+                priceAnnual: "$0",
                 tag: "FOREVER FREE",
                 feats: [
                     "✅ Unlimited Projects",
@@ -43,6 +47,7 @@ const t = {
             {
                 name: "Pro",
                 price: "$15",
+                priceAnnual: "$150",
                 feats: [
                     "✅ Everything in Free",
                     "✅ 10GB Storage",
@@ -53,6 +58,7 @@ const t = {
             {
                 name: "Enterprise",
                 price: "$99",
+                priceAnnual: "$990",
                 feats: [
                     "✅ Unlimited Storage",
                     "✅ SSO & Audit Logs",
@@ -62,6 +68,7 @@ const t = {
             },
         ],
         perMo: "/mo",
+        perYr: "/yr",
     },
     "zh-tw": {
         desc: "由全方位平台驅動的快速成長。無需信用卡。",
@@ -73,16 +80,21 @@ const t = {
         ],
         pricingTitle: "簡單定價",
         pricingDesc: "免費開始，隨成長升級。",
+        monthly: "月付",
+        annual: "年付",
+        save: "省 2 個月",
         tiers: [
             {
                 name: "開發者",
                 price: "$0",
+                priceAnnual: "$0",
                 tag: "永久免費",
                 feats: ["✅ 無限專案", "✅ 500MB 儲存空間", "✅ 社群支援"],
             },
             {
                 name: "專業版",
                 price: "$15",
+                priceAnnual: "$150",
                 feats: [
                     "✅ 包含免費版所有功能",
                     "✅ 10GB 儲存空間",
@@ -93,6 +105,7 @@ const t = {
             {
                 name: "企業版",
                 price: "$99",
+                priceAnnual: "$990",
                 feats: [
                     "✅ 無限儲存空間",
                     "✅ SSO 與稽核日誌",
@@ -102,6 +115,7 @@ const t = {
             },
         ],
         perMo: "/月",
+        perYr: "/年",
     },
 }[lang] || {
     desc: "",
@@ -109,8 +123,12 @@ const t = {
     features: [],
     pricingTitle: "",
     pricingDesc: "",
+    monthly: "",
+    annual: "",
+    save: "",
     tiers: [],
     perMo: "",
+    perYr: "",
 };
 ---
 
@@ -170,13 +188,42 @@ const t = {
     <!-- Pricing - Highlighting Free Tier -->
     {
         contentFocus.highlightFreeTier && (
-            <div class="max-w-5xl mx-auto py-16 px-6">
-                <div class="text-center mb-12">
+            <billing-toggle class="block max-w-5xl mx-auto py-16 px-6">
+                <div class="text-center mb-8">
                     <h3 class="text-3xl font-bold">{t.pricingTitle}</h3>
                     <p class="text-gray-500 dark:text-gray-400">
                         {t.pricingDesc}
                     </p>
                 </div>
+
+                {/* Billing period toggle */}
+                <div class="flex items-center justify-center gap-4 mb-12">
+                    <div class="inline-flex rounded-full bg-green-100 dark:bg-slate-800 p-1">
+                        <button
+                            type="button"
+                            data-billing="monthly"
+                            aria-pressed="true"
+                            class="px-5 py-2 rounded-full text-sm font-bold transition-colors"
+                        >
+                            {t.monthly}
+                        </button>
+                        <button
+                            type="button"
+                            data-billing="annual"
+                            aria-pressed="false"
+                            class="px-5 py-2 rounded-full text-sm font-bold transition-colors"
+                        >
+                            {t.annual}
+                        </button>
+                    </div>
+                    <span
+                        data-save
+                        class="hidden text-sm font-bold text-green-600 dark:text-green-400"
+                    >
+                        {t.save}
+                    </span>
+                </div>
+
                 <div class="grid md:grid-cols-3 gap-6 items-end">
                     {/* Free Tier */}
                     <Card
@@ -195,8 +242,19 @@ const t = {
                             {t.tiers[0].name}
                         </h4>
                         <div class="text-4xl font-bold my-4 text-gray-900 dark:text-white">
-                            {t.tiers[0].price}
-                            <span class="text-sm font-normal text-gray-400">
+                            <span
+                                data-price
+                                data-monthly={t.tiers[0].price}
+                                data-annual={t.tiers[0].priceAnnual}
+                            >
+                                {t.tiers[0].price}
+                            </span>
+                            <span
+                                data-period
+                                data-monthly={t.perMo}
+                                data-annual={t.perYr}
+                                class="text-sm font-normal text-gray-400"
+                            >
                                 {t.perMo}
                             </span>
                         </div>
@@ -224,8 +282,19 @@ const t = {
                             {t.tiers[1].name}
                         </h4>
                         <div class="text-4xl font-bold my-4 text-gray-900 dark:text-white">
-                            {t.tiers[1].price}
-                            <span class="text-sm font-normal text-gray-400">
+                            <span
+                                data-price
+                                data-monthly={t.tiers[1].price}
+                                data-annual={t.tiers[1].priceAnnual}
+                            >
+                                {t.tiers[1].price}
+                            </span>
+                            <span
+                                data-period
+                                data-monthly={t.perMo}
+                                data-annual={t.perYr}
+                                class="text-sm font-normal text-gray-400"
+                            >
                                 {t.perMo}
                             </span>
                         </div>
@@ -248,8 +317,19 @@ const t = {
                             {t.tiers[2].name}
                         </h4>
                         <div class="text-4xl font-bold my-4 text-gray-900 dark:text-white">
-                            {t.tiers[2].price}
-                            <span class="text-sm font-normal text-gray-400">
+                            <span
+                                data-price
+                                data-monthly={t.tiers[2].price}
+                                data-annual={t.tiers[2].priceAnnual}
+                            >
+                                {t.tiers[2].price}
+                            </span>
+                            <span
+                                data-period
+                                data-monthly={t.perMo}
+                                data-annual={t.perYr}
+                                class="text-sm font-normal text-gray-400"
+                            >
                                 {t.perMo}
                             </span>
                         </div>
@@ -263,7 +343,56 @@ const t = {
                         </Button>
                     </Card>
                 </div>
-            </div>
+            </billing-toggle>
         )
     }
 </div>
+
+<script>
+    // 計費週期切換 Web Component：月付 / 年付。
+    // 價格值渲染在 DOM 的 data-monthly / data-annual 屬性上，
+    // script 只讀 DOM，不碰 inline t 物件 —— 未來換資料來源不影響此邏輯。
+    class BillingToggle extends HTMLElement {
+        connectedCallback() {
+            const buttons =
+                this.querySelectorAll<HTMLButtonElement>("[data-billing]");
+            const prices = this.querySelectorAll<HTMLElement>("[data-price]");
+            const periods = this.querySelectorAll<HTMLElement>("[data-period]");
+            const save = this.querySelector<HTMLElement>("[data-save]");
+
+            const ACTIVE = ["bg-green-600", "text-white", "shadow"];
+            const INACTIVE = ["text-gray-600", "dark:text-gray-300"];
+
+            const apply = (mode: "monthly" | "annual") => {
+                buttons.forEach((b) => {
+                    const on = b.dataset.billing === mode;
+                    b.setAttribute("aria-pressed", String(on));
+                    b.classList.remove(...(on ? INACTIVE : ACTIVE));
+                    b.classList.add(...(on ? ACTIVE : INACTIVE));
+                });
+                prices.forEach((p) => {
+                    p.textContent = p.dataset[mode] ?? p.textContent;
+                });
+                periods.forEach((p) => {
+                    p.textContent = p.dataset[mode] ?? p.textContent;
+                });
+                save?.classList.toggle("hidden", mode !== "annual");
+            };
+
+            buttons.forEach((btn) => {
+                btn.addEventListener("click", () =>
+                    apply(
+                        (btn.dataset.billing as "monthly" | "annual") ??
+                            "monthly",
+                    ),
+                );
+            });
+
+            apply("monthly");
+        }
+    }
+
+    if (!customElements.get("billing-toggle")) {
+        customElements.define("billing-toggle", BillingToggle);
+    }
+</script>
