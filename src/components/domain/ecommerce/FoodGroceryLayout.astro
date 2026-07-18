@@ -29,6 +29,8 @@ const t = {
         boxTitle: "Weekly Harvest Box",
         boxDesc: "Get 20% off your first subscription order.",
         boxBtn: "Subscribe",
+        added: "Added to cart",
+        cartLabel: "Cart",
     },
     "zh-tw": {
         desc: "從在地農場新鮮直送餐桌。",
@@ -42,6 +44,8 @@ const t = {
         boxTitle: "每週豐收箱",
         boxDesc: "首次訂閱享八折優惠。",
         boxBtn: "訂閱",
+        added: "已加入購物車",
+        cartLabel: "購物車",
     },
 }[lang] || {
     desc: "",
@@ -50,6 +54,8 @@ const t = {
     boxTitle: "",
     boxDesc: "",
     boxBtn: "",
+    added: "",
+    cartLabel: "",
 };
 
 const baseProducts = [
@@ -75,8 +81,8 @@ const badgeVariants: Record<
 };
 ---
 
-<div
-    class="bg-green-50 dark:bg-green-950/30 p-8 font-sans transition-colors duration-300 min-h-screen"
+<add-to-cart
+    class="block bg-green-50 dark:bg-green-950/30 p-8 font-sans transition-colors duration-300 min-h-screen"
 >
     <!-- Header -->
     <div
@@ -88,22 +94,45 @@ const badgeVariants: Record<
             </h2>
             <p class="text-green-700 dark:text-green-300">{t.desc}</p>
         </div>
-        <div class="hidden md:flex gap-2">
-            {
-                t.cats &&
-                    t.cats.map((cat: string, index: number) => (
-                        <Badge
-                            variant={index === 2 ? "primary" : "neutral"}
-                            class={`px-3 py-1 cursor-pointer border ${
-                                index === 2
-                                    ? "!bg-green-600 !text-white !border-none"
-                                    : "!bg-white dark:!bg-green-900 hover:!bg-green-100 dark:hover:!bg-green-800 !border-green-200 dark:!border-green-800 !text-green-800 dark:!text-green-100"
-                            }`}
-                        >
-                            {cat}
-                        </Badge>
-                    ))
-            }
+        <div class="flex items-center gap-4">
+            <div class="hidden md:flex gap-2">
+                {
+                    t.cats &&
+                        t.cats.map((cat: string, index: number) => (
+                            <Badge
+                                variant={index === 2 ? "primary" : "neutral"}
+                                class={`px-3 py-1 cursor-pointer border ${
+                                    index === 2
+                                        ? "!bg-green-600 !text-white !border-none"
+                                        : "!bg-white dark:!bg-green-900 hover:!bg-green-100 dark:hover:!bg-green-800 !border-green-200 dark:!border-green-800 !text-green-800 dark:!text-green-100"
+                                }`}
+                            >
+                                {cat}
+                            </Badge>
+                        ))
+                }
+            </div>
+            <div class="relative" aria-label={t.cartLabel}>
+                <svg
+                    class="w-7 h-7 text-green-800 dark:text-green-100"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
+                    />
+                </svg>
+                <span
+                    data-cart-count
+                    class="hidden absolute -top-2 -right-2 bg-green-600 text-white text-xs font-bold rounded-full min-w-[1.25rem] h-5 px-1 items-center justify-center"
+                >
+                    0
+                </span>
+            </div>
         </div>
     </div>
 
@@ -146,6 +175,7 @@ const badgeVariants: Record<
                         </div>
                         <Button
                             variant="primary"
+                            data-add-to-cart
                             class="w-full !bg-green-600 hover:!bg-green-700 text-white rounded-lg mt-2 py-1 text-sm"
                         >
                             {contentFocus.primaryCTA}
@@ -173,6 +203,7 @@ const badgeVariants: Record<
                 </div>
                 <Button
                     variant="primary"
+                    data-add-to-cart
                     class="!bg-orange-500 hover:!bg-orange-600 text-white px-6 py-2 font-bold"
                 >
                     {t.boxBtn}
@@ -180,4 +211,60 @@ const badgeVariants: Record<
             </Card>
         )
     }
-</div>
+
+    {/* Toast */}
+    <div
+        data-toast
+        role="status"
+        class="fixed bottom-6 right-6 z-50 bg-green-700 text-white text-sm font-medium px-5 py-3 rounded-lg shadow-xl opacity-0 translate-y-4 pointer-events-none transition-all duration-300"
+    >
+        {t.added}
+    </div>
+</add-to-cart>
+
+<script>
+    // 加入購物車 Web Component:計數 +1、頂部 badge 更新、跳出 toast。
+    // 計數為元件內部狀態,由實際點擊次數累加,不從資料寫死。
+    class AddToCart extends HTMLElement {
+        private count = 0;
+        private toastTimer: number | undefined;
+
+        connectedCallback() {
+            const buttons =
+                this.querySelectorAll<HTMLElement>("[data-add-to-cart]");
+            const badge = this.querySelector<HTMLElement>("[data-cart-count]");
+            const toast = this.querySelector<HTMLElement>("[data-toast]");
+
+            buttons.forEach((btn) => {
+                btn.addEventListener("click", () => {
+                    this.count += 1;
+                    if (badge) {
+                        badge.textContent = String(this.count);
+                        badge.classList.remove("hidden");
+                        badge.classList.add("flex");
+                    }
+                    this.showToast(toast);
+                });
+            });
+        }
+
+        private showToast(toast: HTMLElement | null) {
+            if (!toast) return;
+            toast.classList.remove("opacity-0", "translate-y-4");
+            toast.classList.add("opacity-100", "translate-y-0");
+            if (this.toastTimer) window.clearTimeout(this.toastTimer);
+            this.toastTimer = window.setTimeout(() => {
+                toast.classList.add("opacity-0", "translate-y-4");
+                toast.classList.remove("opacity-100", "translate-y-0");
+            }, 1600);
+        }
+
+        disconnectedCallback() {
+            if (this.toastTimer) window.clearTimeout(this.toastTimer);
+        }
+    }
+
+    if (!customElements.get("add-to-cart")) {
+        customElements.define("add-to-cart", AddToCart);
+    }
+</script>
