@@ -36,6 +36,15 @@ const t = {
     item2: "",
     cta: "",
 };
+
+// Gallery images are language-independent, so they live outside `t`.
+// The <image-gallery> element reads the DOM (thumbnail data-src), never this.
+const gallery = [
+    "https://picsum.photos/800/1200?random=editorial1",
+    "https://picsum.photos/800/1200?random=editorial2",
+    "https://picsum.photos/800/1200?random=editorial3",
+    "https://picsum.photos/800/1200?random=editorial4",
+];
 ---
 
 <div
@@ -43,22 +52,46 @@ const t = {
 >
     <!-- Main Grid Container -->
     <div class="grid md:grid-cols-2 min-h-[600px]">
-        <!-- Left: Hero Image -->
-        <div class="relative h-96 md:h-auto overflow-hidden group">
+        <!-- Left: Hero Image Gallery -->
+        <image-gallery
+            class="relative block h-96 md:h-auto overflow-hidden group"
+        >
             <img
-                src="https://picsum.photos/800/1200?random=fashion"
+                data-gallery-main
+                src={gallery[0]}
                 alt="Fashion Editorial"
                 class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 ease-in-out"
             />
-            <div class="absolute bottom-8 left-8">
-                <p class="text-white text-xs tracking-[0.3em] uppercase mb-2">
+
+            {/* Thumbnails */}
+            <div class="absolute top-4 right-4 flex flex-col gap-2 z-10">
+                {gallery.map((src, i) => (
+                    <button
+                        type="button"
+                        data-gallery-thumb
+                        data-src={src}
+                        aria-pressed={i === 0 ? "true" : "false"}
+                        aria-label={`View image ${i + 1}`}
+                        class="w-12 h-16 overflow-hidden ring-2 ring-transparent transition-all"
+                    >
+                        <img
+                            src={src}
+                            alt=""
+                            class="w-full h-full object-cover"
+                        />
+                    </button>
+                ))}
+            </div>
+
+            <div class="absolute bottom-8 left-8 z-10">
+                <p class="text-white text-xs tracking-[0.3em] uppercase mb-2 drop-shadow">
                     {t.season}
                 </p>
-                <h2 class="text-white text-4xl font-serif italic">
+                <h2 class="text-white text-4xl font-serif italic drop-shadow">
                     {t.heroTitle}
                 </h2>
             </div>
-        </div>
+        </image-gallery>
 
         <!-- Right: Content & Grid -->
         <div class="p-12 flex flex-col justify-center">
@@ -115,3 +148,41 @@ const t = {
         </div>
     </div>
 </div>
+
+<script>
+    // 圖片畫廊 Web Component:點縮圖切換主圖。
+    // 圖片來源存在縮圖的 data-src 上,script 只讀 DOM。
+    class ImageGallery extends HTMLElement {
+        connectedCallback() {
+            const main = this.querySelector<HTMLImageElement>(
+                "[data-gallery-main]",
+            );
+            const thumbs = this.querySelectorAll<HTMLButtonElement>(
+                "[data-gallery-thumb]",
+            );
+
+            const ACTIVE = ["ring-white"];
+
+            const select = (thumb: HTMLButtonElement) => {
+                if (main && thumb.dataset.src) main.src = thumb.dataset.src;
+                thumbs.forEach((t) => {
+                    const on = t === thumb;
+                    t.setAttribute("aria-pressed", String(on));
+                    on
+                        ? t.classList.add(...ACTIVE)
+                        : t.classList.remove(...ACTIVE);
+                });
+            };
+
+            thumbs.forEach((thumb) => {
+                thumb.addEventListener("click", () => select(thumb));
+            });
+
+            if (thumbs[0]) select(thumbs[0]);
+        }
+    }
+
+    if (!customElements.get("image-gallery")) {
+        customElements.define("image-gallery", ImageGallery);
+    }
+</script>
