@@ -18,6 +18,11 @@ const t = {
         desc: "Compassionate care powered by advanced medical technology. Your health is our priority.",
         quick: "Quick Appointment",
         noAcc: "No account required.",
+        fName: "Full name",
+        fDate: "Preferred date",
+        fDept: "Select department",
+        fSuccess: "Thanks! We'll confirm your appointment shortly.",
+        fError: "Please complete all fields.",
         meet: "Meet Our Specialists",
         view: "View Profile",
         doctors: [
@@ -31,6 +36,11 @@ const t = {
         desc: "以先進醫療科技提供充滿關懷的照護。您的健康是我們的首要任務。",
         quick: "快速預約",
         noAcc: "無需註冊",
+        fName: "姓名",
+        fDate: "希望日期",
+        fDept: "選擇科別",
+        fSuccess: "感謝您！我們將盡快確認您的預約。",
+        fError: "請填寫所有欄位。",
         meet: "認識我們的專家",
         view: "查看簡介",
         doctors: [
@@ -44,9 +54,14 @@ const t = {
     desc: "",
     quick: "",
     noAcc: "",
+    fName: "",
+    fDate: "",
+    fDept: "",
+    fSuccess: "",
+    fError: "",
     meet: "",
     view: "",
-    doctors: [],
+    doctors: [] as { name: string; role: string }[],
 };
 
 const baseDoctors = [
@@ -99,17 +114,58 @@ const doctors = baseDoctors.map((d, i) => ({
                 class="p-6 shadow-lg border-t-4 border-l-0 border-r-0 border-b-0 !border-t-teal-500 w-full md:w-auto min-w-[300px]"
             >
                 <h3 class="font-bold text-lg mb-4 text-center">{t.quick}</h3>
-                <Button
-                    variant="primary"
-                    class="w-full bg-teal-600 hover:bg-teal-700 text-white mb-2 py-2"
-                >
-                    {contentFocus.primaryCTA}
-                </Button>
-                <p
-                    class="text-xs text-center text-gray-400 dark:text-gray-500 mt-2"
-                >
-                    {t.noAcc}
-                </p>
+                <appointment-form class="block">
+                    <form novalidate class="space-y-3">
+                        <input
+                            data-field
+                            type="text"
+                            aria-label={t.fName}
+                            placeholder={t.fName}
+                            class="w-full border rounded px-3 py-2 text-sm bg-white dark:bg-slate-800 border-gray-300 dark:border-slate-600 focus:outline-none focus:ring-2 focus:ring-teal-500"
+                        />
+                        <input
+                            data-field
+                            type="date"
+                            aria-label={t.fDate}
+                            class="w-full border rounded px-3 py-2 text-sm bg-white dark:bg-slate-800 border-gray-300 dark:border-slate-600 text-gray-600 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-teal-500"
+                        />
+                        <select
+                            data-field
+                            aria-label={t.fDept}
+                            class="w-full border rounded px-3 py-2 text-sm bg-white dark:bg-slate-800 border-gray-300 dark:border-slate-600 text-gray-600 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-teal-500"
+                        >
+                            <option value="">{t.fDept}</option>
+                            {t.doctors.map((d) => (
+                                <option value={d.role}>{d.role}</option>
+                            ))}
+                        </select>
+                        <button
+                            type="submit"
+                            class="w-full bg-teal-600 hover:bg-teal-700 text-white rounded py-2 font-medium transition-colors"
+                        >
+                            {contentFocus.primaryCTA}
+                        </button>
+                    </form>
+                    <p
+                        data-error
+                        role="alert"
+                        class="hidden text-xs text-center text-red-500 mt-2"
+                    >
+                        {t.fError}
+                    </p>
+                    <p
+                        data-success
+                        role="status"
+                        class="hidden text-xs text-center text-teal-600 dark:text-teal-400 font-medium mt-2"
+                    >
+                        {t.fSuccess}
+                    </p>
+                    <p
+                        class="text-xs text-center text-gray-400 dark:text-gray-500 mt-2"
+                    >
+                        {t.noAcc}
+                    </p>
+                </appointment-form>
             </Card>
         </div>
     </div>
@@ -152,3 +208,52 @@ const doctors = baseDoctors.map((d, i) => ({
         )
     }
 </div>
+
+<script>
+    // 預約表單 Web Component:前端驗證,全部欄位填妥才顯示成功訊息。
+    // 驗證只讀 DOM 上各欄位的實際值,與 i18n 內容無關。
+    class AppointmentForm extends HTMLElement {
+        connectedCallback() {
+            const form = this.querySelector<HTMLFormElement>("form");
+            const fields =
+                this.querySelectorAll<HTMLInputElement | HTMLSelectElement>(
+                    "[data-field]",
+                );
+            const error = this.querySelector<HTMLElement>("[data-error]");
+            const success = this.querySelector<HTMLElement>("[data-success]");
+
+            const RING = ["ring-2", "ring-red-500", "border-red-500"];
+
+            form?.addEventListener("submit", (e) => {
+                e.preventDefault();
+                let valid = true;
+                fields.forEach((f) => {
+                    const empty = !f.value.trim();
+                    f.classList.toggle("ring-2", empty);
+                    f.classList.toggle("ring-red-500", empty);
+                    f.classList.toggle("border-red-500", empty);
+                    if (empty) valid = false;
+                });
+
+                error?.classList.toggle("hidden", valid);
+                success?.classList.toggle("hidden", !valid);
+
+                if (valid) {
+                    form.reset();
+                    fields.forEach((f) => f.classList.remove(...RING));
+                }
+            });
+
+            // clear a field's error state as the user edits it
+            fields.forEach((f) => {
+                f.addEventListener("input", () =>
+                    f.classList.remove(...RING),
+                );
+            });
+        }
+    }
+
+    if (!customElements.get("appointment-form")) {
+        customElements.define("appointment-form", AppointmentForm);
+    }
+</script>

@@ -15,10 +15,31 @@ const t = {
     en: {
         tag: "Fine Dining Experience",
         menuTitle: "Chef's Tasting Menu",
-        items: [
-            { name: "Wagyu Beef Tartare", price: "$24" },
-            { name: "Pan Seared Scallops", price: "$32" },
-            { name: "Truffle Risotto", price: "$28" },
+        menu: [
+            {
+                cat: "Starters",
+                items: [
+                    { name: "Wagyu Beef Tartare", price: "$24" },
+                    { name: "Pan Seared Scallops", price: "$32" },
+                    { name: "Burrata & Heirloom Tomato", price: "$18" },
+                ],
+            },
+            {
+                cat: "Mains",
+                items: [
+                    { name: "Truffle Risotto", price: "$28" },
+                    { name: "Dry-Aged Ribeye", price: "$46" },
+                    { name: "Miso Black Cod", price: "$38" },
+                ],
+            },
+            {
+                cat: "Desserts",
+                items: [
+                    { name: "Valrhona Chocolate Fondant", price: "$14" },
+                    { name: "Yuzu Cheesecake", price: "$12" },
+                    { name: "Seasonal Sorbet", price: "$10" },
+                ],
+            },
         ],
         hoursLabel: "Opening Hours",
         hours: "Mon-Sun: 17:00 - 23:00",
@@ -26,10 +47,31 @@ const t = {
     "zh-tw": {
         tag: "精緻餐飲體驗",
         menuTitle: "主廚品嚐菜單",
-        items: [
-            { name: "和牛塔塔", price: "$24" },
-            { name: "香煎干貝", price: "$32" },
-            { name: "松露燉飯", price: "$28" },
+        menu: [
+            {
+                cat: "前菜",
+                items: [
+                    { name: "和牛塔塔", price: "$24" },
+                    { name: "香煎干貝", price: "$32" },
+                    { name: "布拉塔起司與傳家番茄", price: "$18" },
+                ],
+            },
+            {
+                cat: "主菜",
+                items: [
+                    { name: "松露燉飯", price: "$28" },
+                    { name: "乾式熟成肋眼", price: "$46" },
+                    { name: "味噌黑鱈", price: "$38" },
+                ],
+            },
+            {
+                cat: "甜點",
+                items: [
+                    { name: "Valrhona 巧克力熔岩", price: "$14" },
+                    { name: "柚子起司蛋糕", price: "$12" },
+                    { name: "時令雪酪", price: "$10" },
+                ],
+            },
         ],
         hoursLabel: "營業時間",
         hours: "週一至週日: 17:00 - 23:00",
@@ -37,7 +79,7 @@ const t = {
 }[lang] || {
     tag: "",
     menuTitle: "",
-    items: [],
+    menu: [] as { cat: string; items: { name: string; price: string }[] }[],
     hoursLabel: "",
     hours: "",
 };
@@ -73,28 +115,48 @@ const t = {
             {contentFocus.title}
         </h2>
 
-        <Card
-            variant="default"
-            class="!bg-white/60 dark:!bg-white/5 backdrop-blur-md border border-stone-200 dark:border-white/10 p-8 rounded-lg max-w-2xl w-full mb-12 shadow-xl dark:shadow-none"
-        >
-            <h3
-                class="text-2xl mb-6 text-amber-700 dark:text-amber-200 border-b border-stone-300 dark:border-white/10 pb-4"
+        <menu-tabs class="block max-w-2xl w-full mb-12">
+            <Card
+                variant="default"
+                class="!bg-white/60 dark:!bg-white/5 backdrop-blur-md border border-stone-200 dark:border-white/10 p-8 rounded-lg w-full shadow-xl dark:shadow-none"
             >
-                {t.menuTitle}
-            </h3>
-            <ul class="space-y-4 text-lg">
-                {
-                    t.items.map((item: any) => (
-                        <li class="flex justify-between">
-                            <span class="font-medium">{item.name}</span>
-                            <span class="text-stone-500 dark:text-stone-400">
-                                ................... {item.price}
-                            </span>
-                        </li>
-                    ))
-                }
-            </ul>
-        </Card>
+                <h3
+                    class="text-2xl mb-6 text-amber-700 dark:text-amber-200 border-b border-stone-300 dark:border-white/10 pb-4"
+                >
+                    {t.menuTitle}
+                </h3>
+
+                {/* Category tabs */}
+                <div class="flex justify-center gap-2 mb-6">
+                    {t.menu.map((section, i) => (
+                        <button
+                            type="button"
+                            data-cat={section.cat}
+                            aria-pressed={i === 0 ? "true" : "false"}
+                            class="px-4 py-1.5 rounded-full text-sm uppercase tracking-wider font-bold text-stone-500 dark:text-stone-400 transition-colors"
+                        >
+                            {section.cat}
+                        </button>
+                    ))}
+                </div>
+
+                {t.menu.map((section, i) => (
+                    <ul
+                        data-panel={section.cat}
+                        class={`space-y-4 text-lg ${i === 0 ? "" : "hidden"}`}
+                    >
+                        {section.items.map((item) => (
+                            <li class="flex justify-between">
+                                <span class="font-medium">{item.name}</span>
+                                <span class="text-stone-500 dark:text-stone-400">
+                                    ................... {item.price}
+                                </span>
+                            </li>
+                        ))}
+                    </ul>
+                ))}
+            </Card>
+        </menu-tabs>
 
         <div class="flex flex-col md:flex-row gap-6 items-center">
             <Button
@@ -114,3 +176,48 @@ const t = {
         </div>
     </div>
 </div>
+
+<script>
+    // 菜單分類 tab Web Component:切換前菜/主菜/甜點清單。
+    // 以 data-cat(按鈕)對應 data-panel(清單),狀態存在 DOM。
+    class MenuTabs extends HTMLElement {
+        connectedCallback() {
+            const tabs = this.querySelectorAll<HTMLButtonElement>("[data-cat]");
+            const panels = this.querySelectorAll<HTMLElement>("[data-panel]");
+
+            const ACTIVE = [
+                "bg-amber-600",
+                "text-white",
+                "dark:bg-amber-500",
+            ];
+
+            const select = (cat: string) => {
+                tabs.forEach((tab) => {
+                    const on = tab.dataset.cat === cat;
+                    tab.setAttribute("aria-pressed", String(on));
+                    on
+                        ? tab.classList.add(...ACTIVE)
+                        : tab.classList.remove(...ACTIVE);
+                });
+                panels.forEach((panel) => {
+                    panel.classList.toggle(
+                        "hidden",
+                        panel.dataset.panel !== cat,
+                    );
+                });
+            };
+
+            tabs.forEach((tab) => {
+                tab.addEventListener("click", () =>
+                    select(tab.dataset.cat ?? ""),
+                );
+            });
+
+            if (tabs[0]) select(tabs[0].dataset.cat ?? "");
+        }
+    }
+
+    if (!customElements.get("menu-tabs")) {
+        customElements.define("menu-tabs", MenuTabs);
+    }
+</script>

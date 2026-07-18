@@ -15,11 +15,26 @@ const t = {
     en: {
         areas: "Practice Areas",
         areaList: [
-            "Corporate Law",
-            "Mergers & Acquisitions",
-            "Taxation Strategy",
-            "Intellectual Property",
-            "Litigation",
+            {
+                name: "Corporate Law",
+                blurb: "Entity formation, governance, and day-to-day counsel for boards and executives.",
+            },
+            {
+                name: "Mergers & Acquisitions",
+                blurb: "Buy-side and sell-side deal execution, due diligence, and antitrust clearance.",
+            },
+            {
+                name: "Taxation Strategy",
+                blurb: "Cross-border structuring that keeps multinational operations efficient and compliant.",
+            },
+            {
+                name: "Intellectual Property",
+                blurb: "Portfolio strategy, licensing, and enforcement for technology and brand assets.",
+            },
+            {
+                name: "Litigation",
+                blurb: "Commercial disputes and regulatory defense, from negotiation through trial.",
+            },
         ],
         contact: "Contact Us",
         intro: "We provide comprehensive legal counsel to multinational corporations and financial institutions. Our approach is rooted in a deep understanding of regulatory frameworks and a commitment to achieving favorable outcomes.",
@@ -38,7 +53,28 @@ const t = {
     },
     "zh-tw": {
         areas: "專業領域",
-        areaList: ["公司法", "企業併購", "稅務策略", "智慧財產權", "訴訟"],
+        areaList: [
+            {
+                name: "公司法",
+                blurb: "為董事會與經營團隊提供公司設立、治理與日常法律諮詢。",
+            },
+            {
+                name: "企業併購",
+                blurb: "買賣雙方交易執行、盡職調查與反壟斷審查。",
+            },
+            {
+                name: "稅務策略",
+                blurb: "跨國架構規劃，兼顧營運效率與法規遵循。",
+            },
+            {
+                name: "智慧財產權",
+                blurb: "科技與品牌資產的專利佈局、授權與權利執行。",
+            },
+            {
+                name: "訴訟",
+                blurb: "商業爭議與法規辯護，從協商到審判全程代理。",
+            },
+        ],
         contact: "聯絡我們",
         intro: "我們為跨國企業和金融機構提供全面的法律諮詢。我們的方法植基於對監管框架的深刻理解，並致力於達成最有利的結果。",
         cases: [
@@ -56,7 +92,7 @@ const t = {
     },
 }[lang] || {
     areas: "",
-    areaList: [],
+    areaList: [] as { name: string; blurb: string }[],
     contact: "",
     intro: "",
     cases: [],
@@ -68,8 +104,8 @@ const t = {
 <div
     class="bg-white dark:bg-slate-900 text-slate-900 dark:text-white font-serif p-8 md:p-12 transition-colors duration-300 min-h-screen"
 >
-    <div class="max-w-6xl mx-auto flex flex-col md:flex-row gap-12">
-        <!-- Sidebar Navigation (Visual Only) -->
+    <area-tabs class="max-w-6xl mx-auto flex flex-col md:flex-row gap-12">
+        <!-- Sidebar Navigation -->
         {
             contentFocus.deepNavigation && (
                 <div class="w-full md:w-64 border-r border-slate-200 dark:border-slate-700 pr-8 hidden md:block">
@@ -77,12 +113,17 @@ const t = {
                         {t.areas}
                     </div>
                     <ul class="space-y-4 text-sm text-slate-600 dark:text-slate-400">
-                        <li class="font-bold text-slate-900 dark:text-white border-l-2 border-slate-900 dark:border-white pl-3">
-                            {t.areaList[0]}
-                        </li>
-                        {t.areaList.slice(1).map((area: string) => (
-                            <li class="pl-3 hover:text-slate-900 dark:hover:text-white cursor-pointer transition-colors">
-                                {area}
+                        {t.areaList.map((area, i) => (
+                            <li>
+                                <button
+                                    type="button"
+                                    data-area
+                                    data-blurb={area.blurb}
+                                    aria-pressed={i === 0 ? "true" : "false"}
+                                    class="w-full text-left pl-3 hover:text-slate-900 dark:hover:text-white cursor-pointer transition-colors"
+                                >
+                                    {area.name}
+                                </button>
                             </li>
                         ))}
                     </ul>
@@ -112,10 +153,27 @@ const t = {
             </h2>
 
             <p
-                class="text-lg text-slate-700 dark:text-slate-300 leading-relaxed mb-8"
+                class="text-lg text-slate-700 dark:text-slate-300 leading-relaxed mb-6"
             >
                 {t.intro}
             </p>
+
+            <div
+                class="border-l-4 border-slate-900 dark:border-white pl-4 mb-8"
+            >
+                <p
+                    data-area-title
+                    class="font-bold text-slate-900 dark:text-white"
+                >
+                    {t.areaList[0]?.name}
+                </p>
+                <p
+                    data-area-blurb
+                    class="text-slate-600 dark:text-slate-300"
+                >
+                    {t.areaList[0]?.blurb}
+                </p>
+            </div>
 
             <div class="grid md:grid-cols-2 gap-8 mb-12">
                 {
@@ -151,5 +209,49 @@ const t = {
                 </Button>
             </div>
         </div>
-    </div>
+    </area-tabs>
 </div>
+
+<script>
+    // 執業領域 tab Web Component:點側欄領域,主內容顯示對應說明。
+    // 領域說明存在按鈕的文字與 data-blurb 上,狀態存在 DOM。
+    class AreaTabs extends HTMLElement {
+        connectedCallback() {
+            const buttons = this.querySelectorAll<HTMLButtonElement>("[data-area]");
+            const title = this.querySelector<HTMLElement>("[data-area-title]");
+            const blurb = this.querySelector<HTMLElement>("[data-area-blurb]");
+
+            const ACTIVE = [
+                "font-bold",
+                "text-slate-900",
+                "dark:text-white",
+                "border-l-2",
+                "border-slate-900",
+                "dark:border-white",
+            ];
+
+            const select = (btn: HTMLButtonElement) => {
+                buttons.forEach((b) => {
+                    const on = b === btn;
+                    b.setAttribute("aria-pressed", String(on));
+                    on
+                        ? b.classList.add(...ACTIVE)
+                        : b.classList.remove(...ACTIVE);
+                });
+                if (title) title.textContent = btn.textContent?.trim() ?? "";
+                if (blurb && btn.dataset.blurb)
+                    blurb.textContent = btn.dataset.blurb;
+            };
+
+            buttons.forEach((btn) => {
+                btn.addEventListener("click", () => select(btn));
+            });
+
+            if (buttons[0]) select(buttons[0]);
+        }
+    }
+
+    if (!customElements.get("area-tabs")) {
+        customElements.define("area-tabs", AreaTabs);
+    }
+</script>

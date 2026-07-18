@@ -66,13 +66,18 @@ const t = {
     <!-- Impact Data Section -->
     {
         contentFocus.showImpactData && (
-            <div class="max-w-6xl mx-auto px-6 -mt-16 relative z-10">
+            <count-up class="block max-w-6xl mx-auto px-6 -mt-16 relative z-10">
                 <Card
                     variant="default"
                     class="!shadow-xl p-8 grid md:grid-cols-3 gap-8 text-center !border-b-4 !border-sky-500 border-x-0 border-t-0"
                 >
                     <div class="p-4">
-                        <div class="text-4xl font-extrabold text-sky-600 mb-2">
+                        <div
+                            data-count
+                            data-target="50"
+                            data-suffix="K+"
+                            class="text-4xl font-extrabold text-sky-600 mb-2"
+                        >
                             50K+
                         </div>
                         <div class="text-gray-600 dark:text-gray-300 font-medium">
@@ -80,7 +85,12 @@ const t = {
                         </div>
                     </div>
                     <div class="p-4 md:border-l md:border-r border-gray-100 dark:border-slate-700">
-                        <div class="text-4xl font-extrabold text-sky-600 mb-2">
+                        <div
+                            data-count
+                            data-target="120"
+                            data-suffix=""
+                            class="text-4xl font-extrabold text-sky-600 mb-2"
+                        >
                             120
                         </div>
                         <div class="text-gray-600 dark:text-gray-300 font-medium">
@@ -88,7 +98,12 @@ const t = {
                         </div>
                     </div>
                     <div class="p-4">
-                        <div class="text-4xl font-extrabold text-sky-600 mb-2">
+                        <div
+                            data-count
+                            data-target="95"
+                            data-suffix="%"
+                            class="text-4xl font-extrabold text-sky-600 mb-2"
+                        >
                             95%
                         </div>
                         <div class="text-gray-600 dark:text-gray-300 font-medium">
@@ -96,7 +111,7 @@ const t = {
                         </div>
                     </div>
                 </Card>
-            </div>
+            </count-up>
         )
     }
 
@@ -147,3 +162,59 @@ const t = {
         </div>
     </div>
 </div>
+
+<script>
+    // 影響力數字 count-up Web Component:捲入視窗時從 0 動畫到目標值。
+    // 目標值與後綴存在 DOM 的 data-target / data-suffix 上,script 只讀 DOM。
+    class CountUp extends HTMLElement {
+        private observer: IntersectionObserver | null = null;
+        private done = false;
+
+        connectedCallback() {
+            const nodes = this.querySelectorAll<HTMLElement>("[data-count]");
+            // reset to 0 so the animation has somewhere to travel from
+            nodes.forEach((n) => {
+                n.textContent = `0${n.dataset.suffix ?? ""}`;
+            });
+
+            const animate = () => {
+                if (this.done) return;
+                this.done = true;
+                nodes.forEach((n) => {
+                    const target = Number(n.dataset.target ?? "0");
+                    const suffix = n.dataset.suffix ?? "";
+                    const duration = 1200;
+                    const start = performance.now();
+                    const tick = (now: number) => {
+                        const p = Math.min((now - start) / duration, 1);
+                        const eased = 1 - Math.pow(1 - p, 3); // easeOutCubic
+                        n.textContent = `${Math.round(eased * target)}${suffix}`;
+                        if (p < 1) requestAnimationFrame(tick);
+                    };
+                    requestAnimationFrame(tick);
+                });
+            };
+
+            if ("IntersectionObserver" in window) {
+                this.observer = new IntersectionObserver(
+                    (entries) => {
+                        if (entries.some((e) => e.isIntersecting)) animate();
+                    },
+                    { threshold: 0.4 },
+                );
+                this.observer.observe(this);
+            } else {
+                animate();
+            }
+        }
+
+        disconnectedCallback() {
+            this.observer?.disconnect();
+            this.observer = null;
+        }
+    }
+
+    if (!customElements.get("count-up")) {
+        customElements.define("count-up", CountUp);
+    }
+</script>

@@ -15,11 +15,26 @@ const t = {
         cert: "ISO 9001 Certified • Heavy Industry Solutions",
         flowTitle: "Production Process Flow",
         steps: [
-            "Raw Material",
-            "Fabrication",
-            "Assembly",
-            "QC Check",
-            "Logistics",
+            {
+                label: "Raw Material",
+                desc: "Certified alloy stock is inspected and logged before it enters the line.",
+            },
+            {
+                label: "Fabrication",
+                desc: "CNC machining and robotic welding shape each part to ±0.005mm tolerance.",
+            },
+            {
+                label: "Assembly",
+                desc: "Modules are fitted and torque-verified against the engineering spec.",
+            },
+            {
+                label: "QC Check",
+                desc: "Every unit passes dimensional, load, and non-destructive testing.",
+            },
+            {
+                label: "Logistics",
+                desc: "Finished goods are crated, documented, and scheduled for global shipping.",
+            },
         ],
         tags: ["CNC Machining", "Robotic Welding"],
         capTitle: "Capabilities",
@@ -33,7 +48,28 @@ const t = {
     "zh-tw": {
         cert: "ISO 9001 認證 • 重工業解決方案",
         flowTitle: "生產流程圖",
-        steps: ["原料", "製造", "組裝", "品管", "物流"],
+        steps: [
+            {
+                label: "原料",
+                desc: "認證合金材料進線前先完成檢驗與登錄。",
+            },
+            {
+                label: "製造",
+                desc: "CNC 加工與機器人焊接將每個零件加工至 ±0.005mm 公差。",
+            },
+            {
+                label: "組裝",
+                desc: "模組依工程規格組裝並完成扭力驗證。",
+            },
+            {
+                label: "品管",
+                desc: "每台皆通過尺寸、負載與非破壞性檢測。",
+            },
+            {
+                label: "物流",
+                desc: "成品完成裝箱、文件建檔並排定全球出貨。",
+            },
+        ],
         tags: ["CNC 加工", "機器人焊接"],
         capTitle: "產能規格",
         specs: [
@@ -46,7 +82,7 @@ const t = {
 }[lang] || {
     cert: "",
     flowTitle: "",
-    steps: [],
+    steps: [] as { label: string; desc: string }[],
     tags: [],
     capTitle: "",
     specs: [],
@@ -80,16 +116,22 @@ const t = {
 
         {
             contentFocus.showFlowCharts && (
-                <div class="bg-white dark:bg-slate-900 p-8 shadow-sm mb-8">
+                <process-stepper class="block bg-white dark:bg-slate-900 p-8 shadow-sm mb-8">
                     <h3 class="text-lg font-bold text-gray-500 dark:text-gray-400 uppercase mb-6">
                         {t.flowTitle}
                     </h3>
                     <div class="flex flex-col md:flex-row items-center justify-between gap-4">
-                        {t.steps.map((step: string, idx: number) => (
+                        {t.steps.map((step, idx) => (
                             <>
-                                <div class="bg-gray-100 dark:bg-slate-700 border-2 border-gray-300 dark:border-slate-600 p-4 w-full md:w-32 text-center font-bold text-sm hover:border-orange-500 transition-colors">
-                                    {step}
-                                </div>
+                                <button
+                                    type="button"
+                                    data-step
+                                    data-desc={step.desc}
+                                    aria-pressed={idx === 0 ? "true" : "false"}
+                                    class="bg-gray-100 dark:bg-slate-700 border-2 border-gray-300 dark:border-slate-600 p-4 w-full md:w-32 text-center font-bold text-sm hover:border-orange-500 transition-colors"
+                                >
+                                    {step.label}
+                                </button>
                                 {idx < 4 && (
                                     <div class="hidden md:block text-gray-400 text-xl font-bold">
                                         →
@@ -103,7 +145,15 @@ const t = {
                             </>
                         ))}
                     </div>
-                </div>
+                    <div class="mt-6 border-l-4 border-orange-500 pl-4">
+                        <p
+                            data-step-detail
+                            class="text-gray-600 dark:text-gray-300"
+                        >
+                            {t.steps[0]?.desc}
+                        </p>
+                    </div>
+                </process-stepper>
             )
         }
 
@@ -157,3 +207,42 @@ const t = {
         </div>
     </div>
 </div>
+
+<script>
+    // 製程步驟器 Web Component:點步驟顯示對應說明。
+    // 說明文字存在每個按鈕的 data-desc 上,script 只讀 DOM。
+    class ProcessStepper extends HTMLElement {
+        connectedCallback() {
+            const steps = this.querySelectorAll<HTMLButtonElement>("[data-step]");
+            const detail = this.querySelector<HTMLElement>("[data-step-detail]");
+
+            const ACTIVE = [
+                "border-orange-500",
+                "bg-orange-50",
+                "dark:bg-orange-900/20",
+            ];
+
+            const select = (btn: HTMLButtonElement) => {
+                steps.forEach((s) => {
+                    const on = s === btn;
+                    s.setAttribute("aria-pressed", String(on));
+                    on
+                        ? s.classList.add(...ACTIVE)
+                        : s.classList.remove(...ACTIVE);
+                });
+                if (detail && btn.dataset.desc)
+                    detail.textContent = btn.dataset.desc;
+            };
+
+            steps.forEach((btn) => {
+                btn.addEventListener("click", () => select(btn));
+            });
+
+            if (steps[0]) select(steps[0]);
+        }
+    }
+
+    if (!customElements.get("process-stepper")) {
+        customElements.define("process-stepper", ProcessStepper);
+    }
+</script>
