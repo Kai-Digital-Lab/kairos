@@ -2,6 +2,13 @@
 import { getCollection, render } from "astro:content";
 import PageLayout from "@/layouts/PageLayout.astro";
 
+// Editorial type — Latin webfonts loaded on blog pages only (CJK uses
+// system fallback via the `sans` token). Unused subsets are lazy per
+// unicode-range, so only latin is actually downloaded.
+import "@fontsource-variable/space-grotesk";
+import "@fontsource/space-mono/latin-400.css";
+import "@fontsource/space-mono/latin-700.css";
+
 export const prerender = true;
 
 export async function getStaticPaths() {
@@ -19,7 +26,12 @@ if (!post) {
     return Astro.redirect("/404");
 }
 
-const { Content } = await render(post);
+const { Content, headings } = await render(post);
+
+// Section rail — built server-side from Astro's heading extraction.
+// Astro auto-adds matching `id`s to the rendered headings (verified),
+// so no rehype-slug is needed. Only h2/h3 feed the rail.
+const railHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
 
 // Find translated version via translationKey
 let translatedPost = null;
@@ -34,6 +46,14 @@ if (post.data.translationKey) {
 
 const targetLang = lang === "en" ? "zh-tw" : "en";
 
+// Reading time — Latin words at ~200 wpm + CJK glyphs at ~400 cpm.
+const cjkChars = (post.body.match(/[㐀-鿿]/g) || []).length;
+const latinWords = post.body
+    .replace(/[㐀-鿿]/g, " ")
+    .split(/\s+/)
+    .filter(Boolean).length;
+const minutes = Math.max(1, Math.round(latinWords / 200 + cjkChars / 400));
+
 // SEO Logic
 const isDraft = post.data.isDraft;
 const robots = isDraft ? "noindex, nofollow" : "index, follow";
@@ -44,15 +64,25 @@ const translations = {
     en: {
         draft: "Draft Preview",
         readIn: "閱讀中文版",
+        eyebrow: "Journal",
+        contents: "Contents",
+        readTime: `${minutes} min read`,
     },
     "zh-tw": {
         draft: "草稿預覽",
         readIn: "Read in English",
+        eyebrow: "筆記",
+        contents: "目錄",
+        readTime: `${minutes} 分鐘閱讀`,
     },
 };
 
-const t =
-    translations[lang as keyof typeof translations] || translations.en;
+const t = translations[lang as keyof typeof translations] || translations.en;
+
+const eyebrow = post.data.tags?.[0] || t.eyebrow;
+
+// Reading measure — narrower for CJK than for Latin.
+const measure = lang === "zh-tw" ? "max-w-[34em]" : "max-w-[70ch]";
 
 // Toggle URL: link to translated post if exists, otherwise fallback to blog list
 const toggleUrl = translatedPost
@@ -68,146 +98,293 @@ const toggleUrl = translatedPost
     article={true}
     toggleUrl={toggleUrl}
 >
-    <!-- Progress Indicator (Minimalist) -->
-    <div
-        class="fixed top-0 left-0 w-full h-1 bg-slate-100 dark:bg-slate-800 z-50"
-    >
+    <article-rail>
+        <!-- Mobile / narrow progress bar (rail takes over on lg) -->
         <div
-            class="h-full bg-primary-600 w-0 transition-all duration-150 ease-out"
-            id="scroll-progress"
+            class="fixed top-0 left-0 w-full h-1 bg-slate-100 dark:bg-slate-800 z-50 lg:hidden"
         >
-        </div>
-    </div>
-
-    <article class="py-20 bg-white dark:bg-slate-900 min-h-screen">
-        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-            <!-- Header -->
-            <header class="mb-12 text-center">
-                {
-                    isDraft && (
-                        <span class="inline-block px-3 py-1 mb-4 text-xs font-bold tracking-wider text-amber-500 uppercase bg-amber-100 dark:bg-amber-900/30 rounded-full border border-amber-200 dark:border-amber-700">
-                            {t.draft}
-                        </span>
-                    )
-                }
-                <div
-                    class="flex items-center justify-center gap-2 mb-6 text-sm text-slate-500 dark:text-slate-400 font-mono"
-                >
-                    <time datetime={post.data.pubDate.toISOString()}>
-                        {
-                            post.data.pubDate.toLocaleDateString(dateLocale, {
-                                year: "numeric",
-                                month: "long",
-                                day: "numeric",
-                            })
-                        }
-                    </time>
-                    <span>•</span>
-                    <span>{post.data.author}</span>
-                </div>
-
-                <h1
-                    class="text-3xl md:text-5xl font-bold text-slate-900 dark:text-white mb-6 leading-tight"
-                >
-                    {post.data.title}
-                </h1>
-
-                <p
-                    class="text-xl text-slate-600 dark:text-slate-300 leading-relaxed max-w-2xl mx-auto"
-                >
-                    {post.data.description}
-                </p>
-
-                <!-- Tags -->
-                {
-                    post.data.tags && (
-                        <div class="flex flex-wrap justify-center gap-2 mt-8">
-                            {post.data.tags.map((tag) => (
-                                <span class="px-3 py-1 text-sm text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 rounded-md border border-slate-200 dark:border-slate-700">
-                                    #{tag}
-                                </span>
-                            ))}
-                        </div>
-                    )
-                }
-
-                <!-- Translation Link -->
-                {
-                    translatedPost && (
-                        <div class="mt-6">
-                            <a
-                                href={`/${targetLang}/blog/${translatedPost.slug}`}
-                                class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors border border-slate-200 dark:border-slate-700"
-                            >
-                                <svg
-                                    class="w-4 h-4"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke-width="1.5"
-                                    stroke="currentColor"
-                                >
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        d="m10.5 21 5.25-11.25L21 21m-9-3h7.5M3 5.621a48.474 48.474 0 0 1 6-.371m0 0c1.12 0 2.233.038 3.334.114M9 5.25V3m3.334 2.364C11.176 10.658 7.69 15.08 3 17.502m9.334-12.138c.896.061 1.785.147 2.666.257m-4.589 8.495a18.023 18.023 0 0 1-3.827-5.802"
-                                    />
-                                </svg>
-                                {t.readIn}
-                            </a>
-                        </div>
-                    )
-                }
-            </header>
-
-            <!-- Divider -->
-            <hr class="border-slate-200 dark:border-slate-800 mb-12" />
-
-            <!-- Content -->
             <div
-                class="prose prose-slate dark:prose-invert prose-lg max-w-none
-                prose-headings:font-bold prose-headings:text-slate-900 dark:prose-headings:text-white
-                prose-a:text-primary-600 dark:prose-a:text-primary-400 prose-a:no-underline hover:prose-a:underline
-                prose-code:text-pink-600 dark:prose-code:text-pink-400 prose-code:bg-slate-100 dark:prose-code:bg-slate-800 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded-md prose-code:before:content-none prose-code:after:content-none
-                prose-pre:bg-slate-900 dark:prose-pre:bg-slate-950 prose-pre:border prose-pre:border-slate-800
-                prose-blockquote:border-l-primary-500 prose-blockquote:bg-slate-50 dark:prose-blockquote:bg-slate-900/50 prose-blockquote:py-2 prose-blockquote:px-4 prose-blockquote:rounded-r-lg"
+                class="h-full bg-primary-600 w-0 transition-[width] duration-150 ease-out"
+                data-progress-bar
             >
-                <Content />
             </div>
-
-            <!-- Medium Syndication Link -->
-            {
-                post.data.mediumUrl && (
-                    <div class="mt-12 pt-8 border-t border-slate-200 dark:border-slate-800">
-                        <a
-                            href={post.data.mediumUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
-                        >
-                            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M13.54 12a6.8 6.8 0 01-6.77 6.82A6.8 6.8 0 010 12a6.8 6.8 0 016.77-6.82A6.8 6.8 0 0113.54 12zm7.42 0c0 3.54-1.51 6.42-3.38 6.42-1.87 0-3.39-2.88-3.39-6.42s1.52-6.42 3.39-6.42 3.38 2.88 3.38 6.42M24 12c0 3.17-.53 5.75-1.19 5.75-.66 0-1.19-2.58-1.19-5.75s.53-5.75 1.19-5.75C23.47 6.25 24 8.83 24 12z" />
-                            </svg>
-                            Also available on Medium
-                        </a>
-                    </div>
-                )
-            }
         </div>
-    </article>
+
+        <article
+            class="py-16 sm:py-20 bg-white dark:bg-slate-900 min-h-screen"
+        >
+            <div
+                class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 lg:grid lg:grid-cols-[13rem_minmax(0,1fr)] lg:gap-12"
+            >
+                <!-- Signature section rail (desktop) -->
+                <aside class="hidden lg:block">
+                    <div class="sticky top-24">
+                        {
+                            railHeadings.length > 0 && (
+                                <nav aria-label={t.contents}>
+                                    <p class="font-accent text-[0.7rem] uppercase tracking-[0.2em] text-slate-400 dark:text-slate-500 mb-4">
+                                        {t.contents}
+                                    </p>
+                                    <ol class="border-l border-slate-200 dark:border-slate-800">
+                                        {railHeadings.map((h, i) => (
+                                            <li>
+                                                <a
+                                                    href={`#${h.slug}`}
+                                                    data-rail-link={h.slug}
+                                                    class:list={[
+                                                        "group flex gap-2.5 -ml-px border-l-2 border-transparent py-1 text-sm leading-snug text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors",
+                                                        h.depth === 3 ? "pl-8" : "pl-4",
+                                                    ]}
+                                                >
+                                                    <span class="font-accent text-xs text-slate-300 dark:text-slate-600 group-hover:text-primary-500 tabular-nums">
+                                                        {String(i + 1).padStart(2, "0")}
+                                                    </span>
+                                                    <span>{h.text}</span>
+                                                </a>
+                                            </li>
+                                        ))}
+                                    </ol>
+                                </nav>
+                            )
+                        }
+
+                        <!-- Integrated reading progress -->
+                        <div class="mt-8 flex items-center gap-3">
+                            <div
+                                class="h-1 flex-1 rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden"
+                            >
+                                <div
+                                    class="h-full w-0 bg-gradient-to-r from-primary-500 to-purple-500"
+                                    data-progress-bar
+                                >
+                                </div>
+                            </div>
+                            <span
+                                class="font-accent text-xs text-slate-400 dark:text-slate-500 tabular-nums"
+                                data-progress-label>0%</span
+                            >
+                        </div>
+                    </div>
+                </aside>
+
+                <!-- Content column -->
+                <div class="min-w-0">
+                    <header class="mb-10">
+                        {
+                            isDraft && (
+                                <span class="inline-block px-3 py-1 mb-5 text-xs font-bold tracking-wider text-amber-500 uppercase bg-amber-100 dark:bg-amber-900/30 rounded-full border border-amber-200 dark:border-amber-700">
+                                    {t.draft}
+                                </span>
+                            )
+                        }
+
+                        <!-- Eyebrow (mono structural accent) -->
+                        <p
+                            class="font-accent text-xs uppercase tracking-[0.2em] text-primary-600 dark:text-primary-400 mb-4"
+                        >
+                            {eyebrow}
+                        </p>
+
+                        <!-- Display H1 (left-aligned) -->
+                        <h1
+                            class="font-display text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-5 leading-[1.1] tracking-tight text-balance"
+                        >
+                            {post.data.title}
+                        </h1>
+
+                        <!-- Mono meta line -->
+                        <div
+                            class="flex flex-wrap items-center gap-x-3 gap-y-1 font-accent text-sm text-slate-500 dark:text-slate-400"
+                        >
+                            <time datetime={post.data.pubDate.toISOString()}>
+                                {
+                                    post.data.pubDate.toLocaleDateString(dateLocale, {
+                                        year: "numeric",
+                                        month: "long",
+                                        day: "numeric",
+                                    })
+                                }
+                            </time>
+                            <span class="text-slate-300 dark:text-slate-600">/</span>
+                            <span>{post.data.author}</span>
+                            <span class="text-slate-300 dark:text-slate-600">/</span>
+                            <span>{t.readTime}</span>
+                        </div>
+
+                        <!-- Standfirst -->
+                        <p
+                            class="mt-6 text-xl text-slate-600 dark:text-slate-300 leading-relaxed max-w-2xl"
+                        >
+                            {post.data.description}
+                        </p>
+
+                        <!-- Tags -->
+                        {
+                            post.data.tags && (
+                                <div class="flex flex-wrap gap-2 mt-6">
+                                    {post.data.tags.map((tag) => (
+                                        <span class="font-accent px-2.5 py-0.5 text-xs text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 rounded border border-slate-200 dark:border-slate-700">
+                                            #{tag}
+                                        </span>
+                                    ))}
+                                </div>
+                            )
+                        }
+
+                        <!-- Translation Link -->
+                        {
+                            translatedPost && (
+                                <div class="mt-6">
+                                    <a
+                                        href={`/${targetLang}/blog/${translatedPost.slug}`}
+                                        class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors border border-slate-200 dark:border-slate-700"
+                                    >
+                                        <svg
+                                            class="w-4 h-4"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            stroke-width="1.5"
+                                            stroke="currentColor"
+                                        >
+                                            <path
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                d="m10.5 21 5.25-11.25L21 21m-9-3h7.5M3 5.621a48.474 48.474 0 0 1 6-.371m0 0c1.12 0 2.233.038 3.334.114M9 5.25V3m3.334 2.364C11.176 10.658 7.69 15.08 3 17.502m9.334-12.138c.896.061 1.785.147 2.666.257m-4.589 8.495a18.023 18.023 0 0 1-3.827-5.802"
+                                            />
+                                        </svg>
+                                        {t.readIn}
+                                    </a>
+                                </div>
+                            )
+                        }
+                    </header>
+
+                    <!-- Divider -->
+                    <hr class="border-slate-200 dark:border-slate-800 mb-10" />
+
+                    <!-- Content -->
+                    <div
+                        data-article-body
+                        class:list={[
+                            "prose prose-slate dark:prose-invert prose-lg",
+                            measure,
+                            "prose-headings:font-display prose-headings:font-bold prose-headings:tracking-tight prose-headings:text-slate-900 dark:prose-headings:text-white prose-headings:scroll-mt-24",
+                            "prose-a:text-primary-600 dark:prose-a:text-primary-400 prose-a:no-underline hover:prose-a:underline",
+                            "prose-code:font-accent prose-code:text-pink-600 dark:prose-code:text-pink-400 prose-code:bg-slate-100 dark:prose-code:bg-slate-800 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded-md prose-code:before:content-none prose-code:after:content-none",
+                            "prose-pre:border prose-pre:border-slate-200 dark:prose-pre:border-slate-800 prose-pre:rounded-xl",
+                            "prose-blockquote:border-l-primary-500 prose-blockquote:bg-slate-50 dark:prose-blockquote:bg-slate-900/50 prose-blockquote:py-2 prose-blockquote:px-4 prose-blockquote:rounded-r-lg prose-blockquote:not-italic",
+                            // Drop-cap on the opening paragraph
+                            "[&>p:first-of-type]:first-letter:float-left [&>p:first-of-type]:first-letter:mr-3 [&>p:first-of-type]:first-letter:mt-1 [&>p:first-of-type]:first-letter:font-display [&>p:first-of-type]:first-letter:text-6xl [&>p:first-of-type]:first-letter:font-bold [&>p:first-of-type]:first-letter:leading-[0.8] [&>p:first-of-type]:first-letter:text-primary-600 dark:[&>p:first-of-type]:first-letter:text-primary-400",
+                        ]}
+                    >
+                        <Content />
+                    </div>
+
+                    <!-- Medium Syndication Link -->
+                    {
+                        post.data.mediumUrl && (
+                            <div class="mt-12 pt-8 border-t border-slate-200 dark:border-slate-800">
+                                <a
+                                    href={post.data.mediumUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
+                                >
+                                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M13.54 12a6.8 6.8 0 01-6.77 6.82A6.8 6.8 0 010 12a6.8 6.8 0 016.77-6.82A6.8 6.8 0 0113.54 12zm7.42 0c0 3.54-1.51 6.42-3.38 6.42-1.87 0-3.39-2.88-3.39-6.42s1.52-6.42 3.39-6.42 3.38 2.88 3.38 6.42M24 12c0 3.17-.53 5.75-1.19 5.75-.66 0-1.19-2.58-1.19-5.75s.53-5.75 1.19-5.75C23.47 6.25 24 8.83 24 12z" />
+                                    </svg>
+                                    Also available on Medium
+                                </a>
+                            </div>
+                        )
+                    }
+                </div>
+            </div>
+        </article>
+    </article-rail>
 
     <script>
-        document.addEventListener("astro:page-load", () => {
-            const handler = () => {
-                const winScroll =
-                    document.body.scrollTop || document.documentElement.scrollTop;
-                const height =
-                    document.documentElement.scrollHeight -
-                    document.documentElement.clientHeight;
-                const scrolled = (winScroll / height) * 100;
-                const bar = document.getElementById("scroll-progress");
-                if (bar) bar.style.width = scrolled + "%";
+        // Reading rail as a Custom Element: connectedCallback/disconnectedCallback
+        // fire on every View-Transition swap, so listeners/observers never leak
+        // (mirrors FullBleedCarouselLayout / ProjectModal lifecycle pattern).
+        class ArticleRail extends HTMLElement {
+            private observer: IntersectionObserver | null = null;
+            private links = new Map<string, HTMLAnchorElement>();
+            private bars: HTMLElement[] = [];
+            private label: HTMLElement | null = null;
+
+            private onScroll = () => {
+                const el = document.documentElement;
+                const max = el.scrollHeight - el.clientHeight;
+                const pct =
+                    max > 0
+                        ? Math.min(100, Math.max(0, (el.scrollTop / max) * 100))
+                        : 0;
+                for (const bar of this.bars) bar.style.width = pct + "%";
+                if (this.label) this.label.textContent = Math.round(pct) + "%";
             };
-            window.addEventListener("scroll", handler);
-        });
+
+            connectedCallback() {
+                this.bars = Array.from(
+                    this.querySelectorAll<HTMLElement>("[data-progress-bar]")
+                );
+                this.label = this.querySelector<HTMLElement>(
+                    "[data-progress-label]"
+                );
+                this.querySelectorAll<HTMLAnchorElement>(
+                    "[data-rail-link]"
+                ).forEach((a) => {
+                    const slug = a.getAttribute("data-rail-link");
+                    if (slug) this.links.set(slug, a);
+                });
+
+                // Active-section highlight (mirrors Header.astro scroll-spy).
+                const heads = Array.from(
+                    document.querySelectorAll<HTMLElement>(
+                        "[data-article-body] :is(h2, h3)[id]"
+                    )
+                );
+                if (heads.length && this.links.size) {
+                    this.observer = new IntersectionObserver(
+                        (entries) => {
+                            for (const entry of entries) {
+                                if (entry.isIntersecting) {
+                                    this.setActive(entry.target.id);
+                                }
+                            }
+                        },
+                        { rootMargin: "-20% 0px -70% 0px", threshold: 0 }
+                    );
+                    heads.forEach((h) => this.observer!.observe(h));
+                }
+
+                window.addEventListener("scroll", this.onScroll, {
+                    passive: true,
+                });
+                this.onScroll();
+            }
+
+            disconnectedCallback() {
+                window.removeEventListener("scroll", this.onScroll);
+                this.observer?.disconnect();
+                this.observer = null;
+                this.links.clear();
+            }
+
+            private setActive(id: string) {
+                this.links.forEach((a, slug) => {
+                    const on = slug === id;
+                    a.classList.toggle("text-slate-900", on);
+                    a.classList.toggle("dark:text-white", on);
+                    a.classList.toggle("!border-primary-500", on);
+                    if (on) a.setAttribute("aria-current", "true");
+                    else a.removeAttribute("aria-current");
+                });
+            }
+        }
+
+        if (!customElements.get("article-rail")) {
+            customElements.define("article-rail", ArticleRail);
+        }
     </script>
 </PageLayout>
