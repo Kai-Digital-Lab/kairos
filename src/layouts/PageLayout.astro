@@ -12,9 +12,10 @@ interface Props {
     canonicalURL?: string;
     article?: boolean;
     toggleUrl?: string;
+    alternatePaths?: Record<string, string>;
 }
 
-const { title, description, image, lang, robots, canonicalURL, article, toggleUrl } = Astro.props;
+const { title, description, image, lang, robots, canonicalURL, article, toggleUrl, alternatePaths } = Astro.props;
 ---
 
 <BaseLayout
@@ -25,6 +26,7 @@ const { title, description, image, lang, robots, canonicalURL, article, toggleUr
     robots={robots}
     canonicalURL={canonicalURL}
     article={article}
+    alternatePaths={alternatePaths}
 >
     <Header toggleUrl={toggleUrl} />
     <main class="min-h-screen">

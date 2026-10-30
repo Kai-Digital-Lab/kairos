@@ -12,9 +12,16 @@ export function getStaticPaths() {
 }
 
 const { lang } = Astro.params;
+
+const translations = {
+	en: { title: "K@i DIGITAL LAB | Custom Websites & Web Apps" },
+	"zh-tw": { title: "K@i DIGITAL LAB | 客製網站與系統開發" },
+};
+
+const t = translations[lang as keyof typeof translations] || translations.en;
 ---
 
-<PageLayout title="K@i DIGITAL LAB | Senior TPM Portfolio" lang={lang}>
+<PageLayout title={t.title} lang={lang}>
 	<Hero />
 
 	<Portfolio />

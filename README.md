@@ -67,6 +67,6 @@ I specialize in leading complex cross-functional teams to deliver high-impact di
 
 ## 📄 License
 
-This project is open-source and available under the MIT License.
+The source code is available under the [MIT License](LICENSE).
 
-The content, design, and creative assets are licensed under a [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](https://creativecommons.org/licenses/by-nc-nd/4.0/) (CC BY-NC-ND 4.0).
+The website's content, design, and creative assets are © Kevin Hsieh. All rights reserved.

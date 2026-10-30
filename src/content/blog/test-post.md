@@ -7,7 +7,6 @@ translationKey: "future-of-portfolios"
 author: "Kevin Hsieh"
 tags: ["Architecture", "Astro", "Philosophy"]
 isDraft: false
-canonicalURL: "https://kai-digital-lab.com/blog/future-of-portfolios"
 ---
 
 # The Static Web is Boring.

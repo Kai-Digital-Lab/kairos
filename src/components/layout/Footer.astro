@@ -4,12 +4,10 @@ const year = new Date().getFullYear();
 
 const translations = {
     en: {
-        privacy: "Privacy Policy",
-        terms: "Terms of Service",
+        rights: "All rights reserved.",
     },
     "zh-tw": {
-        privacy: "隱私權政策",
-        terms: "服務條款",
+        rights: "版權所有。",
     },
 };
 
@@ -27,61 +25,22 @@ const t = translations[lang as keyof typeof translations] || translations.en;
                 class="text-xl font-bold text-slate-900 dark:text-white tracking-tighter"
                 >Kai Digital Lab</span
             >
-            <p class="text-sm mt-2 flex flex-wrap items-center gap-1">
-                &copy; {year} by&nbsp;
-                <a
-                    href="https://github.com/kevin828"
-                    class="hover:text-primary-600 dark:hover:text-white transition-colors"
-                    >Kevin Hsieh</a
-                >
-                &nbsp;is licensed under&nbsp;
-                <a
-                    href="https://creativecommons.org/licenses/by-nc-nd/4.0/"
-                    class="hover:text-primary-600 dark:hover:text-white transition-colors"
-                    >CC BY-NC-ND 4.0</a
-                >
-                <span class="inline-flex items-center gap-0.5 ml-1 opacity-80">
-                    <img
-                        src="https://mirrors.creativecommons.org/presskit/icons/cc.svg"
-                        alt="CC"
-                        class="h-4 w-4"
-                    />
-                    <img
-                        src="https://mirrors.creativecommons.org/presskit/icons/by.svg"
-                        alt="BY"
-                        class="h-4 w-4"
-                    />
-                    <img
-                        src="https://mirrors.creativecommons.org/presskit/icons/nc.svg"
-                        alt="NC"
-                        class="h-4 w-4"
-                    />
-                    <img
-                        src="https://mirrors.creativecommons.org/presskit/icons/nd.svg"
-                        alt="ND"
-                        class="h-4 w-4"
-                    />
-                </span>
+            <p class="text-sm mt-2">
+                &copy; {year} Kevin Hsieh. {t.rights}
             </p>
         </div>
         <div class="flex items-center gap-6 text-sm font-medium">
             <a
-                href="#"
-                class="hover:text-primary-600 dark:hover:text-white transition-colors"
-                >{t.privacy}</a
-            >
-            <a
-                href="#"
-                class="hover:text-primary-600 dark:hover:text-white transition-colors"
-                >{t.terms}</a
-            >
-            <a
-                href="#"
+                href="https://www.linkedin.com/in/kevinhsieh-pmp/"
+                target="_blank"
+                rel="noopener noreferrer"
                 class="hover:text-primary-600 dark:hover:text-white transition-colors"
                 >LinkedIn</a
             >
             <a
-                href="#"
+                href="https://github.com/kevin828"
+                target="_blank"
+                rel="noopener noreferrer"
                 class="hover:text-primary-600 dark:hover:text-white transition-colors"
                 >GitHub</a
             >
