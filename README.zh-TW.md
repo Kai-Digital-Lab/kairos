@@ -67,6 +67,6 @@
 
 ## 📄 授權規範
 
-本專案基於 MIT License 授權開放原始碼。
+原始碼採用 [MIT License](LICENSE) 授權。
 
-內容、設計與創意資產採用 [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](https://creativecommons.org/licenses/by-nc-nd/4.0/) (CC BY-NC-ND 4.0) 授權。
+網站的內容、設計與創意資產版權屬於 Kevin Hsieh，保留所有權利。
