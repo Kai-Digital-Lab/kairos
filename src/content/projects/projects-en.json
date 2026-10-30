@@ -21,9 +21,9 @@
     },
     {
         "id": "smart-factory-cloud-migration",
-        "title": "Smart Factory Cloud Migration Program",
+        "title": "Smart Factory Cloud Migration Program (Demo)",
         "summary": "An 18-month program moving a PCB manufacturer's MES and quality systems from on-prem VMs to AWS with zero line-down time.",
-        "fullDescription": "Led the migration of 40+ production workloads — MES, SPC quality dashboards, and shop-floor integration services — for a Taoyuan PCB manufacturer. The program ran in five migration waves aligned to factory maintenance windows, landing on a Terraform-managed AWS landing zone with EKS for containerized services and Site-to-Site VPN back to shop-floor PLCs. Cumulative cutover downtime stayed under four hours across the entire program; production never stopped.",
+        "fullDescription": "Led the migration of 40+ production workloads — MES, SPC quality dashboards, and shop-floor integration services — for a fictional PCB manufacturer. The program ran in five migration waves aligned to factory maintenance windows, landing on a Terraform-managed AWS landing zone with EKS for containerized services and Site-to-Site VPN back to shop-floor PLCs. Cumulative cutover downtime stayed under four hours across the entire program; production never stopped.",
         "heroImage": "https://picsum.photos/seed/factory-cloud/1200/800",
         "tags": ["Cloud Architecture", "AWS", "Program Management"],
         "year": 2024,
@@ -33,9 +33,9 @@
         },
         "consultant": {
             "testimonial": {
-                "quote": "Kevin ran the tightest migration program we've seen — every wave landed inside its maintenance window, and his weekly risk reviews meant nothing ever caught us by surprise.",
-                "author": "Y.C. Chen",
-                "role": "Director of Manufacturing IT"
+                "quote": "The tightest migration program we've seen — every wave landed inside its maintenance window, and weekly risk reviews meant nothing ever caught us by surprise.",
+                "author": "Sample Client A",
+                "role": "Fictional testimonial"
             },
             "serviceProcess": [
                 "Discovery & workload assessment",
@@ -48,7 +48,7 @@
     },
     {
         "id": "aoi-vision-platform",
-        "title": "AOI Vision Inspection Platform",
+        "title": "AOI Vision Inspection Platform (Demo)",
         "summary": "Edge-AI defect re-judgment that cut false rejects on SMT lines by two-thirds while keeping every image on-prem.",
         "fullDescription": "A rework of legacy automated optical inspection (AOI): rule-based machines flagged so many false positives that every board needed manual re-inspection. We layered a CNN-based re-judgment service onto the existing camera feeds, deployed on edge GPUs beside the line so raw images never leave the factory network, with a cloud control plane for model versioning, fleet monitoring, and drift alerts.",
         "heroImage": "https://picsum.photos/seed/aoi-vision/1200/800",
@@ -76,14 +76,14 @@
         "consultant": {
             "testimonial": {
                 "quote": "False rejects dropped from 38% to 11% in the first quarter. The team finally trusts the AOI line again.",
-                "author": "H.M. Lin",
-                "role": "Quality Assurance Manager"
+                "author": "Sample Client B",
+                "role": "Fictional testimonial"
             }
         }
     },
     {
         "id": "klab-design-system",
-        "title": "K-LAB Design System",
+        "title": "K-LAB Design System (Demo)",
         "summary": "Atomic design tokens and shared components that unified 25 theme layouts without flattening their personalities.",
         "fullDescription": "As the Kairos theme explorer grew to 25 layouts, visual drift crept in: five slightly different buttons, inconsistent spacing, ad-hoc dark-mode fixes. The design system introduced shared atoms (Button, Card, Badge) with a token layer thin enough that each theme keeps its own voice — a corporate layout and a gossip-magazine layout use the same Card primitive with different tokens.",
         "heroImage": "https://picsum.photos/seed/klab-design/1200/800",
@@ -110,7 +110,7 @@
     },
     {
         "id": "formosa-light",
-        "title": "Formosa Light",
+        "title": "Formosa Light (Demo)",
         "summary": "A landscape series chasing Taiwan's mountain light, from Hehuanshan dawn to Jiufen's lantern dusk.",
         "fullDescription": "A year-long personal series on how light moves across Taiwan: sea-of-clouds sunrises above Hehuanshan, tea fields catching late sun in Alishan, and the blue hour when Jiufen's lanterns take over from the sky. Shot deliberately slow — one location per trip, waiting for the light instead of chasing compositions.",
         "heroImage": "https://picsum.photos/seed/formosa-light/1600/900",
@@ -133,7 +133,7 @@
     },
     {
         "id": "neon-taipei",
-        "title": "Neon Taipei",
+        "title": "Neon Taipei (Demo)",
         "summary": "Night street photography of Taipei after the rain — neon, reflections, and late-night noodle stalls.",
         "fullDescription": "Shot over one humid summer of after-work walks: Ximending signage doubled in wet asphalt, the last customers at Raohe Street stalls, taxi light-trails down Zhongxiao East Road. The series stays handheld and high-ISO on purpose — the grain belongs to the city.",
         "heroImage": "https://picsum.photos/seed/neon-taipei/1600/900",

@@ -1,47 +1,36 @@
 [
     {
         "id": "landing-page",
-        "title": "形象著陸頁",
-        "price": { "usd": "$1,500", "twd": "NT$45,000" },
-        "per": "/ 起",
-        "features": [
-            "高轉換率單頁設計",
-            "完全響應式 (手機友善)",
-            "聯絡表單與潛在客戶收集",
-            "5-7 天快速交付"
-        ],
-        "cta": "開始專案",
-        "isPopular": false,
-        "exampleProjectIds": ["kairos-website"]
+        "title": "形象／活動頁",
+        "price": "NT$45,000 起",
+        "audience": "需要一個聚焦頁面的單一產品、服務或活動。",
+        "cta": "洽談形象頁",
+        "exampleThemes": [
+            { "category": "software", "id": "FreemiumSoftware" },
+            { "category": "ecommerce", "id": "DigitalProducts" }
+        ]
     },
     {
         "id": "business-website",
-        "title": "商業形象網站",
-        "price": { "usd": "$4,800", "twd": "NT$120,000" },
-        "per": "/ 起",
-        "features": [
-            "最多 8 個客製化頁面",
-            "易用的後台 (內容管理)",
-            "技術 SEO 與分析設定",
-            "移交教育訓練與文件"
-        ],
-        "cta": "選擇此方案",
-        "isPopular": true,
-        "exampleProjectIds": ["klab-design-system"]
+        "title": "企業官網",
+        "price": "NT$120,000 起",
+        "audience": "需要完整公司網站的中小企業、診所與事務所。",
+        "cta": "洽談官網",
+        "exampleThemes": [
+            { "category": "corporate", "id": "LawAccountingFirm" },
+            { "category": "corporate", "id": "MedicalClinic" },
+            { "category": "corporate", "id": "RestaurantCafe" }
+        ]
     },
     {
         "id": "custom-web-app",
-        "title": "客製化 Web App",
-        "price": { "usd": "$10k+", "twd": "NT$300,000+" },
-        "per": "/ 專案",
-        "features": [
-            "React / Next.js 架構",
-            "資料庫與會員驗證整合",
-            "客製化 API 開發",
-            "上線後 30 天技術支援"
-        ],
+        "title": "客製系統",
+        "price": "依需求報價",
+        "audience": "現成軟體無法滿足流程的內部工具、儀表板與產品。",
         "cta": "索取報價",
-        "isPopular": false,
-        "exampleProjectIds": ["aoi-vision-platform", "smart-factory-cloud-migration"]
+        "exampleThemes": [
+            { "category": "software", "id": "ProjectManagementTool" },
+            { "category": "software", "id": "Fintech" }
+        ]
     }
 ]

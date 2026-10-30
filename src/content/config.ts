@@ -120,23 +120,21 @@ const projectsCollection = defineCollection({
 
 // ── Pricing collection ──
 // Locale-split like themes/projects (pricing-en.json / pricing-zh-tw.json).
-// Both currencies stored per plan (display strings, not converted rates);
-// exampleProjectIds cross-reference the projects collection.
+// Each locale carries its own display price: USD for en, TWD for zh-tw.
+// exampleThemes cross-reference demo layouts in the themes collection.
 
 const pricingCollection = defineCollection({
     type: 'data',
     schema: z.array(z.object({
         id: z.string(),                 // stable across locales
         title: z.string(),
-        price: z.object({
-            usd: z.string(),            // e.g. "$1,500"
-            twd: z.string(),            // e.g. "NT$45,000"
-        }),
-        per: z.string(),                // e.g. "/ starting"
-        features: z.array(z.string()),
+        price: z.string(),              // e.g. "From $1,500", "NT$45,000 起"
+        audience: z.string(),
         cta: z.string(),
-        isPopular: z.boolean().default(false),
-        exampleProjectIds: z.array(z.string()).optional(),
+        exampleThemes: z.array(z.object({
+            category: z.string(),       // themes entry prefix, e.g. "corporate"
+            id: z.string(),             // theme id within that category
+        })),
     })),
 });
 

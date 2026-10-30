@@ -90,69 +90,71 @@ const cards = categoryMeta.map((meta, i) => ({
               })),
 }));
 
+const totalDemos = cards.reduce((sum, card) => sum + card.themes.length, 0);
+
 // UI chrome strings only — theme names and preview images come from data
 const translations = {
     en: {
-        sectionTitle: "Interactive Capability Showcase",
-        sectionSubtitle: 'Experience our "Project Insanity" engine.',
-        themesLabel: "themes",
+        sectionTitle: "Try a Demo for Your Industry",
+        sectionSubtitle: `${totalDemos} working demo sites with fictional brands and content. Pick the one closest to your business and click around.`,
+        themesLabel: "demos",
         categories: {
             portfolio: {
                 title: "Portfolio Collections",
                 desc: "Creative layouts for personal branding and portfolios.",
-                cta: "Explore Portfolio Themes",
+                cta: "Try Portfolio Demos",
             },
             ecommerce: {
                 title: "E-Commerce",
                 desc: "Conversion-optimized storefronts and product pages.",
-                cta: "Explore Store Themes",
+                cta: "Try Store Demos",
             },
             corporate: {
                 title: "Corporate & Business",
                 desc: "Professional layouts for agencies, firms, and organizations.",
-                cta: "Explore Corporate Themes",
+                cta: "Try Corporate Demos",
             },
             content: {
                 title: "Content & Editorial",
                 desc: "Immersive layouts for blogs, news, and digital pubs.",
-                cta: "Explore Content Themes",
+                cta: "Try Content Demos",
             },
             software: {
                 title: "Software & SaaS",
                 desc: "Product-led growth layouts, pricing tables, and data dashboards.",
-                cta: "Explore Software Themes",
+                cta: "Try Software Demos",
             },
         },
     },
     "zh-tw": {
-        sectionTitle: "互動能力展示",
-        sectionSubtitle: "體驗我們的「Project Insanity」引擎。",
-        themesLabel: "種版型",
+        sectionTitle: "試用您產業的範例網站",
+        sectionSubtitle: `${totalDemos} 個可實際操作的範例網站，品牌與內容皆為虛構。挑一個最接近您事業的，直接點點看。`,
+        themesLabel: "個範例",
         categories: {
             portfolio: {
                 title: "精選作品集",
                 desc: "個人品牌與作品集的創意佈局。",
-                cta: "探索作品集主題",
+                cta: "試用作品集範例",
             },
             ecommerce: {
                 title: "電子商務",
                 desc: "最佳化轉換率的商店與產品頁面。",
-                cta: "探索電商主題",
+                cta: "試用電商範例",
             },
             corporate: {
                 title: "企業與商務",
                 desc: "適合代理商、事務所與組織的專業佈局。",
-                cta: "探索企業主題",
+                cta: "試用企業範例",
             },
             content: {
                 title: "內容與編輯",
                 desc: "適合部落格、新聞與數位出版的沉浸式佈局。",
-                cta: "探索內容主題",
+                cta: "試用內容範例",
             },
             software: {
                 title: "軟體與 SaaS",
                 desc: "產品驅動成長佈局、定價表與數據儀表板。",
-                cta: "探索軟體主題",
+                cta: "試用軟體範例",
             },
         },
     },

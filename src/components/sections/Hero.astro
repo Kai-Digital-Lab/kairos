@@ -3,21 +3,21 @@ const lang = Astro.currentLocale || "en";
 
 const translations = {
     en: {
-        statusPill: "Open to Senior TPM & consulting opportunities",
-        titleLine1: "Global Vision,",
-        titleLine2: "Local Excellence",
+        statusPill: "Now booking web projects",
+        titleLine1: "Websites That Work",
+        titleLine2: "As Hard As You Do",
         subtitle:
-            "Senior Technical Program Manager bridging the gap between business strategy and engineering execution.",
-        ctaPrimary: "View Projects",
-        ctaSecondary: "About Me",
+            "Custom websites and web apps, planned by a senior technical program manager and built around how your business actually runs.",
+        ctaPrimary: "Try Live Demos",
+        ctaSecondary: "Start a Project",
     },
     "zh-tw": {
-        statusPill: "開放資深 TPM 職缺與顧問合作洽談",
-        titleLine1: "全球視野，",
-        titleLine2: "深耕在地",
-        subtitle: "資深技術專案經理，連結商業策略與工程執行的關鍵橋樑。",
-        ctaPrimary: "精選專案",
-        ctaSecondary: "關於我",
+        statusPill: "目前接受網站與系統專案洽談",
+        titleLine1: "為您的事業，",
+        titleLine2: "打造真正好用的網站",
+        subtitle: "由資深技術專案經理規劃與開發的客製網站與系統，依照您的實際營運需求打造。",
+        ctaPrimary: "試用範例網站",
+        ctaSecondary: "洽談專案",
     },
 };
 
@@ -102,7 +102,7 @@ const t = translations[lang as keyof typeof translations] || translations.en;
                 {t.ctaPrimary}
             </a>
             <a
-                href="#about"
+                href="#contact"
                 class="inline-flex items-center justify-center px-8 py-3 text-base font-medium text-slate-700 dark:text-slate-200 bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm border border-slate-200 dark:border-slate-700 rounded-lg hover:bg-white dark:hover:bg-slate-800 transition-all duration-300 hover:-translate-y-1"
             >
                 {t.ctaSecondary}
