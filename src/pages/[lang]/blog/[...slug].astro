@@ -57,7 +57,7 @@ const minutes = Math.max(1, Math.round(latinWords / 200 + cjkChars / 400));
 // SEO Logic
 const isDraft = post.data.isDraft;
 const robots = isDraft ? "noindex, nofollow" : "index, follow";
-const canonicalURL = post.data.canonicalURL || Astro.url.href;
+const canonicalURL = post.data.canonicalURL;
 const dateLocale = lang === "zh-tw" ? "zh-TW" : "en-US";
 
 const translations = {
@@ -88,15 +88,25 @@ const measure = lang === "zh-tw" ? "max-w-[34em]" : "max-w-[70ch]";
 const toggleUrl = translatedPost
     ? `/${targetLang}/blog/${translatedPost.slug}`
     : `/${targetLang}/blog/`;
+
+// hreflang only pairs real translations; the toggle fallback above is a list page.
+const alternatePaths = translatedPost
+    ? {
+          [post.data.language]: Astro.url.pathname,
+          [targetLang]: `/${targetLang}/blog/${translatedPost.slug}`,
+      }
+    : {};
 ---
 
 <PageLayout
     title={post.data.title}
     description={post.data.description}
+    lang={lang}
     robots={robots}
     canonicalURL={canonicalURL}
     article={true}
     toggleUrl={toggleUrl}
+    alternatePaths={alternatePaths}
 >
     <article-rail>
         <!-- Mobile / narrow progress bar (rail takes over on lg) -->

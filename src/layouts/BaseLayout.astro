@@ -11,16 +11,18 @@ interface Props {
     robots?: string;
     canonicalURL?: string;
     article?: boolean;
+    alternatePaths?: Record<string, string>;
 }
 
 const {
     title = "K@i DIGITAL LAB",
-    description = "Senior TPM & Modern Web Architecture Portfolio",
+    description,
     image,
     lang = "en",
     robots = "index, follow",
-    canonicalURL = Astro.url.href,
+    canonicalURL,
     article = false,
+    alternatePaths,
 } = Astro.props;
 ---
 
@@ -32,7 +34,7 @@ const {
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
         <meta name="generator" content={Astro.generator} />
         <title>{title}</title>
-        <SEO title={title} description={description} image={image} canonicalURL={canonicalURL} robots={robots} article={article} />
+        <SEO title={title} description={description} image={image} canonicalURL={canonicalURL} robots={robots} article={article} alternatePaths={alternatePaths} />
 
         <ClientRouter />
 

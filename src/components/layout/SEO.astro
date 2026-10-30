@@ -6,25 +6,71 @@ interface Props {
     article?: boolean;
     canonicalURL?: string;
     robots?: string;
+    alternatePaths?: Record<string, string>;
 }
 
 const siteUrl = Astro.site ? Astro.site.href : "https://kairos-559.pages.dev";
+const lang = Astro.currentLocale || "en";
+
+const translations = {
+    en: {
+        description:
+            "Custom websites and web apps, planned by a senior technical program manager and built around how your business actually runs.",
+    },
+    "zh-tw": {
+        description:
+            "由資深技術專案經理規劃與開發的客製網站與系統，依照您的實際營運需求打造。",
+    },
+};
+
+const t = translations[lang as keyof typeof translations] || translations.en;
 
 const {
-    title = "K@i DIGITAL LAB | Senior TPM Portfolio",
-    description = "Senior Technical Program Manager & Architecture Consultant. Bridging the gap between business requirements and technical excellence.",
-    image = "/og-image.jpg",
+    title = "K@i DIGITAL LAB",
+    description = t.description,
+    image = "/og-image.png",
     article = false,
     canonicalURL = new URL(Astro.url.pathname, siteUrl).href,
     robots = "index, follow",
+    alternatePaths,
 } = Astro.props;
 
 const socialImageURL = new URL(image, siteUrl);
+
+// Locale-prefixed routes default to the same path in the other locale.
+// Pages without a counterpart pass their own alternatePaths; unprefixed
+// routes such as the 404 page get none.
+const locales = ["en", "zh-tw"];
+const currentPath = Astro.url.pathname;
+const pathLocale = locales.find(
+    (locale) =>
+        currentPath === `/${locale}` || currentPath.startsWith(`/${locale}/`),
+);
+const resolvedAlternates =
+    alternatePaths ??
+    (pathLocale
+        ? Object.fromEntries(
+              locales.map((locale) => [
+                  locale,
+                  currentPath.replace(`/${pathLocale}`, `/${locale}`),
+              ]),
+          )
+        : {});
+const hreflangCodes: Record<string, string> = { en: "en", "zh-tw": "zh-TW" };
+const alternateLinks = Object.entries(resolvedAlternates).map(
+    ([locale, path]) => ({
+        hreflang: hreflangCodes[locale] || locale,
+        href: new URL(path, siteUrl).href,
+    }),
+);
+const defaultAlternate = resolvedAlternates.en;
 ---
 
 <meta name="description" content={description} />
 <meta name="robots" content={robots} />
 <link rel="canonical" href={canonicalURL} />
+{alternateLinks.map((link) => <link rel="alternate" hreflang={link.hreflang} href={link.href} />)}
+{defaultAlternate && <link rel="alternate" hreflang="x-default" href={new URL(defaultAlternate, siteUrl).href} />}
 
 <meta property="og:type" content={article ? "article" : "website"} />
 <meta property="og:url" content={canonicalURL} />

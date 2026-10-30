@@ -102,11 +102,13 @@ if (category === "portfolio") {
 
 const translations = {
     en: {
+        demoLabel: "Demo",
         demoNotice: "Demo site: the brand, people, and content here are fictional.",
         ctaQuestion: "Want a site like this?",
         ctaButton: "Start a Project",
     },
     "zh-tw": {
+        demoLabel: "範例",
         demoNotice: "範例網站：此處的品牌、人物與內容皆為虛構。",
         ctaQuestion: "想要類似的網站嗎？",
         ctaButton: "洽談專案",
@@ -117,7 +119,11 @@ const t = translations[lang as keyof typeof translations] || translations.en;
 const contactHref = `/${lang}/?demo=${encodeURIComponent(activeTheme.name)}#contact`;
 ---
 
-<PageLayout title={`Explorer - ${category}`} lang={lang}>
+<PageLayout
+    title={`${activeTheme.name} | ${t.demoLabel} | K@i DIGITAL LAB`}
+    description={activeTheme.description}
+    lang={lang}
+>
     <div class="pt-20 min-h-screen bg-slate-50 dark:bg-slate-900">
         <div class="max-w-7xl mx-auto px-4 py-8">
             <h1
