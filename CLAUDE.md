@@ -128,8 +128,8 @@ Data collections are locale-split (`*-en.json` / `*-zh-tw.json`) with stable sha
 
 - `blog`: Markdown content with Zod-validated frontmatter (title, description, pubDate, tags, etc.)
 - `themes`: JSON data defining layout themes with content focus metadata
-- `projects`: shared portfolio dataset — core fields + optional per-lens facets (`designer` / `engineer` / `photographer` / `caseStudy` / `consultant`), see ADR-0008. Consumed by the 5 portfolio explorer layouts, the homepage showcase, and as example-work links in Pricing/Services.
-- `pricing`: plans with dual-currency display prices (`price.usd` / `price.twd`) and `exampleProjectIds` cross-referencing `projects`
+- `projects`: shared portfolio dataset — core fields + optional per-lens facets (`designer` / `engineer` / `photographer` / `caseStudy` / `consultant`), see ADR-0008. Consumed by the 5 portfolio explorer layouts and the homepage showcase. Only `kairos-website` is real; every other entry is fictional demo data and must stay labelled as such.
+- `pricing`: engagement types with a locale-specific display `price` (USD in en, TWD in zh-tw) and `exampleThemes` cross-referencing `themes`
 
 ## Git Conventions
 
