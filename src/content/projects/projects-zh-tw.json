@@ -21,9 +21,9 @@
     },
     {
         "id": "smart-factory-cloud-migration",
-        "title": "智慧工廠雲端遷移計畫",
+        "title": "智慧工廠雲端遷移計畫（範例）",
         "summary": "歷時 18 個月，將 PCB 製造商的 MES 與品質系統從地端 VM 遷移至 AWS，產線零停擺。",
-        "fullDescription": "為桃園一家 PCB 製造商主導 40 多個生產工作負載的遷移——涵蓋 MES、SPC 品質儀表板與現場整合服務。計畫配合工廠歲修窗口分五波執行，落地於以 Terraform 管理的 AWS Landing Zone：容器化服務跑在 EKS 上，並以 Site-to-Site VPN 回連現場 PLC。整個計畫累計切換停機時間不到四小時，產線從未停擺。",
+        "fullDescription": "為一家虛構的 PCB 製造商主導 40 多個生產工作負載的遷移——涵蓋 MES、SPC 品質儀表板與現場整合服務。計畫配合工廠歲修窗口分五波執行，落地於以 Terraform 管理的 AWS Landing Zone：容器化服務跑在 EKS 上，並以 Site-to-Site VPN 回連現場 PLC。整個計畫累計切換停機時間不到四小時，產線從未停擺。",
         "heroImage": "https://picsum.photos/seed/factory-cloud/1200/800",
         "tags": ["雲端架構", "AWS", "專案管理"],
         "year": 2024,
@@ -33,9 +33,9 @@
         },
         "consultant": {
             "testimonial": {
-                "quote": "這是我們見過執行最嚴謹的遷移計畫——每一波都準時落在歲修窗口內，Kevin 的每週風險檢視讓我們從未被突發狀況打到。",
-                "author": "陳育誠",
-                "role": "製造資訊處長"
+                "quote": "這是我們見過執行最嚴謹的遷移計畫——每一波都準時落在歲修窗口內，每週的風險檢視讓我們從未被突發狀況打到。",
+                "author": "範例客戶 A",
+                "role": "虛構見證"
             },
             "serviceProcess": [
                 "探索與工作負載盤點",
@@ -48,7 +48,7 @@
     },
     {
         "id": "aoi-vision-platform",
-        "title": "AOI 智慧視覺檢測平台",
+        "title": "AOI 智慧視覺檢測平台（範例）",
         "summary": "在 SMT 產線導入邊緣 AI 複判，誤殺率降低三分之二，影像全程不出廠。",
         "fullDescription": "一場 AOI 老線翻新：既有規則式 AOI 誤報率過高，每片板子都得靠人工複檢。我們在原有相機訊號上疊加 CNN 複判服務，部署於產線旁的邊緣 GPU，原始影像不離開廠內網路；雲端控制平面則負責模型版本管理、機隊監控與飄移告警。",
         "heroImage": "https://picsum.photos/seed/aoi-vision/1200/800",
@@ -76,14 +76,14 @@
         "consultant": {
             "testimonial": {
                 "quote": "第一季誤殺率就從 38% 降到 11%，團隊終於重新信任 AOI 產線了。",
-                "author": "林惠敏",
-                "role": "品保經理"
+                "author": "範例客戶 B",
+                "role": "虛構見證"
             }
         }
     },
     {
         "id": "klab-design-system",
-        "title": "K-LAB 設計系統",
+        "title": "K-LAB 設計系統（範例）",
         "summary": "以原子化設計代幣與共用元件統一 25 種主題版型，同時保留每個主題的個性。",
         "fullDescription": "隨著 Kairos 主題探索器擴張到 25 種版型，視覺開始漂移：五種略有差異的按鈕、不一致的間距、各自為政的深色模式修補。設計系統引入共用原子元件（Button、Card、Badge）與夠薄的代幣層，讓每個主題保有自己的聲音——企業版型與八卦雜誌版型用的是同一個 Card 原型，只是注入不同的代幣。",
         "heroImage": "https://picsum.photos/seed/klab-design/1200/800",
@@ -110,7 +110,7 @@
     },
     {
         "id": "formosa-light",
-        "title": "福爾摩沙之光",
+        "title": "福爾摩沙之光（範例）",
         "summary": "追逐台灣山線光影的風景攝影系列——從合歡山日出到九份的燈籠暮色。",
         "fullDescription": "為期一年的個人創作，記錄光如何在台灣移動：合歡山雲海之上的日出、阿里山茶園斜照的午後、九份燈籠接管天色的藍調時刻。刻意放慢節奏——一次旅程只拍一個地點，等光，而不是追構圖。",
         "heroImage": "https://picsum.photos/seed/formosa-light/1600/900",
@@ -133,7 +133,7 @@
     },
     {
         "id": "neon-taipei",
-        "title": "霓虹台北",
+        "title": "霓虹台北（範例）",
         "summary": "雨後台北的夜間街拍——霓虹、倒影，與深夜麵攤。",
         "fullDescription": "在一個潮濕的夏天、無數次下班後的散步中完成：西門町招牌倒映在濕漉的柏油路上、饒河街最後一批客人、忠孝東路計程車的光軌。整個系列刻意手持、高 ISO——顆粒感本來就屬於這座城市。",
         "heroImage": "https://picsum.photos/seed/neon-taipei/1600/900",
