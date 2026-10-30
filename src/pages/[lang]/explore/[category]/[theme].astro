@@ -99,6 +99,22 @@ if (category === "portfolio") {
     const projectsEntry = await getEntry("projects", `projects-${lang}`);
     projects = projectsEntry?.data ?? [];
 }
+
+const translations = {
+    en: {
+        demoNotice: "Demo site: the brand, people, and content here are fictional.",
+        ctaQuestion: "Want a site like this?",
+        ctaButton: "Start a Project",
+    },
+    "zh-tw": {
+        demoNotice: "範例網站：此處的品牌、人物與內容皆為虛構。",
+        ctaQuestion: "想要類似的網站嗎？",
+        ctaButton: "洽談專案",
+    },
+};
+
+const t = translations[lang as keyof typeof translations] || translations.en;
+const contactHref = `/${lang}/?demo=${encodeURIComponent(activeTheme.name)}#contact`;
 ---
 
 <PageLayout title={`Explorer - ${category}`} lang={lang}>
@@ -109,6 +125,21 @@ if (category === "portfolio") {
             >
                 {category} Explorer
             </h1>
+
+            <div
+                role="note"
+                class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 rounded-lg border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/40 px-4 py-3"
+            >
+                <p class="text-sm font-medium text-amber-900 dark:text-amber-200">
+                    {t.demoNotice}
+                </p>
+                <a
+                    href={contactHref}
+                    class="shrink-0 text-sm font-bold text-primary-700 dark:text-primary-300 hover:underline"
+                >
+                    {t.ctaQuestion} {t.ctaButton} →
+                </a>
+            </div>
 
             <!-- Floating Theme Dock -->
             <ThemeDock
@@ -131,6 +162,19 @@ if (category === "portfolio") {
                         return <Layout theme={activeTheme} projects={projects} />;
                     })()
                 }
+            </div>
+
+            <!-- Clear of the fixed Theme Dock -->
+            <div class="mt-12 mb-24 text-center">
+                <p class="text-2xl font-bold text-slate-900 dark:text-white mb-4">
+                    {t.ctaQuestion}
+                </p>
+                <a
+                    href={contactHref}
+                    class="inline-block rounded-lg bg-primary-600 hover:bg-primary-700 px-8 py-3 font-bold text-white transition-colors"
+                >
+                    {t.ctaButton}
+                </a>
             </div>
         </div>
     </div>
